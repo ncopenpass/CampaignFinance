@@ -8,7 +8,7 @@
 ## Getting Started
 
 See the [contributing](./CONTRIBUTING.md) guide for instructions on running the project and more.  
-See the [project board](https://github.com/ncopenpass/CampaignFinance/projects/3) for open development tasks
+See the [project board](https://github.com/ncopenpass/CampaignFinance/projects/3) for open tasks
 
 ## About
 

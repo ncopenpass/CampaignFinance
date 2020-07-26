@@ -2,7 +2,7 @@
 
 ## Perquisites
 
-- Node.JS version v12 or newer and NPM
+- NodeJS version v12 or newer and NPM
 - Docker/Docker-Compose or PostgreSQL
 
 ## Tech
@@ -24,14 +24,15 @@
 ## How to contribute
 
 - Fork the repo
+- Create a feature branch
 - Make your changes
 - Commit and push your changes
-- Create a PR from your forked repo to the new repo
+- Create a PR from your forked repo to the main repo
 
 ## How to Run
 
-TBD
+<!-- TODO: -->
 
 ## Project Structure
 
-TBD
+<!-- TODO -->
