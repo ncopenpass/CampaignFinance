@@ -9,11 +9,14 @@
 ## How to Run
 
 1. Ensure all pre-requisites are installed
+1. Download this data and unzip this [file](https://drive.google.com/file/d/1KMMrK0WIPdJyqb76j4VOw3q9pZomDbqX/view?usp=sharing)
+1. Copy the two CSV files to the `./server/tmp` directory
 1. Run `cp server/sample.env server/.env` (If you do not wish to use docker, change the database url in the newly created `.env` file)
 1. Run `make first-run` this will run `npm install` for the ui and server and setup the db using Docker. After running this once you shouldn't need to run it again. (If you are not using Docker run `make first-run-no-docker`)
-1. Run `make start` this will start the UI and server running on ports 3000 and 3001 respectively. Type `CTRL-c` to exit
+1. Run `make start` this will start the UI and server running on ports 3000 and 3001 respectively. Both the UI and server will be running in watch mode, so any changes should automatically take effect. Type `CTRL-c` to exit
 1. View the project in your browser at [localhost:3000](http://localhost:3000)
-1. To verify that the API is running run `curl http://localhost:3001/status`. You should receive `{"status": "online"}`
+
+After the initial setup, to start and stop the project just run `make start` and `CTRL-c` to exit
 
 ## Tech
 
