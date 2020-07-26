@@ -3,7 +3,17 @@
 ## Perquisites
 
 - NodeJS version v12 or newer and NPM
-- Docker/Docker-Compose or PostgreSQL
+- Docker and Docker-Compose OR PostgreSQL
+- Make
+
+## How to Run
+
+1. Ensure all pre-requisites are installed
+1. Run `cp server/sample.env server/.env` (If you do not wish to use docker, change the database url in the newly created `.env` file)
+1. Run `make first-run` this will run `npm install` for the ui and server and setup the db using Docker. After running this once you shouldn't need to run it again. (If you are not using Docker run `make first-run-no-docker`)
+1. Run `make start` this will start the UI and server running on ports 3000 and 3001 respectively. Type `CTRL-c` to exit
+1. View the project in your browser at [localhost:3000](http://localhost:3000)
+1. To verify that the API is running run `curl http://localhost:3001/status`. You should receive `{"status": "online"}`
 
 ## Tech
 
@@ -21,6 +31,11 @@
 - [Docker](https://docker.io) - A container runtime
 - [Docker-Compose](https://docs.docker.com/compose/) - A way to manager Docker applications
 
+## Project Structure
+
+- `./src` directory contains the UI React code
+- `./server` contains the backend API code
+
 ## How to contribute
 
 - Fork the repo
@@ -28,11 +43,3 @@
 - Make your changes
 - Commit and push your changes
 - Create a PR from your forked repo to the main repo
-
-## How to Run
-
-<!-- TODO: -->
-
-## Project Structure
-
-<!-- TODO -->

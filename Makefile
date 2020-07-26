@@ -1,3 +1,6 @@
+first-run: install clean-db
+
+first-run-no-docker: install migrate-up etl
 
 install:
 	npm install
