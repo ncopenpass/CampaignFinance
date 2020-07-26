@@ -1,5 +1,16 @@
-﻿# Campaign Finance dashboard project
-[Join the Google Group](https://groups.google.com/forum/#!forum/raleigh-brigade-cfd) to join the discussion.
+﻿# Campaign Finance Dashboard
+
+[Join the Google Group](https://groups.google.com/forum/#!forum/raleigh-brigade-cfd) to join the discussion.  
+[Join us on Slack](http://code-for-nc-slack-invitations.herokuapp.com/)
+
+- After registering join the `#campaign-finance-dash-dev`, `#campaign-finance-dash-ux`, and `#campaign-finance-dash-data` channels
+
+## Getting Started
+
+See the [contributing](./CONTRIBUTING.md) guide for instructions on running the project and more.  
+See the [project board](https://github.com/ncopenpass/CampaignFinance/projects/3) for open tasks
+
+## About
 
 A lack of easy access to campaign finance data — that any citizen can search, sort and understand — undermines a transparent democracy. Our ability as voters and citizens to understand the people and corporations who fund the campaigns of our elected officials is key to making sense of policy outcomes and ensuring our elected officials have the public interest in mind when making vital decisions.
 
