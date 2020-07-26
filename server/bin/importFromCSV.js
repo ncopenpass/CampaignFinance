@@ -1,36 +1,9 @@
 #!/usr/bin/env node
-const fs = require('fs')
-const stream = require('stream')
-const copyFrom = require('pg-copy-streams').from
 const { getClient } = require('../db')
-const { after } = require('lodash')
+const { copyFromCSV } = require('../db/copyFromCSV')
 
 const tableName = process.argv[2]
 const filePath = process.argv[3]
-
-/**
- *
- * @param {*} fileStream
- * @param {string} tableName
- * @param {object} client
- * @param {string}  columns
- */
-const copyFromCSV = (path, tableName, client) =>
-  new Promise((resolve, reject) => {
-    const fileStream = fs.createReadStream(path)
-    const stream = client.query(
-      copyFrom(`COPY ${tableName} FROM STDIN DELIMITER ',' csv HEADER`)
-    )
-    fileStream.on('error', (error) => {
-      reject(error)
-    })
-    stream.on('error', (error) => {
-      reject(error)
-    })
-    fileStream.pipe(stream).on('finish', () => {
-      resolve()
-    })
-  })
 
 const init = () => {
   if (!filePath || !tableName) {

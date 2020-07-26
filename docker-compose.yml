@@ -10,7 +10,7 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_USER: postgres
     ports:
-        - 54322:5432
+        - 54321:5432
   pgweb:
     container_name: campaign-finance-dashboard-pgweb
     image: sosedoff/pgweb
