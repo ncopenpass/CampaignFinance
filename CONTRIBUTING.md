@@ -52,6 +52,10 @@ After the initial setup, to start and stop the project just run `make start` and
 - `./src` directory contains the UI React code
 - `./server` contains the backend API code
 
+## Wireframes
+
+Wireframes are on [Figma](https://www.figma.com/proto/OcC48DWJjwCsPigGa9vb82/Campaign-Finance-Dashboard-Wireframes?node-id=2%3A59&viewport=-1320%2C-986%2C0.3811715841293335&scaling=scale-down-width)
+
 ## How to contribute
 
 - Fork the repo
