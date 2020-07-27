@@ -1,2 +1,48 @@
 @import "~@trussworks/react-uswds/lib/index.css";
 @import "~@trussworks/react-uswds/lib/uswds.css";
+
+/* GLOBAL STYLES */
+body {
+    background-color:#EFF3FE;
+}
+
+/* HEADER */
+.usa-header {
+    background-color: #fff;;
+}
+
+
+/* SEARCH PAGE */
+.search-page {
+    margin-top: 150px;
+    margin-bottom: 138px;
+}
+
+.search-header {
+    text-align: center;
+    font-size: 50px;
+    // position: absolute;
+    // top: 50%;
+    // left: 50%;
+    // transform: translate(-50%, -50%);
+}
+
+.home-search {
+    justify-content: center;
+    text-align: center;
+}
+
+/* SEARCH BAR */
+.quick-search-btns {
+    margin: 20px;
+}
+.quick-search {
+    display: inline;
+    padding-right: 10px;
+}
+
+.search-component {
+    margin-left: auto;
+    margin-right: auto;
+    width: 65%;
+}
