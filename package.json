@@ -18,7 +18,7 @@
     "uswds": "^2.8.0"
   },
   "scripts": {
-    "start": "concurrently 'react-scripts start' 'cd server && npm run start-dev'",
+    "start": "concurrently \"react-scripts start\" \"cd server && npm run start-dev\"",
     "start-ui": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",

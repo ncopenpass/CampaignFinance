@@ -8,13 +8,26 @@
 
 ## How to Run
 
-1. Ensure all pre-requisites are installed
-1. Download this data and unzip this [file](https://drive.google.com/file/d/1KMMrK0WIPdJyqb76j4VOw3q9pZomDbqX/view?usp=sharing)
-1. Copy the two CSV files to the `./server/tmp` directory
-1. Run `cp server/sample.env server/.env` (If you do not wish to use docker, change the database url in the newly created `.env` file)
-1. Run `make first-run` this will run `npm install` for the ui and server and setup the db using Docker. After running this once you shouldn't need to run it again. (If you are not using Docker run `make first-run-no-docker`)
-1. Run `make start` this will start the UI and server running on ports 3000 and 3001 respectively. Both the UI and server will be running in watch mode, so any changes should automatically take effect. Type `CTRL-c` to exit
-1. View the project in your browser at [localhost:3000](http://localhost:3000)
+### MacOS/Linux
+
+- Ensure all pre-requisites are installed
+- Download this data and unzip this [file](https://drive.google.com/file/d/1KMMrK0WIPdJyqb76j4VOw3q9pZomDbqX/view?usp=sharing)
+- Copy the two CSV files to the `./server/tmp` directory
+- Run `cp server/sample.env server/.env` (If you do not wish to use docker, change the database url in the newly created `.env` file)
+- Run `make first-run` this will run `npm install` for the ui and server and setup the db using Docker. After running this once you shouldn't need to run it again. (If you are not using Docker run `make first-run-no-docker`)
+- Run `make start` this will start the UI and server running on ports 3000 and 3001 respectively. Both the UI and server will be running in watch mode, so any changes should automatically take effect. Type `CTRL-c` to exit
+- View the project in your browser at [localhost:3000](http://localhost:3000)
+
+### Windows
+
+- Ensure all pre-requisites are installed
+- Download this data and unzip this [file](https://drive.google.com/file/d/1KMMrK0WIPdJyqb76j4VOw3q9pZomDbqX/view?usp=sharing)
+- Copy the two CSV files to the `./server/tmp` directory
+- copy `server/sample.env` to `server/.env` (If you do not wish to use docker, change the database url in the newly created `.env` file)
+- Add your `DATABASE_URL` to your environment
+  - Powershell: `$env:DATABASE_URL = 'YOUR_DATABASE_URL'`
+- Run `make start` this will start the UI and server running on ports 3000 and 3001 respectively. Both the UI and server will be running in watch mode, so any changes should automatically take effect. Type `CTRL-c` to exit
+- View the project in your browser at [localhost:3000](http://localhost:3000)
 
 After the initial setup, to start and stop the project just run `make start` and `CTRL-c` to exit
 
