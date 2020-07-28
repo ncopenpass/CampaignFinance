@@ -1,0 +1,24 @@
+version: '3.1'
+
+services:
+
+  postgres:
+    container_name: campaign-finance-dashboard-db
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+    ports:
+        - 54321:5432
+  pgweb:
+    container_name: campaign-finance-dashboard-pgweb
+    image: sosedoff/pgweb
+    ports: 
+      - "8081:8081" 
+    links: 
+      - postgres:postgres
+    environment:
+      - DATABASE_URL=postgres://postgres:postgres@postgres:5432/postgres?sslmode=disable
+    depends_on:
+      - postgres 
