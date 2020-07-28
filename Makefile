@@ -37,7 +37,7 @@ migrate-up:
 	cd server && npm run migrate up
 
 migrate-up-windows:
-	cd server && npm run migrate-no-dot-env
+	cd server && npm run migrate-no-dot-env up
 
 migrate-down:
 	cd server && npm run migrate down
