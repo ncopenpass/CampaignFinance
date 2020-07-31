@@ -44,6 +44,22 @@ export default function Candidate() {
         donation_type: 'Contribution',
         donation_date: '3/5/2020',
         description: ''
+      },
+      {
+        donor_name: 'Lawrence Baxter',
+        donor_type: 'Individual',
+        amount: 2149.53,
+        donation_type: 'In-Kind',
+        donation_date: '1/22/2020',
+        description: 'Catering'
+      },
+      {
+        donor_name: 'Anne Abramson',
+        donor_type: 'Individual',
+        amount: 5400.00,
+        donation_type: 'Contribution',
+        donation_date: '2/5/2020',
+        description: ''
       }
     ],
     []

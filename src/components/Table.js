@@ -1,5 +1,5 @@
 import React from 'react';
-import { useTable } from 'react-table';
+import { useTable, useSortBy } from 'react-table';
 import { Table as USTable } from '@trussworks/react-uswds';
 
 export default function Table({ columns, data }) {
@@ -10,10 +10,13 @@ export default function Table({ columns, data }) {
     headerGroups, // headerGroups, if your table has groupings
     rows, // rows for the table based on the data passed
     prepareRow // Prepare the row (this function needs to be called for each row before getting the row props)
-  } = useTable({
-    columns,
-    data
-  });
+  } = useTable(
+    {
+      columns,
+      data
+    },
+    useSortBy
+  );
 
   return (
     <USTable bordered={true} fullWidth={true} {...getTableProps()}>
@@ -21,7 +24,9 @@ export default function Table({ columns, data }) {
         {headerGroups.map(headerGroup => (
           <tr {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map(column => (
-              <th {...column.getHeaderProps()}>{column.render("Header")}</th>
+              <th {...column.getHeaderProps(column.getSortByToggleProps())} className={
+                column.isSorted ? column.isSortedDesc ? "sort-desc" : "sort-asc" : ""
+              }>{column.render("Header")}</th>
             ))}
           </tr>
         ))}
