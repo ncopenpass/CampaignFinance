@@ -37,6 +37,7 @@ const searchContributors = async (
       count: results.rowCount,
     }
   } catch (error) {
+    console.error('error searching for contributor', error)
     throw error
   } finally {
     if (client !== null) {

@@ -1,6 +1,5 @@
 const express = require('express')
 const bodyParser = require('body-parser')
-const { getClient } = require('./db')
 const { searchContributors } = require('./lib/search')
 const app = express()
 app.use(bodyParser.json())
