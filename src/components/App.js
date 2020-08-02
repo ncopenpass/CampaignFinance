@@ -1,7 +1,7 @@
 import React from 'react'
 import Header from './header'
 import Footer from './footer'
-import Candidate from './candidate'
+import Candidate from './Candidate'
 import Search from './search'
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
 
