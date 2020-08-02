@@ -3,8 +3,6 @@ import Table from './Table';
 import { GridContainer } from '@trussworks/react-uswds';
 
 export default function Candidate() {
-
-  
   const columns = useMemo(
     () => [
       {

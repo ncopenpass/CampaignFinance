@@ -1,56 +1,9 @@
 import React from 'react';
-import { useTable, useSortBy, useFilters, useGlobalFilter, useAsyncDebounce } from 'react-table';
+import { useTable, useSortBy, useFilters, useGlobalFilter } from 'react-table';
 import matchSorter from 'match-sorter';
+import Select from 'react-select';
 import { Table as USTable } from '@trussworks/react-uswds';
 import '../css/table.scss'
-
-// Define a default UI for filtering
-function GlobalFilter({
-  preGlobalFilteredRows,
-  globalFilter,
-  setGlobalFilter,
-}) {
-  const count = preGlobalFilteredRows.length
-  const [value, setValue] = React.useState(globalFilter)
-  const onChange = useAsyncDebounce(value => {
-    setGlobalFilter(value || undefined)
-  }, 200)
-
-  return (
-    <span>
-      Search:{' '}
-      <input
-        value={value || ""}
-        onChange={e => {
-          setValue(e.target.value);
-          onChange(e.target.value);
-        }}
-        placeholder={`${count} records...`}
-        style={{
-          fontSize: '1.1rem',
-          border: '0',
-        }}
-      />
-    </span>
-  )
-}
-
-// Define a default UI for filtering
-function DefaultColumnFilter({
-  column: { filterValue, preFilteredRows, setFilter },
-}) {
-  const count = preFilteredRows.length
-
-  return (
-    <input
-      value={filterValue || ''}
-      onChange={e => {
-        setFilter(e.target.value || undefined) // Set undefined to remove the filter entirely
-      }}
-      placeholder={`Search ${count} records...`}
-    />
-  )
-}
 
 // This is a custom filter UI for selecting
 // a unique option from a list
@@ -60,28 +13,23 @@ function SelectColumnFilter({
   // Calculate the options for filtering
   // using the preFilteredRows
   const options = React.useMemo(() => {
-    const options = new Set()
+    const options = []
     preFilteredRows.forEach(row => {
-      options.add(row.values[id])
+      options.push({value: row.values[id], label: row.values[id]})
     })
-    return [...options.values()]
+    return options
   }, [id, preFilteredRows])
+
+  console.log(options);
 
   // Render a multi-select box
   return (
-    <select
-      value={filterValue}
-      onChange={e => {
-        setFilter(e.target.value || undefined)
+    <Select 
+      onChange={(value, action) => {
+        setFilter(value.value || undefined)
       }}
-    >
-      <option value="">All</option>
-      {options.map((option, i) => (
-        <option key={i} value={option}>
-          {option}
-        </option>
-      ))}
-    </select>
+      isMulti={true}
+      options={options} />
   )
 }
 
@@ -117,7 +65,7 @@ export default function Table({ columns, data }) {
   const defaultColumn = React.useMemo(
     () => ({
       // Let's set up our default Filter UI
-      Filter: DefaultColumnFilter,
+      Filter: SelectColumnFilter,
     }),
     []
   )
@@ -129,10 +77,6 @@ export default function Table({ columns, data }) {
     headerGroups, // headerGroups, if your table has groupings
     rows, // rows for the table based on the data passed
     prepareRow, // Prepare the row (this function needs to be called for each row before getting the row props)
-    state,
-    visibleColumns,
-    preGlobalFilteredRows,
-    setGlobalFilter,
   } = useTable(
     {
       columns,
