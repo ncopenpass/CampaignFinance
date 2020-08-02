@@ -1,7 +1,6 @@
 const express = require('express')
 const bodyParser = require('body-parser')
-const { getClient } = require('./db')
-const { searchContributors } = require('./lib/search')
+const { searchContributors, searchCommittees } = require('./lib/search')
 const app = express()
 app.use(bodyParser.json())
 const { PORT: port = 3001 } = process.env
@@ -20,7 +19,29 @@ api.get('/search/contributors/:name', async (req, res) => {
       limit,
       TRIGRAM_LIMIT
     )
-    res.send(contributors)
+    return res.send(contributors)
+  } catch (error) {
+    console.error(error)
+    res.status(500)
+    res.send({
+      error: 'unable to process request',
+    })
+  }
+})
+
+api.get('/search/candidates/:name', async (req, res) => {
+  try {
+    const { name } = req.params
+    const { offset = 0, limit = 50 } = req.query
+    const decodedName = decodeURIComponent(name)
+
+    const committees = await searchCommittees(
+      decodedName,
+      offset,
+      limit,
+      TRIGRAM_LIMIT
+    )
+    return res.send(committees)
   } catch (error) {
     console.error(error)
     res.status(500)
