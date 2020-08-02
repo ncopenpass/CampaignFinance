@@ -8,6 +8,7 @@
     "@testing-library/user-event": "^7.2.1",
     "@trussworks/react-uswds": "^1.7.0",
     "campaign-finance-server": "file:server",
+    "match-sorter": "^4.2.0",
     "node": "^14.5.0",
     "node-sass": "^4.14.1",
     "react": "^16.13.1",
