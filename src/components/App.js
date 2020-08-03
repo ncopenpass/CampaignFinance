@@ -3,6 +3,7 @@ import Header from './header'
 import Footer from './footer'
 import Candidate from './Candidate'
 import Search from './search'
+import Table from './Table'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
 export default function App() {
@@ -12,8 +13,11 @@ export default function App() {
         <Header></Header>
 
         <Switch>
-          <Route path="/candidate">
+          <Route path="/Candidate">
             <Candidate />
+          </Route>
+          <Route path="/Table">
+            <Table />
           </Route>
           <Route path="/">
             <Search />
