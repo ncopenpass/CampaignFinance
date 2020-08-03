@@ -109,7 +109,7 @@ Query Params (optional):
 - `offset` default value `0`
 - `limit` default value `50`
 
-Example: `/api/candidate/STA-C0498N-C-002?limit=2
+Example: `/api/candidate/STA-C0498N-C-002?limit=2`
 response:
 
 ```json
