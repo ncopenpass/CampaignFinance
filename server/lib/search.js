@@ -24,9 +24,9 @@ const searchContributors = async (
   let client = null
   try {
     client = await getClient()
-    client.query('select set_limit($1)', [trigramLimit])
+    await client.query('select set_limit($1)', [trigramLimit])
     const results = await client.query(
-      `select *, similarity(name, $1) as sml 
+      `select *, count(*) over() as full_count, similarity(name, $1) as sml 
       from contributors where name % $1 
       order by sml
       limit $2 offset $3`,
@@ -34,7 +34,7 @@ const searchContributors = async (
     )
     return {
       data: results.rows,
-      count: results.rowCount,
+      count: results.rows.length > 0 ? results.rows[0].full_count : 0,
     }
   } catch (error) {
     throw error
@@ -62,11 +62,12 @@ const searchCommittees = async (
   let client = null
   try {
     client = await getClient()
-    client.query('select set_limit($1)', [trigramLimit])
+    await client.query('select set_limit($1)', [trigramLimit])
     const results = await client.query(
       `select *, 
         similarity(candidate_first_last_name, $1) as first_last_sml,
-        similarity(candidate_full_name, $1) as full_name_sml
+        similarity(candidate_full_name, $1) as full_name_sml,
+        count(*) over() as full_count
       from committees
         where candidate_full_name % $1
         order by first_last_sml
@@ -76,7 +77,7 @@ const searchCommittees = async (
 
     return {
       data: results.rows,
-      count: results.rowCount,
+      count: results.rows.length > 0 ? results.rows[0].full_count : 0,
     }
   } catch (error) {
     throw error
