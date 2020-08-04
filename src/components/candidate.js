@@ -1,8 +1,16 @@
-import React, { useMemo } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import Table from './Table'
 import { GridContainer } from '@trussworks/react-uswds'
 
 export default function Candidate() {
+  useEffect(() => {
+    const url = '/api/search/contributors/'
+    // const search = url + encodeURIComponent(this.state.candidate)
+    fetch(url)
+      .then((res) => res.json())
+      .then((json) => this.setState({ data: json }))
+  }, [])
+
   const columns = useMemo(
     () => [
       {
@@ -62,6 +70,7 @@ export default function Candidate() {
     ],
     []
   )
+
   return (
     <GridContainer>
       <Table columns={columns} data={data}></Table>

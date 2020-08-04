@@ -13,7 +13,7 @@ export default function App() {
         <Header></Header>
 
         <Switch>
-          <Route path="/Candidate">
+          <Route path="/Candidate/:candidate">
             <Candidate />
           </Route>
           <Route path="/Table">
