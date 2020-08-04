@@ -1,6 +1,7 @@
 import React from 'react'
 import { Search, Button } from '@trussworks/react-uswds'
 import { withRouter } from 'react-router-dom'
+
 class SearchBar extends React.Component {
   handleChange = (e) => {
     this.setState({ candidate: e.target.value })

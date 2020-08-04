@@ -1,15 +1,20 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useRef, useEffect, useMemo } from 'react'
 import Table from './Table'
+import { useParams } from 'react-router-dom'
 import { GridContainer } from '@trussworks/react-uswds'
 
-export default function Candidate() {
+export default function Candidate(props) {
+  const ref = useRef(null)
+  let { candidate } = useParams()
+
   useEffect(() => {
-    const url = '/api/search/contributors/'
-    // const search = url + encodeURIComponent(this.state.candidate)
-    fetch(url)
+    const url = `/api/search/contributors/`
+    console.log(candidate)
+    const search = url + encodeURIComponent(candidate)
+    fetch(search)
       .then((res) => res.json())
-      .then((json) => this.setState({ data: json }))
-  }, [])
+      .then((json) => (ref.current = json))
+  })
 
   const columns = useMemo(
     () => [
