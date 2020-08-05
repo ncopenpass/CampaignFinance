@@ -211,3 +211,65 @@ response:
   "count": "25059"
 }
 ```
+
+## GET `/api/contributors/:contributorId/contributions`
+
+Retrieve contributions for a contributor id.
+
+Query Params (optional):
+
+- `offset` default value `0`
+- `limit` default value `50`
+
+Example: `/api/search/contributors/john%20smith?limit=2&offset=0`
+response:
+
+```json
+{
+  "data": [
+    {
+      "source_contribution_id": "d418ce8e-b2b4-4cf0-b1f9-ad72a4cceb7d",
+      "contributor_id": "2423d2db-2dd1-493e-8bf6-d85a44c2a58d",
+      "transaction_type": "Individual",
+      "committee_name": "JUSTICE MARK DAVIS COMMITTEE",
+      "committee_sboe_id": "STA-196F43-C-002",
+      "committee_street_1": "PO BOX 807",
+      "committee_street_2": null,
+      "committee_city": "RALEIGH",
+      "committee_state": "NC",
+      "committee_zip_code": "27602",
+      "report_name": "2019 Mid Year Semi-Annual (Amendment)",
+      "date_occurred": "6/27/19",
+      "account_code": "Not Available",
+      "amount": 500,
+      "form_of_payment": "Credit Card",
+      "purpose": null,
+      "candidate_or_referendum_name": null,
+      "declaration": null,
+      "full_count": "2"
+    },
+    {
+      "source_contribution_id": "e7f83a5e-c948-4d4f-a151-fd91d18143c7",
+      "contributor_id": "2423d2db-2dd1-493e-8bf6-d85a44c2a58d",
+      "transaction_type": "Individual",
+      "committee_name": "JOSH STEIN FOR ATTORNEY GENERAL",
+      "committee_sboe_id": "STA-WP1LKA-C-001",
+      "committee_street_1": "434 FAYETTEVILLE STREET, SUITE 2020",
+      "committee_street_2": null,
+      "committee_city": "RALEIGH",
+      "committee_state": "NC",
+      "committee_zip_code": "27601",
+      "report_name": "2019 Year End Semi-Annual",
+      "date_occurred": "8/1/19",
+      "account_code": "Not Available",
+      "amount": 500,
+      "form_of_payment": "Credit Card",
+      "purpose": null,
+      "candidate_or_referendum_name": null,
+      "declaration": null,
+      "full_count": "2"
+    },
+    "count": "2"
+  ]
+}
+```
