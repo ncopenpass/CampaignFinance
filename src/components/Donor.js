@@ -24,25 +24,21 @@ export default function Donor() {
         Header: 'Donor Name',
         accessor: 'name',
       },
-      // {
-      //   Header: 'Donor Type',
-      //   accessor: 'donor_type',
-      // },
-      // {
-      //   Header: 'Amount',
-      //   accessor: 'amount',
-      // },
-      // {
-      //   Header: 'Donation Type',
-      //   accessor: 'donation_type',
-      // },
-      // {
-      //   Header: 'Donation Date',
-      //   accessor: 'donation_date',
-      // },
+      {
+        Header: 'City/State',
+        accessor: (cityState) => cityState.city + '/' + cityState.state,
+      },
+      {
+        Header: 'Type',
+        accessor: 'type',
+      },
       {
         Header: 'Profession',
         accessor: 'profession',
+      },
+      {
+        Header: 'Total Donations',
+        accessor: 'total',
       },
     ],
     []
