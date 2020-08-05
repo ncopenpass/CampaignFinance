@@ -221,7 +221,7 @@ Query Params (optional):
 - `offset` default value `0`
 - `limit` default value `50`
 
-Example: `/api/search/contributors/2423d2db-2dd1-493e-8bf6-d85a44c2a58d?limit=2&offset=0`
+Example: `/api/contributors/2423d2db-2dd1-493e-8bf6-d85a44c2a58d/contributions?limit=2&offset=0`
 response:
 
 ```json
