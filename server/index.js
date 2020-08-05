@@ -95,6 +95,39 @@ api.get('/candidate/:ncsbeID', async (req, res) => {
   }
 })
 
+api.get('/contributors/:contributorId/contributions', async (req, res) => {
+  let client = null
+  try {
+    const { contributorId } = req.params
+    const { limit = 50, offset = 0 } = req.query
+    client = await getClient()
+    const contributions = await client.query(
+      `select *, count(*) over () as full_count from contributions
+      where contributor_id = $1
+      order by contributions.date_occurred asc
+      limit $2
+      offset $3
+      `,
+      [contributorId, limit, offset]
+    )
+    return res.send({
+      data: contributions.rows,
+      count:
+        contributions.rows.length > 0 ? contributions.rows[0].full_count : 0,
+    })
+  } catch (error) {
+    console.error(error)
+    res.status(500)
+    return res.send({
+      error: 'unable to process request',
+    })
+  } finally {
+    if (client !== null) {
+      client.release()
+    }
+  }
+})
+
 app.use('/api', api)
 app.get('/status', (req, res) => res.send({ status: 'online' }))
 app.listen(port, () => {
