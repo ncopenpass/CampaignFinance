@@ -20,7 +20,7 @@ function SelectColumnFilter({
     return options
   }, [id, preFilteredRows])
 
-  console.log(options)
+  //console.log(options)
 
   // Render a multi-select box
   return (

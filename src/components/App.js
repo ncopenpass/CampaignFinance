@@ -1,7 +1,7 @@
 import React from 'react'
 import Header from './header'
 import Footer from './footer'
-import Candidate from './Candidate'
+import Donor from './Donor'
 import Search from './search'
 import Table from './Table'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
@@ -13,8 +13,8 @@ export default function App() {
         <Header></Header>
 
         <Switch>
-          <Route path="/Candidate/:candidate">
-            <Candidate />
+          <Route path="/Donor/:donor">
+            <Donor />
           </Route>
           <Route path="/Table">
             <Table />

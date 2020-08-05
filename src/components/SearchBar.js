@@ -4,12 +4,12 @@ import { withRouter } from 'react-router-dom'
 
 class SearchBar extends React.Component {
   handleChange = (e) => {
-    this.setState({ candidate: e.target.value })
+    this.setState({ donor: e.target.value })
   }
 
   handleClick = (e) => {
     e.preventDefault()
-    this.props.history.push(`/Candidate/${this.state.candidate}`)
+    this.props.history.push(`/Donor/${this.state.donor}`)
   }
 
   render() {
