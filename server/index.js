@@ -128,6 +128,40 @@ api.get('/contributors/:contributorId/contributions', async (req, res) => {
   }
 })
 
+api.get('/contributors/:year', async (req, res) => {
+  let client = null
+  try {
+    const { year } = req.params
+    const { limit = 50, offset = 0 } = req.query
+    client = await getClient()
+    const contributors = await client.query(
+      `select *, count(*) over () as full_count from contributors
+      inner join contributions on
+      contributions.contributor_id = contributors.id
+      where date_part('year', to_date(contributions.date_occurred, 'M/D/Y')) = $1
+      order by contributors.name
+      limit $2
+      offset $3
+      `,
+      [year, limit, offset]
+    )
+    return res.send({
+      data: contributors.rows,
+      count: contributors.rows.length > 0 ? contributors.rows[0].full_count : 0,
+    })
+  } catch (error) {
+    console.error(error)
+    res.status(500)
+    return res.send({
+      error: 'unable to process request',
+    })
+  } finally {
+    if (client !== null) {
+      client.release()
+    }
+  }
+})
+
 app.use('/api', api)
 app.get('/status', (req, res) => res.send({ status: 'online' }))
 app.listen(port, () => {
