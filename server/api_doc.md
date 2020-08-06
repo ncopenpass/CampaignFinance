@@ -283,7 +283,7 @@ Query Params (optional):
 - `offset` default value `0`
 - `limit` default value `50`
 
-Example: `api/contributors/2019?limit=2&offset=1`
+Example: `/api/contributors/2019?limit=2&offset=1`
 response:
 
 ```json
