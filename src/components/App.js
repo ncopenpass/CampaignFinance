@@ -1,9 +1,8 @@
 import React from 'react'
-import Header from './header'
-import Footer from './footer'
-import Candidate from './candidate'
 import Donor from './Donor'
-import Search from './search'
+import Header from './Header'
+import Footer from './Footer'
+import Search from './Search'
 import Table from './Table'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
