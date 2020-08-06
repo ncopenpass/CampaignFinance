@@ -1,0 +1,38 @@
+{
+  "dictionary": [
+    {
+      "name": "Form of Payment",
+      "definition": "Financial instrument used to make the contribution."
+    },
+    { "name": "Purpose", "definition": "Purpose of contribution payment." },
+    { "name": "Candidate or Referendum Name", "definition": "––" },
+    { "name": "Declaration", "definition": "––" },
+    { "name": "Contributor ID", "definition": "––" },
+    {
+      "name": "Name",
+      "definition": "First and last name of individual, name of committee, or name of business"
+    },
+    {
+      "name": "Contributor Mailing Address Line 1",
+      "definition": "First line of contributor's address."
+    },
+    {
+      "name": "Contributor Mailing Address Line 2",
+      "definition": "Second line of contributor's address."
+    },
+    {
+      "name": "Contributor City",
+      "definition": "City of contributors address."
+    },
+    {
+      "name": "Contributor State",
+      "definition": "State of contributors address."
+    },
+    {
+      "name": "Contributor Zip Code",
+      "definition": "Zip code of contributors address."
+    },
+    { "name": "Profession", "definition": "Contributor's profession." },
+    { "name": "Employer Name", "definition": "Name of contributor's employer." }
+  ]
+}

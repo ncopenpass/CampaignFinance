@@ -24,6 +24,9 @@ const Header = () => {
               <a key="about" className="usa-nav__link" href="/candidate">
                 <span>About</span>
               </a>,
+              <a key="about" className="usa-nav__link" href="/DataDictionary">
+                <span>Data Dictionary</span>
+              </a>,
             ]}
             onToggleMobileNav={function noRefCheck() {}}
           ></PrimaryNav>

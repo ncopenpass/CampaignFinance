@@ -4,6 +4,7 @@ import Header from './Header'
 import Footer from './Footer'
 import Search from './Search'
 import Table from './Table'
+import DataDictionary from './DataDictionary'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
 export default function App() {
@@ -18,6 +19,9 @@ export default function App() {
           </Route>
           <Route path="/Table">
             <Table />
+          </Route>
+          <Route path="/DataDictionary">
+            <DataDictionary />
           </Route>
           <Route path="/">
             <Search />
