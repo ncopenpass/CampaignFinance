@@ -20,8 +20,6 @@ function SelectColumnFilter({
     return options
   }, [id, preFilteredRows])
 
-  console.log(options)
-
   // Render a multi-select box
   return (
     <Select
