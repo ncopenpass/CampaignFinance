@@ -128,6 +128,56 @@ api.get('/contributors/:contributorId/contributions', async (req, res) => {
   }
 })
 
+api.get('/candidates/:year', async (req, res) => {
+  let client = null
+  try {
+    const { year } = req.params
+    const { limit = 50, offset = 0 } = req.query
+    client = await getClient()
+    // NB: distinct on below includes committee_name, committee_street_1 etc.
+    // to avoid edge case where >1 candidate with same first, middle, last name, assuming
+    // that the committees will be at distinct addresses.
+    // on other hand, this does mean that if there are more than > committee for a given
+    // candidate, that candidate could get counted twice.
+    const candidates = await client.query(
+      `with candidates_for_year as (
+        select
+          distinct on (
+            candidate_last_name, candidate_first_name, candidate_middle_name,
+            committees.committee_name, committees.committee_street_1,
+            committees.committee_full_zip
+          )
+          candidate_last_name, candidate_first_name, candidate_middle_name
+        from committees
+        inner join contributions
+        on contributions.committee_sboe_id = committees.sboe_id
+        where date_part('year', to_date(contributions.date_occurred, 'm/d/y')) = $1
+      )
+      select *, count(*) over () as full_count
+      from candidates_for_year
+      order by candidate_last_name, candidate_first_name, candidate_middle_name
+      limit $2
+      offset $3
+      `,
+      [year, limit, offset]
+    )
+    return res.send({
+      data: candidates.rows,
+      count: candidates.rows.length > 0 ? candidates.rows[0].full_count : 0,
+    })
+  } catch (error) {
+    console.error(error)
+    res.status(500)
+    return res.send({
+      error: 'unable to process request',
+    })
+  } finally {
+    if (client !== null) {
+      client.release()
+    }
+  }
+})
+
 app.use('/api', api)
 app.get('/status', (req, res) => res.send({ status: 'online' }))
 app.listen(port, () => {

@@ -273,3 +273,35 @@ response:
   ]
 }
 ```
+
+## GET `/api/candidates/:year`
+
+Get all candidates who received donations in a given year.
+
+Query Params (optional):
+
+- `offset` default value `0`
+- `limit` default value `50`
+
+Example: `/api/candidates/2019?limit=2&offset=0`
+response:
+
+```json
+{
+  "data": [
+    {
+      "candidate_last_name": "ABERNETHY",
+      "candidate_first_name": "RICHARD",
+      "candidate_middle_name": "BRUCE",
+      "full_count": "574"
+    },
+    {
+      "candidate_last_name": "ADAMS",
+      "candidate_first_name": "ALLAN",
+      "candidate_middle_name": "ROGERS",
+      "full_count": "574"
+    }
+  ],
+  "count": "574"
+}
+```
