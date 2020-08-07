@@ -145,11 +145,7 @@ api.get('/contributors/:year', async (req, res) => {
       count: contributors.rows.length > 0 ? contributors.rows[0].full_count : 0,
     })
   } catch (error) {
-    console.error(error)
-    res.status(500)
-    return res.send({
-      error: 'unable to process request',
-    })
+    handleError(error, res)
   } finally {
     if (client !== null) {
       client.release()
