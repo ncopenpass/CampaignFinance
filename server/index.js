@@ -7,6 +7,17 @@ app.use(bodyParser.json())
 const { PORT: port = 3001 } = process.env
 const TRIGRAM_LIMIT = 0.6
 
+const handleError = (error, res) => {
+  console.error(error)
+  res.status(500)
+  const { NODE_ENV } = process.env
+  const message =
+    NODE_ENV === 'development'
+      ? `unable to process request: ${error.message}`
+      : 'unable to process request'
+  res.send({ error: message })
+}
+
 const api = express.Router()
 api.use(bodyParser.json())
 api.get('/search/contributors/:name', async (req, res) => {
@@ -23,11 +34,7 @@ api.get('/search/contributors/:name', async (req, res) => {
     )
     return res.send(contributors)
   } catch (error) {
-    console.error(error)
-    res.status(500)
-    res.send({
-      error: 'unable to process request',
-    })
+    handleError(error, res)
   }
 })
 
@@ -45,11 +52,7 @@ api.get('/search/candidates/:name', async (req, res) => {
     )
     return res.send(committees)
   } catch (error) {
-    console.error(error)
-    res.status(500)
-    res.send({
-      error: 'unable to process request',
-    })
+    handleError(error, res)
   }
 })
 
@@ -83,11 +86,7 @@ api.get('/candidate/:ncsbeID', async (req, res) => {
         contributions.rows.length > 0 ? contributions.rows[0].full_count : 0,
     })
   } catch (error) {
-    console.error(error)
-    res.status(500)
-    return res.send({
-      error: 'unable to process request',
-    })
+    handleError(error, res)
   } finally {
     if (client !== null) {
       client.release()
@@ -116,11 +115,7 @@ api.get('/contributors/:contributorId/contributions', async (req, res) => {
         contributions.rows.length > 0 ? contributions.rows[0].full_count : 0,
     })
   } catch (error) {
-    console.error(error)
-    res.status(500)
-    return res.send({
-      error: 'unable to process request',
-    })
+    handleError(error, res)
   } finally {
     if (client !== null) {
       client.release()
@@ -128,6 +123,41 @@ api.get('/contributors/:contributorId/contributions', async (req, res) => {
   }
 })
 
+api.get('/search/contributors/:name', async (req, res) => {
+  try {
+    const { name } = req.params
+    const { offset = 0, limit = 50 } = req.query
+    const decodedName = decodeURIComponent(name)
+
+    const contributors = await searchContributors(
+      decodedName,
+      offset,
+      limit,
+      TRIGRAM_LIMIT
+    )
+    return res.send(contributors)
+  } catch (error) {
+    handleError(error, res)
+  }
+})
+
+api.get('/search/donors-candidates-pacs/:query', async (req, res) => {
+  try {
+    const { query } = req.params
+    const { offset = 0, limit = 50 } = req.query
+    const decodedQuery = decodeURIComponent(query)
+
+    const committees = await searchCommittees(
+      decodedName,
+      offset,
+      limit,
+      TRIGRAM_LIMIT
+    )
+    return res.send(committees)
+  } catch (error) {
+    handleError(error, res)
+  }
+})
 app.use('/api', api)
 app.get('/status', (req, res) => res.send({ status: 'online' }))
 app.listen(port, () => {
