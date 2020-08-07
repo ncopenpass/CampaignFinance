@@ -146,7 +146,7 @@ api.get('/candidates/:year', async (req, res) => {
         from committees
         inner join contributions
         on contributions.committee_sboe_id = committees.sboe_id
-        where date_part('year', to_date(contributions.date_occurred, 'm/d/y')) = $1
+        where date_part('year', to_date(contributions.date_occurred, 'MM/DD/YY')) = $1
       )
       select *, count(*) over () as full_count
       from candidates_for_year
