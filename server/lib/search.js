@@ -80,7 +80,6 @@ const searchCommittees = async (
       count: results.rows.length > 0 ? results.rows[0].full_count : 0,
     }
   } catch (error) {
-    console.error('error searching for contributor', error)
     throw error
   } finally {
     if (client !== null) {

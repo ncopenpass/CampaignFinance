@@ -71,7 +71,7 @@ const insertContributions = (contributions) => {
   // take values, and generate value str. Divide by 18
   const valueStr = values
     .reduce((acc, val, idx) => {
-      const value = `${acc}$${idx + 1}`
+      const value = `${acc}\$${idx + 1}`
       if (idx === 0) {
         return `(${value},`
       } else if ((idx + 1) % 18 === 0) {
