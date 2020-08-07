@@ -123,41 +123,6 @@ api.get('/contributors/:contributorId/contributions', async (req, res) => {
   }
 })
 
-api.get('/search/contributors/:name', async (req, res) => {
-  try {
-    const { name } = req.params
-    const { offset = 0, limit = 50 } = req.query
-    const decodedName = decodeURIComponent(name)
-
-    const contributors = await searchContributors(
-      decodedName,
-      offset,
-      limit,
-      TRIGRAM_LIMIT
-    )
-    return res.send(contributors)
-  } catch (error) {
-    handleError(error, res)
-  }
-})
-
-api.get('/search/donors-candidates-pacs/:query', async (req, res) => {
-  try {
-    const { query } = req.params
-    const { offset = 0, limit = 50 } = req.query
-    const decodedQuery = decodeURIComponent(query)
-
-    const committees = await searchCommittees(
-      decodedName,
-      offset,
-      limit,
-      TRIGRAM_LIMIT
-    )
-    return res.send(committees)
-  } catch (error) {
-    handleError(error, res)
-  }
-})
 app.use('/api', api)
 app.get('/status', (req, res) => res.send({ status: 'online' }))
 app.listen(port, () => {
