@@ -1,6 +1,7 @@
 import React from 'react'
 import Header from './header'
 import Footer from './footer'
+import Candidate from './candidate'
 import Donor from './Donor'
 import Search from './search'
 import Table from './Table'

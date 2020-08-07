@@ -273,3 +273,7 @@ response:
   ]
 }
 ```
+
+## Error handling
+
+By default, error messages are not passed to the client. For development though, you can get full error messages in response from API by adding `NODE_ENV=development` to the `.env` file in /server.
