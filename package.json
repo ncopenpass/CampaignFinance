@@ -27,8 +27,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "format": "prettier --write .",
-    "lint": "eslint . --ext .js --fix"
+    "format": "prettier --write ."
   },
   "proxy": "http://localhost:3001",
   "secure": false,
@@ -49,9 +48,6 @@
   },
   "devDependencies": {
     "concurrently": "^5.2.0",
-    "eslint": "^7.6.0",
-    "eslint-config-prettier": "^6.11.0",
-    "eslint-plugin-react": "^7.20.5",
     "husky": "^4.2.5",
     "lint-staged": "^10.2.11",
     "prettier": "^2.0.5"
@@ -62,6 +58,6 @@
     }
   },
   "lint-staged": {
-    "*.{js,css,md}": ["eslint . --ext .js --fix", "prettier --write"]
+    "*.{js,css,md}": "prettier --write"
   }
 }
