@@ -1,82 +1,46 @@
 {
   "dictionary": [
     {
-      "name": "Form of Payment",
-      "definition": "Financial instrument used to make the contribution.",
+      "name": "Committee Name",
+      "definition": "Name of committee to which contribution was made. Name associated with committee SBOE-ID.",
       "published": true,
-      "source": "Form CRO-1210"
-    },
+      "source": "Reported by committee to North Carolina State Board of Elections on Form CRO-1210 Contributions from Individuals Field 1 Committee Full Name (and Fund if applicable) [will expand to include other relevant forms]."
+    }, 
     {
-      "name": "Purpose",
-      "definition": "Purpose of contribution payment.",
+      "name": "Committee City",
+      "definition": "City of address of committee to which contribution was made",
       "published": true,
-      "source": "Form CRO-1210"
-    },
+      "source": "As reported to North Carolina State Board of Elections on CRO-2100A Statement of Organization - Candidate Committee Field b. Associated with ID Number. [will add more more committee types]"
+    }, 
     {
-      "name": "Candidate or Referendum Name",
-      "definition": "––",
+      "name": "Committee State",
+      "definition": "State of address of committee to which contribution was made",
       "published": true,
-      "source": "NC State Board of Elections"
-    },
+      "source": "As reported to North Carolina State Board of Elections on CRO-2100A Statement of Organization - Candidate Committee Field b. Associated with ID Number. [will add more more committee types]"
+    }, 
     {
-      "name": "Declaration",
-      "definition": "––",
+      "name": "Amount",
+      "definition": "Value of contribution in dollars",
       "published": true,
-      "source": "NC State Board of Elections"
-    },
-    {
-      "name": "Contributor ID",
-      "definition": "––",
-      "published": true,
-      "source": "––"
-    },
+      "source": "North Carolina State Board of Elections form CRO-1210 Contributions from Individuals field k"
+    }, 
     {
       "name": "Name",
       "definition": "First and last name of individual, name of committee, or name of business",
       "published": true,
-      "source": "Form CRO-1210"
-    },
-    {
-      "name": "Contributor Mailing Address Line 1",
-      "definition": "First line of contributor's address.",
-      "published": false,
-      "source": "Form CRO-1210"
-    },
-    {
-      "name": "Contributor Mailing Address Line 2",
-      "definition": "Second line of contributor's address.",
-      "published": false,
-      "source": "Form CRO-1210"
-    },
+      "source": "Reported by committee to North Carolina State Board of Elections on Form CRO-1210 Contributions from Individuals Field 3a Contributor Information [will expand to include other relevant forms]."
+    }, 
     {
       "name": "Contributor City",
-      "definition": "City of contributors address.",
+      "definition": "City of contributor's address",
       "published": true,
-      "source": "Form CRO-1210"
-    },
+      "source": "Reported by committee to North Carolina State Board of Elections on Form CRO-1210 Contributions from Individuals Field 3a Contributor Information [will expand to include other relevant forms]."
+    }, 
     {
       "name": "Contributor State",
-      "definition": "State of contributors address.",
+      "definition": "State of contributor's address",
       "published": true,
-      "source": "Form CRO-1210"
-    },
-    {
-      "name": "Contributor Zip Code",
-      "definition": "Zip code of contributors address.",
-      "published": true,
-      "source": "Form CRO-1210"
-    },
-    {
-      "name": "Profession",
-      "definition": "Contributor's profession.",
-      "published": true,
-      "source": "Form CRO-1210"
-    },
-    {
-      "name": "Employer Name",
-      "definition": "Name of contributor's employer.",
-      "published": true,
-      "source": "Form CRO-1210"
+      "source": "Reported by committee to North Carolina State Board of Elections on Form CRO-1210 Contributions from Individuals Field 3a Contributor Information [will expand to include other relevant forms]."
     }
   ]
 }
