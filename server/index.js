@@ -133,7 +133,7 @@ api.get('/contributors/:year', async (req, res) => {
       `select *, count(*) over () as full_count from contributors
       inner join contributions on
       contributions.contributor_id = contributors.id
-      where date_part('year', to_date(contributions.date_occurred, 'M/D/Y')) = $1
+      where date_part('year', to_date(contributions.date_occurred, 'MM/DD/YY')) = $1
       order by contributors.name
       limit $2
       offset $3
