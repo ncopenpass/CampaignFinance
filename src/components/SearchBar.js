@@ -1,12 +1,26 @@
 import React from 'react'
 import { Search, Button } from '@trussworks/react-uswds'
+import { withRouter } from 'react-router-dom'
 
 class SearchBar extends React.Component {
+  handleChange = (e) => {
+    this.setState({ donor: e.target.value })
+  }
+
+  handleClick = (e) => {
+    e.preventDefault()
+    this.props.history.push(`/Donor/${this.state.donor}`)
+  }
+
   render() {
     return (
       <div className="search-component">
         <div className="search-bar">
-          <Search onSubmit={function noRefCheck() {}} size="big" />
+          <Search
+            onSubmit={this.handleClick}
+            onChange={this.handleChange}
+            size="big"
+          />
         </div>
         <div className="quick-search-btns">
           <p className="quick-search">Quick Search</p>
@@ -25,4 +39,4 @@ class SearchBar extends React.Component {
   }
 }
 
-export default SearchBar
+export default withRouter(SearchBar)
