@@ -6,35 +6,77 @@
       "published": true,
       "source": "Form CRO-1210"
     },
-    { "name": "Purpose", "definition": "Purpose of contribution payment." , "published": true, "source": "Form CRO-1210"},
-    { "name": "Candidate or Referendum Name", "definition": "––" , "published": true, "source": "NC State Board of Elections"},
-    { "name": "Declaration", "definition": "––" , "published": true, "source": "NC State Board of Elections"},
-    { "name": "Contributor ID", "definition": "––" , "published": true, "source": "––"},
+    {
+      "name": "Purpose",
+      "definition": "Purpose of contribution payment.",
+      "published": true,
+      "source": "Form CRO-1210"
+    },
+    {
+      "name": "Candidate or Referendum Name",
+      "definition": "––",
+      "published": true,
+      "source": "NC State Board of Elections"
+    },
+    {
+      "name": "Declaration",
+      "definition": "––",
+      "published": true,
+      "source": "NC State Board of Elections"
+    },
+    {
+      "name": "Contributor ID",
+      "definition": "––",
+      "published": true,
+      "source": "––"
+    },
     {
       "name": "Name",
-      "definition": "First and last name of individual, name of committee, or name of business"
-    , "published": true, "source": "Form CRO-1210"},
+      "definition": "First and last name of individual, name of committee, or name of business",
+      "published": true,
+      "source": "Form CRO-1210"
+    },
     {
       "name": "Contributor Mailing Address Line 1",
-      "definition": "First line of contributor's address."
-    , "published": false, "source": "Form CRO-1210"},
+      "definition": "First line of contributor's address.",
+      "published": false,
+      "source": "Form CRO-1210"
+    },
     {
       "name": "Contributor Mailing Address Line 2",
-      "definition": "Second line of contributor's address."
-    , "published": false, "source": "Form CRO-1210"},
+      "definition": "Second line of contributor's address.",
+      "published": false,
+      "source": "Form CRO-1210"
+    },
     {
       "name": "Contributor City",
-      "definition": "City of contributors address."
-    , "published": true, "source": "Form CRO-1210"},
+      "definition": "City of contributors address.",
+      "published": true,
+      "source": "Form CRO-1210"
+    },
     {
       "name": "Contributor State",
-      "definition": "State of contributors address."
-    , "published": true, "source": "Form CRO-1210"},
+      "definition": "State of contributors address.",
+      "published": true,
+      "source": "Form CRO-1210"
+    },
     {
       "name": "Contributor Zip Code",
-      "definition": "Zip code of contributors address."
-    , "published": true, "source": "Form CRO-1210"},
-    { "name": "Profession", "definition": "Contributor's profession." , "published": true, "source": "Form CRO-1210"},
-    { "name": "Employer Name", "definition": "Name of contributor's employer." , "published": true, "source": "Form CRO-1210"}
+      "definition": "Zip code of contributors address.",
+      "published": true,
+      "source": "Form CRO-1210"
+    },
+    {
+      "name": "Profession",
+      "definition": "Contributor's profession.",
+      "published": true,
+      "source": "Form CRO-1210"
+    },
+    {
+      "name": "Employer Name",
+      "definition": "Name of contributor's employer.",
+      "published": true,
+      "source": "Form CRO-1210"
+    }
   ]
 }
