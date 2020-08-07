@@ -161,11 +161,7 @@ api.get('/candidates/:year', async (req, res) => {
       count: candidates.rows.length > 0 ? candidates.rows[0].full_count : 0,
     })
   } catch (error) {
-    console.error(error)
-    res.status(500)
-    return res.send({
-      error: 'unable to process request',
-    })
+    handleError(error, res)
   } finally {
     if (client !== null) {
       client.release()
