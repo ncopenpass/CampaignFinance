@@ -7,6 +7,25 @@ import {
   Logo,
 } from '@trussworks/react-uswds'
 
+const links = [
+  {
+    href: '#',
+    innerText: 'Terms of use',
+  },
+  {
+    href: '#',
+    innerText: 'Sitemap',
+  },
+  {
+    href: '#',
+    innerText: 'Privacy Policy',
+  },
+  {
+    href: 'https://github.com/ncopenpass/CampaignFinance',
+    innerText: 'GitHub',
+  },
+]
+
 export default function footer() {
   return (
     <Footer
@@ -14,23 +33,15 @@ export default function footer() {
         <div className="usa-footer__primary-container grid-row">
           <div className="mobile-lg:grid-col-8">
             <FooterNav
-              links={[
-                <a className="usa-footer__primary-link" href="#">
-                  Terms of Use
-                </a>,
-                <a className="usa-footer__primary-link" href="#">
-                  Sitemap
-                </a>,
-                <a className="usa-footer__primary-link" href="#">
-                  Privacy Policy
-                </a>,
+              links={links.map((link, i) => (
                 <a
+                  key={i}
                   className="usa-footer__primary-link"
-                  href="https://github.com/ncopenpass/CampaignFinance"
+                  href={link.href}
                 >
-                  Github
-                </a>,
-              ]}
+                  {link.innerText}
+                </a>
+              ))}
               size="slim"
             />
           </div>
