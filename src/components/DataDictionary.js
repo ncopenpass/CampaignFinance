@@ -16,19 +16,22 @@ const DataDictionary = () => {
           <tr>
             <th scope="col">Term</th>
             <th scope="col">Definition</th>
+            <th scope="col">Source</th>
           </tr>
         </thead>
         <tbody>
           {dictionary
+            .filter(({ published }) => published)
             .sort((a, b) => {
               const nameA = a.name.toUpperCase()
               const nameB = b.name.toUpperCase()
               return nameA - nameB
             })
-            .map(({ name, definition }) => (
+            .map(({ name, definition, source }) => (
               <tr key={name}>
                 <th scope="row">{name}</th>
                 <td>{definition}</td>
+                <td>{source}</td>
               </tr>
             ))}
         </tbody>
