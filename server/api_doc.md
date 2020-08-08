@@ -276,33 +276,43 @@ response:
 
 ## GET `/api/candidates/:year`
 
-Get all candidates who received donations in a given year.
+Get all candidates who received donations in a given year. Note that in rare cases, individuals have more than one candidacy. In that case, there will be unique entries returned for each candidacy/committee for that single individual.
 
 Query Params (optional):
 
 - `offset` default value `0`
 - `limit` default value `50`
 
-Example: `/api/candidates/2019?limit=2&offset=0`
+Example: `api/candidates/2020?limit=2&offset=0`
 response:
 
 ```json
 {
   "data": [
     {
-      "candidate_last_name": "ABERNETHY",
-      "candidate_first_name": "RICHARD",
-      "candidate_middle_name": "BRUCE",
-      "full_count": "574"
+      "sboe_id": "STA-C2342N-C-004",
+      "candidate_last_name": "JONES",
+      "candidate_first_name": "ABRAHAM",
+      "candidate_middle_name": "PENN",
+      "party": "Democratic",
+      "office": "N.C. House",
+      "candidate_full_name": "ABRAHAM PENN JONES",
+      "candidate_first_last_name": "ABRAHAM JONES",
+      "full_count": "523"
     },
     {
-      "candidate_last_name": "ADAMS",
-      "candidate_first_name": "ALLAN",
-      "candidate_middle_name": "ROGERS",
-      "full_count": "574"
+      "sboe_id": "STA-5JHUJB-C-001",
+      "candidate_last_name": "ERICSON",
+      "candidate_first_name": "ADAM",
+      "candidate_middle_name": "FLETCHER",
+      "party": "Democratic",
+      "office": "N.C. House",
+      "candidate_full_name": "ADAM FLETCHER ERICSON",
+      "candidate_first_last_name": "ADAM ERICSON",
+      "full_count": "523"
     }
   ],
-  "count": "574"
+  "count": "523"
 }
 ```
 

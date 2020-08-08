@@ -129,20 +129,17 @@ api.get('/candidates/:year', async (req, res) => {
     const { year } = req.params
     const { limit = 50, offset = 0 } = req.query
     client = await getClient()
-    // NB: distinct on below includes committee_name, committee_street_1 etc.
-    // to avoid edge case where >1 candidate with same first, middle, last name, assuming
-    // that the committees will be at distinct addresses.
-    // on other hand, this does mean that if there are more than > committee for a given
-    // candidate, that candidate could get counted twice.
+    // NB: in rare cases, there are individuals who have > 1
+    // committee and candidacy in a given year. This endpoint
+    // will return each candidacy such individuals.
     const candidates = await client.query(
       `with candidates_for_year as (
         select
-          distinct on (
-            candidate_last_name, candidate_first_name, candidate_middle_name,
-            committees.committee_name, committees.committee_street_1,
-            committees.committee_full_zip
-          )
-          candidate_last_name, candidate_first_name, candidate_middle_name
+          distinct on (committees.sboe_id)
+          committees.sboe_id,
+          candidate_last_name, candidate_first_name, candidate_middle_name,
+          party, office, candidate_full_name, candidate_first_last_name
+
         from committees
         inner join contributions
         on contributions.committee_sboe_id = committees.sboe_id
@@ -150,7 +147,7 @@ api.get('/candidates/:year', async (req, res) => {
       )
       select *, count(*) over () as full_count
       from candidates_for_year
-      order by candidate_last_name, candidate_first_name, candidate_middle_name
+      order by candidate_full_name
       limit $2
       offset $3
       `,
