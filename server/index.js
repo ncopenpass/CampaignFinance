@@ -60,6 +60,39 @@ api.get('/candidate/:ncsbeID', async (req, res) => {
   let client = null
   try {
     let { ncsbeID = '' } = req.params
+    ncsbeID = decodeURIComponent(ncsbeID)
+    if (!ncsbeID) {
+      res.status(500)
+      return res.send({
+        error: 'empty ncsbeID',
+      })
+    }
+
+    client = await getClient()
+    const contributions = await client.query(
+      `select * from committees
+      where upper(committees.sboe_id) = upper($1)
+      limit 1
+      `,
+      [ncsbeID]
+    )
+    return res.send({
+      data: contributions.rows,
+      count: 1,
+    })
+  } catch (error) {
+    handleError(error, res)
+  } finally {
+    if (client !== null) {
+      client.release()
+    }
+  }
+})
+
+api.get('/candidate/:ncsbeID/contributions', async (req, res) => {
+  let client = null
+  try {
+    let { ncsbeID = '' } = req.params
     const { limit = 50, offset = 0 } = req.query
     ncsbeID = decodeURIComponent(ncsbeID)
     if (!ncsbeID) {
@@ -71,14 +104,12 @@ api.get('/candidate/:ncsbeID', async (req, res) => {
 
     client = await getClient()
     const contributions = await client.query(
-      `select *, count(*) over() as full_count from committees
-      join contributions on committees.sboe_id = contributions.committee_sboe_id
-          join contributors on contributions.contributor_id = contributors.id
-      where upper(committees.sboe_id) = upper($1)
-      order by contributions.date_occurred asc
+      `select *, count(*) over () as full_count
+      from contributions
+              join contributors c on contributions.contributor_id = c.id
+      where lower(contributions.committee_sboe_id) = lower($1)
       limit $2
-      offset $3
-      `,
+      offset $3`,
       [ncsbeID, limit, offset]
     )
     return res.send({
