@@ -72,9 +72,10 @@ api.get('/candidate/:ncsbeID', async (req, res) => {
     client = await getClient()
     const contributions = await client.query(
       `select *, count(*) over() as full_count from committees
-      join contributions c on committees.sboe_id = c.committee_sboe_id
+      join contributions on committees.sboe_id = contributions.committee_sboe_id
+          join contributors on contributions.contributor_id = contributors.id
       where upper(committees.sboe_id) = upper($1)
-      order by c.date_occurred asc
+      order by contributions.date_occurred asc
       limit $2
       offset $3
       `,
