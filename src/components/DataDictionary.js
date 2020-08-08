@@ -1,15 +1,11 @@
 import React from 'react'
-import { Table } from '@trussworks/react-uswds'
+import { Table, GridContainer, Grid } from '@trussworks/react-uswds'
 
 import { dictionary } from '../static/dataDictionary.json'
 
-const dataDictionaryPage = {
-  padding: '50px 100px',
-}
-
 const DataDictionary = () => {
   return (
-    <div style={dataDictionaryPage}>
+    <GridContainer>
       <h1>Data Dictionary</h1>
       <Table bordered fullWidth>
         <thead>
@@ -36,7 +32,7 @@ const DataDictionary = () => {
             ))}
         </tbody>
       </Table>
-    </div>
+    </GridContainer>
   )
 }
 
