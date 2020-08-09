@@ -106,7 +106,7 @@ The `:ncsbeID` parameter must be URIEncoded (ie: `encodeURIComponent`)
 
 Query Params (optional):
 
-Example: `/api/candidate/STA-C0498N-C-002?limit=2`
+Example: `/api/candidate/STA-C0498N-C-002`
 response:
 
 ```json
