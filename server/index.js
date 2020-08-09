@@ -1,3 +1,4 @@
+const path = require('path')
 const express = require('express')
 const bodyParser = require('body-parser')
 const { searchContributors, searchCommittees } = require('./lib/search')
@@ -155,6 +156,14 @@ api.get('/contributors/:year', async (req, res) => {
 
 app.use('/api', api)
 app.get('/status', (req, res) => res.send({ status: 'online' }))
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, 'build')))
+  app.get('/*', function (req, res) {
+    res.sendFile(path.join(__dirname, 'build', 'index.html'))
+  })
+}
+
 app.listen(port, () => {
   console.log(`app listening on port ${port}`)
 })

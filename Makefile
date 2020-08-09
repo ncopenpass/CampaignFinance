@@ -19,8 +19,17 @@ start-api:
 start:
 	npm start
 
+.PHONY: build
 build:
 	npm run build
+	rm -rf server/build
+	mv build server/build
+
+start-prod:
+	cd server/ && NODE_ENV=production npm run start
+
+start-prod-local:
+	cd server/ && NODE_ENV=production DB_IGNORE_SSL=true npm run start
 
 refresh-docker:
 	docker-compose -f docker-compose.yml down -v
