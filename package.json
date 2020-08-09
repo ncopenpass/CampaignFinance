@@ -22,9 +22,11 @@
     "uswds": "^2.8.0"
   },
   "scripts": {
-    "start": "concurrently \"react-scripts start\" \"cd server && npm run start-dev\"",
+    "start": "cd server/ && node index.js",
+    "start-dev": "concurrently \"react-scripts start\" \"cd server && npm run start-dev\"",
     "start-ui": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "make build",
+    "build-ui": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "format": "prettier --write ."

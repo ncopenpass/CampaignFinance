@@ -17,11 +17,11 @@ start-api:
 	cd server && npm run start-dev
 
 start:
-	npm start
+	npm run start-dev
 
 .PHONY: build
 build:
-	npm run build
+	npm run build-ui
 	rm -rf server/build
 	mv build server/build
 
