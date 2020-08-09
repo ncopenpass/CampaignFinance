@@ -15,13 +15,13 @@ const Footer = () => {
           <div className="mobile-lg:grid-col-8">
             <FooterNav
               links={[
-                <a className="usa-footer__primary-link" href="#">
+                <a className="usa-footer__primary-link" href="/">
                   Terms of Use
                 </a>,
-                <a className="usa-footer__primary-link" href="#">
+                <a className="usa-footer__primary-link" href="/">
                   Sitemap
                 </a>,
-                <a className="usa-footer__primary-link" href="#">
+                <a className="usa-footer__primary-link" href="/">
                   Privacy Policy
                 </a>,
                 <a
@@ -74,4 +74,4 @@ const Footer = () => {
   )
 }
 
-export default FooterComponent
+export default Footer
