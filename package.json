@@ -22,6 +22,7 @@
   "scripts": {
     "start": "cd server/ && node index.js",
     "start-dev": "concurrently \"react-scripts start\" \"cd server && npm run start-dev\"",
+    "heroku-postbuild": "cd server && npm run migrate-no-dot-env",
     "start-ui": "react-scripts start",
     "build": "make build",
     "build-ui": "react-scripts build",
