@@ -274,6 +274,124 @@ response:
 }
 ```
 
+## GET `/api/contributors/:year
+
+Retrieve all contributors for a given year.
+
+Query Params (optional):
+
+- `offset` default value `0`
+- `limit` default value `50`
+
+Example: `/api/contributors/2019?limit=2&offset=1`
+response:
+
+```json
+{
+  "data": [
+    {
+      "id": "146755ab-c8b9-4b7d-8ba8-81d66bd725e1",
+      "name": ".PAM MINSHEW",
+      "city": "PRINCETON",
+      "state": "NC",
+      "zip_code": "27569-7117",
+      "profession": "RETIRED",
+      "employer_name": null,
+      "source_contribution_id": "e8864a3e-a22a-4056-b592-6e4677901f9d",
+      "contributor_id": "146755ab-c8b9-4b7d-8ba8-81d66bd725e1",
+      "transaction_type": "Individual",
+      "committee_name": "WAYNE DEC",
+      "committee_sboe_id": "STA-C3941N-C-001",
+      "committee_street_1": "PO BOX 2024",
+      "committee_street_2": null,
+      "committee_city": "GOLDSBORO",
+      "committee_state": "NC",
+      "committee_zip_code": "27533",
+      "report_name": "2019 Mid Year Semi-Annual (Amendment)",
+      "date_occurred": "2/20/19",
+      "account_code": "Not Available",
+      "amount": 100,
+      "form_of_payment": "Check",
+      "purpose": null,
+      "candidate_or_referendum_name": null,
+      "declaration": null,
+      "full_count": "133614"
+    },
+    {
+      "id": "21fd4377-fe56-4889-accd-a0ef3a29f7b7",
+      "name": "03RD CONGRESSIONAL DISTRICT REC",
+      "city": "WASHINGTON",
+      "state": "NC",
+      "zip_code": "27889",
+      "profession": null,
+      "employer_name": null,
+      "source_contribution_id": "1b69b74a-c594-43bf-a8a0-3239c7fb7179",
+      "contributor_id": "21fd4377-fe56-4889-accd-a0ef3a29f7b7",
+      "transaction_type": "Party Comm",
+      "committee_name": "CRAVEN RBF",
+      "committee_sboe_id": "STA-13Y14M-C-001",
+      "committee_street_1": "P O BOX 13466",
+      "committee_street_2": null,
+      "committee_city": "NEW BERN",
+      "committee_state": "NC",
+      "committee_zip_code": "28561",
+      "report_name": "2019 Year End Semi-Annual",
+      "date_occurred": "9/27/19",
+      "account_code": "Not Available",
+      "amount": 500,
+      "form_of_payment": "Check",
+      "purpose": null,
+      "candidate_or_referendum_name": null,
+      "declaration": null,
+      "full_count": "133614"
+    }
+  ],
+  "count": "133614"
+}
+```
+
+## GET `/api/candidates/:year`
+
+Get all candidates who received donations in a given year. Note that in rare cases, individuals have more than one candidacy. In that case, there will be unique entries returned for each candidacy/committee for that single individual.
+
+Query Params (optional):
+
+- `offset` default value `0`
+- `limit` default value `50`
+
+Example: `api/candidates/2020?limit=2&offset=0`
+response:
+
+```json
+{
+  "data": [
+    {
+      "sboe_id": "STA-C2342N-C-004",
+      "candidate_last_name": "JONES",
+      "candidate_first_name": "ABRAHAM",
+      "candidate_middle_name": "PENN",
+      "party": "Democratic",
+      "office": "N.C. House",
+      "candidate_full_name": "ABRAHAM PENN JONES",
+      "candidate_first_last_name": "ABRAHAM JONES",
+      "full_count": "523"
+    },
+    {
+      "sboe_id": "STA-5JHUJB-C-001",
+      "candidate_last_name": "ERICSON",
+      "candidate_first_name": "ADAM",
+      "candidate_middle_name": "FLETCHER",
+      "party": "Democratic",
+      "office": "N.C. House",
+      "candidate_full_name": "ADAM FLETCHER ERICSON",
+      "candidate_first_last_name": "ADAM ERICSON",
+      "full_count": "523"
+    }
+  ],
+  "count": "523"
+}
+```
+
 ## Error handling
 
 By default, error messages are not passed to the client. For development though, you can get full error messages in response from API by adding `NODE_ENV=development` to the `.env` file in /server.

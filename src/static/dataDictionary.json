@@ -1,0 +1,46 @@
+{
+  "dictionary": [
+    {
+      "name": "Committee Name",
+      "definition": "Name of committee to which contribution was made. Name associated with committee SBOE-ID.",
+      "published": true,
+      "source": "Reported by committee to North Carolina State Board of Elections on Form CRO-1210 Contributions from Individuals Field 1 Committee Full Name (and Fund if applicable) [will expand to include other relevant forms]."
+    },
+    {
+      "name": "Committee City",
+      "definition": "City of address of committee to which contribution was made",
+      "published": true,
+      "source": "As reported to North Carolina State Board of Elections on CRO-2100A Statement of Organization - Candidate Committee Field b. Associated with ID Number. [will add more more committee types]"
+    },
+    {
+      "name": "Committee State",
+      "definition": "State of address of committee to which contribution was made",
+      "published": true,
+      "source": "As reported to North Carolina State Board of Elections on CRO-2100A Statement of Organization - Candidate Committee Field b. Associated with ID Number. [will add more more committee types]"
+    },
+    {
+      "name": "Amount",
+      "definition": "Value of contribution in dollars",
+      "published": true,
+      "source": "North Carolina State Board of Elections form CRO-1210 Contributions from Individuals field k"
+    },
+    {
+      "name": "Name",
+      "definition": "First and last name of individual, name of committee, or name of business",
+      "published": true,
+      "source": "Reported by committee to North Carolina State Board of Elections on Form CRO-1210 Contributions from Individuals Field 3a Contributor Information [will expand to include other relevant forms]."
+    },
+    {
+      "name": "Contributor City",
+      "definition": "City of contributor's address",
+      "published": true,
+      "source": "Reported by committee to North Carolina State Board of Elections on Form CRO-1210 Contributions from Individuals Field 3a Contributor Information [will expand to include other relevant forms]."
+    },
+    {
+      "name": "Contributor State",
+      "definition": "State of contributor's address",
+      "published": true,
+      "source": "Reported by committee to North Carolina State Board of Elections on Form CRO-1210 Contributions from Individuals Field 3a Contributor Information [will expand to include other relevant forms]."
+    }
+  ]
+}
