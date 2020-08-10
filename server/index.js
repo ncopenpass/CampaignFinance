@@ -225,7 +225,10 @@ api.get('/search/candidates-donors-pacs/:name', async (req, res) => {
         count: donors.data.length > 0 ? donors.data[0].full_count : 0,
       },
       // this is placeholder until we include real pacs data
-      pacs: [],
+      pacs: {
+        data: [],
+        count: '0',
+      },
     })
   } catch (error) {
     handleError(error, res)

@@ -463,7 +463,10 @@ response:
     ],
     "count": "1"
   },
-  "pacs": []
+  "pacs": {
+    "data": [],
+    "count": "0"
+  }
 }
 ```
 
