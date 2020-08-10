@@ -392,6 +392,81 @@ response:
 }
 ```
 
+## GET `/api/search/candidates-donors-pacs/:name`
+
+Search for candidates, donors, and PACs by name.
+
+Query Params (optional):
+
+- `limit` default value `50`
+
+Example: `/api/search/candidates-donors-pacs/cooper?limit=1`
+
+response:
+
+```json
+{
+  "candidates": {
+    "data": [
+      {
+        "sboe_id": "STA-C0498N-C-002",
+        "current_status": "Active (Non-Exempt)",
+        "committee_name": "COOPER FOR NORTH CAROLINA",
+        "committee_type": "Candidate Committee",
+        "committee_street_1": "434 FAYETTEVILLE ST   SUITE 2020",
+        "committee_street_2": null,
+        "committee_city": "RALEIGH",
+        "committee_state": "NC",
+        "committee_full_zip": "27601",
+        "candidate_first_name": "ROY",
+        "candidate_middle_name": "A",
+        "candidate_last_name": "COOPER",
+        "treasurer_first_name": "JAMES",
+        "treasurer_middle_name": "B",
+        "treasurer_last_name": "STEPHENSON",
+        "treasurer_email": "JBS@STEPHENSON-LAW.COM",
+        "asst_treasurer_first_name": null,
+        "asst_treasurer_middle_name": null,
+        "asst_treasurer_last_name": null,
+        "asst_treasurer_email": null,
+        "treasurer_street_1": "434 FAYETTEVILLE ST.   SUITE 2020",
+        "treasurer_street_2": null,
+        "treasurer_city": "RALEIGH",
+        "treasurer_state": "NC",
+        "treasurer_full_zip": "27601",
+        "party": "Democratic",
+        "office": "Governor",
+        "juris": null,
+        "candidate_full_name": "ROY A COOPER",
+        "candidate_first_last_name": "ROY COOPER",
+        "last_name_sml": 1,
+        "first_last_sml": 0.6363636,
+        "full_name_sml": 0.53846157,
+        "full_count": "1"
+      }
+    ],
+    "count": "1"
+  },
+  "donors": {
+    "data": [
+      {
+        "id": "7351285a-cce4-4dfd-aeee-bfc297ee8139",
+        "name": "KAY COOPER",
+        "city": "HILLSBOROUGH",
+        "state": "NC",
+        "zip_code": "27278",
+        "profession": "RETIRED",
+        "employer_name": "RETIRED",
+        "full_count": "1",
+        "sml": 0.6363636
+      }
+    ],
+    "count": "1"
+  },
+  "pacs": []
+}
+```
+
 ## Error handling
 
 By default, error messages are not passed to the client. For development though, you can get full error messages in response from API by adding `NODE_ENV=development` to the `.env` file in /server.

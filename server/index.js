@@ -220,7 +220,10 @@ api.get('/search/candidates-donors-pacs/:name', async (req, res) => {
 
     return res.send({
       candidates: committees,
-      donors: donors.data,
+      donors: {
+        data: donors.data,
+        count: donors.data.length > 0 ? donors.data[0].full_count : 0,
+      },
       // this is placeholder until we include real pacs data
       pacs: [],
     })
