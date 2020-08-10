@@ -1,7 +1,7 @@
 import React from 'react'
 import SearchBar from './SearchBar'
 
-export default function search() {
+const Search = () => {
   return (
     <div className="grid-container search-page">
       <div className="grid-row">
@@ -21,3 +21,5 @@ export default function search() {
     </div>
   )
 }
+
+export default Search

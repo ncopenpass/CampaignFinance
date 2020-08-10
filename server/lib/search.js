@@ -26,8 +26,8 @@ const searchContributors = async (
     client = await getClient()
     await client.query('select set_limit($1)', [trigramLimit])
     const results = await client.query(
-      `select *, count(*) over() as full_count, similarity(name, $1) as sml 
-      from contributors where name % $1 
+      `select *, count(*) over() as full_count, similarity(name, $1) as sml
+      from contributors where name % $1
       order by sml
       limit $2 offset $3`,
       [name, limit, offset]
@@ -64,12 +64,14 @@ const searchCommittees = async (
     client = await getClient()
     await client.query('select set_limit($1)', [trigramLimit])
     const results = await client.query(
-      `select *, 
+      `select *,
+        similarity(candidate_last_name, $1) as last_name_sml,
         similarity(candidate_first_last_name, $1) as first_last_sml,
         similarity(candidate_full_name, $1) as full_name_sml,
         count(*) over() as full_count
       from committees
-        where candidate_full_name % $1
+        where
+          candidate_full_name % $1 OR candidate_last_name % $1
         order by first_last_sml
         limit $2 offset $3`,
       [name, limit, offset]
