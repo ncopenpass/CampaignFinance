@@ -22,18 +22,20 @@ class SearchBar extends React.Component {
             size="big"
           />
         </div>
-        <div className="quick-search-btns">
-          <p className="quick-search">Quick Search</p>
-          <Button outline type="button" className="search-btn">
-            2020 Candidates
-          </Button>
-          <Button outline type="button" className="search-btn">
-            2020 Donors
-          </Button>
-          <Button outline type="button" className="search-btn">
-            2020 Contests
-          </Button>
-        </div>
+        {!this.props.hideQuickLinks && (
+          <div className="quick-search-btns">
+            <p className="quick-search">Quick Search</p>
+            <Button outline type="button" className="search-btn">
+              2020 Candidates
+            </Button>
+            <Button outline type="button" className="search-btn">
+              2020 Donors
+            </Button>
+            <Button outline type="button" className="search-btn">
+              2020 Contests
+            </Button>
+          </div>
+        )}
       </div>
     )
   }

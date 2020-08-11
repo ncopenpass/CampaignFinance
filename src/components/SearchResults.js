@@ -2,7 +2,7 @@ import React, { useEffect, useMemo } from 'react'
 import { useParams } from 'react-router'
 import { GridContainer, Alert, Accordion } from '@trussworks/react-uswds'
 
-import { useSearch } from '../hooks/useSearch'
+import { useSearch, useTableColumns } from '../hooks'
 
 import Table from './Table'
 
@@ -16,57 +16,13 @@ const SearchResults = () => {
     candidateCount,
     fetchInitialSearchData,
   } = useSearch()
+  const { donorColumns, candidateColumns } = useTableColumns()
 
   useEffect(() => {
     if (fetchInitialSearchData) {
       fetchInitialSearchData({ searchTerm })
     }
   }, [searchTerm, fetchInitialSearchData])
-
-  const donorColumns = useMemo(
-    () => [
-      {
-        Header: 'Donor Name',
-        accessor: 'name',
-      },
-      {
-        Header: 'City/State',
-        accessor: ({ city, state }) => city + ', ' + state,
-      },
-      {
-        Header: 'Type',
-        accessor: 'type',
-      },
-      {
-        Header: 'Profession',
-        accessor: 'profession',
-      },
-      {
-        Header: 'Total Donations',
-        accessor: 'total',
-      },
-    ],
-    []
-  )
-
-  const candidateColumns = useMemo(
-    () => [
-      {
-        Header: 'Name',
-        accessor: 'candidate_full_name',
-      },
-      {
-        Header: 'Party',
-        accessor: 'party',
-      },
-      {
-        Header: 'Contest',
-        accessor: ({ office, juris }) =>
-          juris ? `${office} ${juris}` : office,
-      },
-    ],
-    []
-  )
 
   const resultsTables = useMemo(
     () => [
