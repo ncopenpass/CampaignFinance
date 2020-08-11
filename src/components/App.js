@@ -1,13 +1,13 @@
 import React from 'react'
-import Donor from './Donor'
 import Header from './Header'
 import Footer from './Footer'
 import Search from './Search'
 import Table from './Table'
+import SearchResults from './SearchResults'
 import DataDictionary from './DataDictionary'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import {
-  DONOR_ROUTE,
+  SEARCH_ROUTE,
   TABLE_ROUTE,
   DATA_DICTIONARY_ROUTE,
   DEFAULT_ROUTE,
@@ -20,8 +20,8 @@ export default function App() {
         <Header></Header>
 
         <Switch>
-          <Route path={DONOR_ROUTE}>
-            <Donor />
+          <Route path={SEARCH_ROUTE}>
+            <SearchResults />
           </Route>
           <Route path={TABLE_ROUTE}>
             <Table />

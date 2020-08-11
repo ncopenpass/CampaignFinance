@@ -9,7 +9,7 @@ class SearchBar extends React.Component {
 
   handleClick = (e) => {
     e.preventDefault()
-    this.props.history.push(`/Donor/${this.state.donor}`)
+    this.props.history.push(`/search/${this.state.donor}`)
   }
 
   render() {
