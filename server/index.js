@@ -196,6 +196,49 @@ api.get('/contributors/:year', async (req, res) => {
   }
 })
 
+api.get('/search/candidates-donors-pacs/:name', async (req, res) => {
+  let client = null
+  try {
+    const { name } = req.params
+    const { limit = 50 } = req.query
+    const decodedName = decodeURIComponent(name)
+
+    client = await getClient()
+
+    const committees = await searchCommittees(
+      decodedName,
+      0,
+      limit,
+      TRIGRAM_LIMIT
+    )
+    const donors = await searchContributors(
+      decodedName,
+      0,
+      limit,
+      TRIGRAM_LIMIT
+    )
+
+    return res.send({
+      candidates: committees,
+      donors: {
+        data: donors.data,
+        count: donors.data.length > 0 ? donors.data[0].full_count : 0,
+      },
+      // this is placeholder until we include real pacs data
+      pacs: {
+        data: [],
+        count: '0',
+      },
+    })
+  } catch (error) {
+    handleError(error, res)
+  } finally {
+    if (client !== null) {
+      client.release()
+    }
+  }
+})
+
 app.use('/api', api)
 app.get('/status', (req, res) => res.send({ status: 'online' }))
 app.listen(port, () => {
