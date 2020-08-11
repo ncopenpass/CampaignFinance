@@ -13,6 +13,21 @@ export const useSearch = () => {
   const [donors, setDonors] = useState([])
   const [donorCount, setDonorCount] = useState(0)
 
+  const getDataAndCount = useCallback(
+    async (url) => {
+      setHasError(false)
+      try {
+        const response = await fetch(url)
+        const { data, count } = await response.json()
+        return { data, count }
+      } catch (e) {
+        console.log(e)
+        setHasError(true)
+      }
+    },
+    [setHasError]
+  )
+
   const fetchCandidates = useCallback(
     async ({ searchTerm, limit = 10, offset = 0 } = {}) => {
       const url = constructSearchUrl({
@@ -21,20 +36,15 @@ export const useSearch = () => {
         limit,
         offset,
       })
-      setHasError(false)
       try {
-        // const { count, data } = (await fetch(url)).json();
-        const response = await fetch(url)
-        const responseData = await response.json()
-        const { data, count } = responseData
+        const { data, count } = await getDataAndCount(url)
         setCandidates(data)
         setCandidateCount(count)
       } catch (e) {
         console.log(e)
-        setHasError(true)
       }
     },
-    []
+    [getDataAndCount]
   )
 
   const fetchDonors = useCallback(
@@ -47,15 +57,14 @@ export const useSearch = () => {
       })
       setHasError(false)
       try {
-        const { count, data } = (await fetch(url)).json()
+        const { data, count } = await getDataAndCount(url)
         setDonors(data)
         setDonorCount(count)
       } catch (e) {
         console.log(e)
-        setHasError(true)
       }
     },
-    []
+    [getDataAndCount]
   )
 
   const fetchInitialSearchData = useCallback(
