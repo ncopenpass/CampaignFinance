@@ -116,7 +116,7 @@ export default function Table({ columns, data, count }) {
         <tfoot>
           <tr>
             <td
-              colspan={columns.length}
+              colSpan={columns.length}
             >{`Showing ${data.length} of ${count} results`}</td>
           </tr>
         </tfoot>
