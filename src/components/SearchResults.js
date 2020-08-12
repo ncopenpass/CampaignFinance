@@ -5,8 +5,14 @@ import { GridContainer, Alert, Accordion } from '@trussworks/react-uswds'
 import { useSearch, useTableColumns } from '../hooks'
 
 import Table from './Table'
+import SearchBar from './SearchBar'
 
-const SearchResults = () => {
+const searchBarStyling = {
+  width: '100%',
+  padding: '20px 0px',
+}
+
+const SearchResults = React.memo(() => {
   let { searchTerm } = useParams()
   const {
     hasError,
@@ -69,10 +75,15 @@ const SearchResults = () => {
           Error fetching search data
         </Alert>
       ) : (
-        <Accordion items={resultsTables} />
+        <>
+          <div style={searchBarStyling}>
+            <SearchBar hideQuickLinks />
+          </div>
+          <Accordion items={resultsTables} />
+        </>
       )}
     </GridContainer>
   )
-}
+})
 
 export default SearchResults
