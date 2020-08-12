@@ -13,19 +13,16 @@ const Candidate = () => {
   let { candidate } = useParams()
 
   useEffect(() => {
-    const fetchContributions = () => {
-      const url = `/api/candidates/` + candData.sboe_id + `/contributions`;
-      fetch(url)
-        .then((res) => res.json())
-        .then((json) => setContData(json.data))
-    }
+    const fetchData = async () => {
+      const urlCand = `/api/search/candidates/` + encodeURIComponent(candidate);
+      const responseCand = await fetch(urlCand);
+      const jsonCand = await responseCand.json();
+      setCandData(jsonCand.data[0]);
 
-    const fetchData = () => {
-      const url = `/api/search/candidates/` + encodeURIComponent(candidate)
-      fetch(url)
-        .then((res) => res.json())
-        .then((json) => setCandData(json.data[0]))
-        .then(() => fetchContributions())
+      const urlCont = `/api/candidates/` + candData.sboe_id + `/contributions`;
+      const responseCont = await fetch(urlCont);
+      const jsonCont = await responseCont.json()
+      setContData(jsonCont.data);
     }
     
     fetchData();
