@@ -1,4 +1,5 @@
 import { useCallback, useState } from 'react'
+import { API_BATCH_SIZE } from '../constants'
 
 const CONTRIBUTORS_URL = '/api/search/contributors/'
 const CANDIDATES_URL = '/api/search/candidates/'
@@ -10,8 +11,10 @@ export const useSearch = () => {
   const [hasError, setHasError] = useState(false)
   const [candidates, setCandidates] = useState([])
   const [candidateCount, setCandidateCount] = useState(0)
+  const [candidateOffset, setCandidateOffset] = useState(0)
   const [donors, setDonors] = useState([])
   const [donorCount, setDonorCount] = useState(0)
+  const [donorOffset, setDonorOffset] = useState(0)
 
   const getDataAndCount = useCallback(
     async (url) => {
@@ -29,7 +32,7 @@ export const useSearch = () => {
   )
 
   const fetchCandidates = useCallback(
-    async ({ searchTerm, limit = 10, offset = 0 } = {}) => {
+    async ({ searchTerm, limit = API_BATCH_SIZE, offset = 0 } = {}) => {
       const url = constructSearchUrl({
         url: CANDIDATES_URL,
         searchTerm,
@@ -48,7 +51,7 @@ export const useSearch = () => {
   )
 
   const fetchDonors = useCallback(
-    async ({ searchTerm, limit = 10, offset = 0 } = {}) => {
+    async ({ searchTerm, limit = API_BATCH_SIZE, offset = 0 } = {}) => {
       const url = constructSearchUrl({
         url: CONTRIBUTORS_URL,
         searchTerm,
@@ -79,8 +82,10 @@ export const useSearch = () => {
     hasError,
     candidates,
     candidateCount,
+    candidateOffset,
     donors,
     donorCount,
+    donorOffset,
     fetchInitialSearchData,
     fetchCandidates,
     fetchDonors,

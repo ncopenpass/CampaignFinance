@@ -39,7 +39,7 @@ function fuzzyTextFilterFn(rows, id, filterValue) {
 // Let the table remove the filter if the string is empty
 fuzzyTextFilterFn.autoRemove = (val) => !val
 
-export default function Table({ columns, data, count }) {
+export default function Table({ columns, data }) {
   const filterTypes = React.useMemo(
     () => ({
       // Add a new fuzzyTextFilterFn filter type.
@@ -112,15 +112,6 @@ export default function Table({ columns, data, count }) {
           </tr>
         ))}
       </thead>
-      {count && (
-        <tfoot>
-          <tr>
-            <td
-              colSpan={columns.length}
-            >{`Showing ${data.length} of ${count} results`}</td>
-          </tr>
-        </tfoot>
-      )}
       <tbody {...getTableBodyProps()}>
         {rows.map((row, i) => {
           prepareRow(row)
