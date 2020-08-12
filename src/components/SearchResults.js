@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect, useMemo, useCallback } from 'react'
 import { useParams } from 'react-router'
 import {
   GridContainer,
@@ -33,6 +33,8 @@ const SearchResults = React.memo(() => {
     candidateCount,
     donorOffset,
     candidateOffset,
+    fetchCandidates,
+    fetchDonors,
     fetchInitialSearchData,
   } = useSearch()
   const { donorColumns, candidateColumns } = useTableColumns()
@@ -42,6 +44,20 @@ const SearchResults = React.memo(() => {
       fetchInitialSearchData({ searchTerm })
     }
   }, [searchTerm, fetchInitialSearchData])
+
+  const fetchNextCandidates = useCallback(() => {
+    fetchCandidates({
+      searchTerm,
+      offset: candidateOffset + API_BATCH_SIZE,
+    })
+  }, [candidateOffset, fetchCandidates, searchTerm])
+
+  const fetchPreviousCandidates = useCallback(() => {
+    fetchCandidates({
+      searchTerm,
+      offset: candidateOffset - API_BATCH_SIZE,
+    })
+  }, [candidateOffset, searchTerm, fetchCandidates])
 
   const resultsTables = useMemo(
     () => [
@@ -60,10 +76,16 @@ const SearchResults = React.memo(() => {
                 candidateCount
               )} candidates shown`}
               <div>
-                <Button size="small" outline disabled={candidateOffset === 0}>
+                <Button
+                  onClick={fetchPreviousCandidates}
+                  size="small"
+                  outline
+                  disabled={candidateOffset === 0}
+                >
                   Previous
                 </Button>
                 <Button
+                  onClick={fetchNextCandidates}
                   style={{ marginRight: '0px' }}
                   size="small"
                   outline
@@ -109,6 +131,8 @@ const SearchResults = React.memo(() => {
       donorCount,
       donorOffset,
       searchTerm,
+      fetchNextCandidates,
+      fetchPreviousCandidates,
     ]
   )
 

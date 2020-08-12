@@ -43,6 +43,7 @@ export const useSearch = () => {
         const { data, count } = await getDataAndCount(url)
         setCandidates(data)
         setCandidateCount(count)
+        setCandidateOffset(offset)
       } catch (e) {
         console.log(e)
       }
@@ -63,6 +64,7 @@ export const useSearch = () => {
         const { data, count } = await getDataAndCount(url)
         setDonors(data)
         setDonorCount(count)
+        setDonorOffset(offset)
       } catch (e) {
         console.log(e)
       }
