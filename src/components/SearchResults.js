@@ -1,28 +1,17 @@
 import React, { useEffect, useMemo, useCallback } from 'react'
 import { useParams } from 'react-router'
-import {
-  GridContainer,
-  Alert,
-  Accordion,
-  Button,
-} from '@trussworks/react-uswds'
+import { GridContainer, Alert, Accordion } from '@trussworks/react-uswds'
 import styled from '@emotion/styled'
 
 import { useSearch, useTableColumns } from '../hooks'
 import { API_BATCH_SIZE } from '../constants'
 
-import Table from './Table'
 import SearchBar from './SearchBar'
+import SearchResultTable from './SearchResultTable'
 
 const SearchBarContainer = styled.div`
   padding: 20px 0px;
 `
-
-const ResultsTableFooter = styled.div`
-  display: flex;
-  justify-content: space-between;
-`
-
 const SearchResults = React.memo(() => {
   let { searchTerm } = useParams()
   const {
@@ -59,67 +48,56 @@ const SearchResults = React.memo(() => {
     })
   }, [candidateOffset, searchTerm, fetchCandidates])
 
+  const fetchNextDonors = useCallback(() => {
+    fetchDonors({
+      searchTerm,
+      offset: donorOffset + API_BATCH_SIZE,
+    })
+  }, [donorOffset, fetchDonors, searchTerm])
+
+  const fetchPreviousDonors = useCallback(() => {
+    fetchDonors({
+      searchTerm,
+      offset: donorOffset - API_BATCH_SIZE,
+    })
+  }, [donorOffset, searchTerm, fetchDonors])
+
   const resultsTables = useMemo(
     () => [
       {
         title: `Candidates (${candidateCount}) matching "${searchTerm}"`,
-        content: candidateCount ? (
-          <>
-            <Table
-              columns={candidateColumns}
-              data={candidates}
-              count={candidateCount}
-            />
-            <ResultsTableFooter>
-              {`${candidateOffset + 1} - ${Math.min(
-                candidateOffset + API_BATCH_SIZE,
-                candidateCount
-              )} candidates shown`}
-              <div>
-                <Button
-                  onClick={fetchPreviousCandidates}
-                  size="small"
-                  outline
-                  disabled={candidateOffset === 0}
-                >
-                  Previous
-                </Button>
-                <Button
-                  onClick={fetchNextCandidates}
-                  style={{ marginRight: '0px' }}
-                  size="small"
-                  outline
-                  disabled={candidateOffset + API_BATCH_SIZE >= candidateCount}
-                >
-                  Next
-                </Button>
-              </div>
-            </ResultsTableFooter>
-          </>
-        ) : (
-          <p>{`No candidates found for "${searchTerm}"`}</p>
+        content: (
+          <SearchResultTable
+            columns={candidateColumns}
+            data={candidates}
+            count={candidateCount}
+            offset={candidateOffset}
+            fetchNext={fetchNextCandidates}
+            fetchPrevious={fetchPreviousCandidates}
+            searchTerm={searchTerm}
+            searchType="candidates"
+          />
         ),
         expanded: true,
         id: 'candidates',
       },
-      // {
-      //   title: `Donors (${donorCount}) matching "${searchTerm}"`,
-      //   content: donorCount ? (
-      //     <>
-      //       <Table columns={donorColumns} data={donors} count={donorCount} />
-      //       <div>
-      //         {`${donorOffset} - ${Math.min(
-      //           donorOffset + API_BATCH_SIZE,
-      //           donorCount
-      //         )} donors shown`}
-      //       </div>
-      //     </>
-      //   ) : (
-      //     <p>{`No donors found for "${searchTerm}"`}</p>
-      //   ),
-      //   expanded: true,
-      //   id: 'donors',
-      // },
+      {
+        title: `Donors (${donorCount}) matching "${searchTerm}"`,
+        content: (
+          <SearchResultTable
+            columns={donorColumns}
+            data={donors}
+            count={donorCount}
+            offset={donorOffset}
+            fetchNext={fetchNextDonors}
+            fetchPrevious={fetchPreviousDonors}
+            searchTerm={searchTerm}
+            searchType="donors"
+          />
+        ),
+        expanded: true,
+        id: 'donors',
+      },
     ],
     [
       candidateColumns,
@@ -133,6 +111,8 @@ const SearchResults = React.memo(() => {
       searchTerm,
       fetchNextCandidates,
       fetchPreviousCandidates,
+      fetchNextDonors,
+      fetchPreviousDonors,
     ]
   )
 
