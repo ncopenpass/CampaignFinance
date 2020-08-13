@@ -2,26 +2,31 @@ import React from 'react'
 import {
   Address,
   Button,
-  Footer,
+  Footer as FooterComponent,
   FooterNav,
   Logo,
 } from '@trussworks/react-uswds'
 
-export default function footer() {
+import { PRIVACY_POLICY_ROUTE } from '../constants'
+
+const Footer = () => {
   return (
-    <Footer
+    <FooterComponent
       primary={
         <div className="usa-footer__primary-container grid-row">
           <div className="mobile-lg:grid-col-8">
             <FooterNav
               links={[
-                <a className="usa-footer__primary-link" href="#">
+                <a className="usa-footer__primary-link" href="/">
                   Terms of Use
                 </a>,
-                <a className="usa-footer__primary-link" href="#">
+                <a className="usa-footer__primary-link" href="/">
                   Sitemap
                 </a>,
-                <a className="usa-footer__primary-link" href="#">
+                <a
+                  className="usa-footer__primary-link"
+                  href={PRIVACY_POLICY_ROUTE}
+                >
                   Privacy Policy
                 </a>,
                 <a
@@ -73,3 +78,5 @@ export default function footer() {
     />
   )
 }
+
+export default Footer
