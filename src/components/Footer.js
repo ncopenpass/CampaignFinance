@@ -7,6 +7,8 @@ import {
   Logo,
 } from '@trussworks/react-uswds'
 
+import { PRIVACY_POLICY_ROUTE } from '../constants'
+
 const Footer = () => {
   return (
     <FooterComponent
@@ -21,7 +23,10 @@ const Footer = () => {
                 <a className="usa-footer__primary-link" href="/">
                   Sitemap
                 </a>,
-                <a className="usa-footer__primary-link" href="/">
+                <a
+                  className="usa-footer__primary-link"
+                  href={PRIVACY_POLICY_ROUTE}
+                >
                   Privacy Policy
                 </a>,
                 <a
