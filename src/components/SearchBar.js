@@ -2,6 +2,8 @@ import React from 'react'
 import { Search, Button } from '@trussworks/react-uswds'
 import { withRouter } from 'react-router-dom'
 
+import { DONOR_FRAGMENT_ROUTE } from '../constants'
+
 class SearchBar extends React.Component {
   handleChange = (e) => {
     this.setState({ donor: e.target.value })
@@ -9,7 +11,7 @@ class SearchBar extends React.Component {
 
   handleClick = (e) => {
     e.preventDefault()
-    this.props.history.push(`/Donor/${this.state.donor}`)
+    this.props.history.push(`${DONOR_FRAGMENT_ROUTE}${this.state.donor}`)
   }
 
   render() {
