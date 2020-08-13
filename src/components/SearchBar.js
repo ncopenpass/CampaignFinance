@@ -2,6 +2,8 @@ import React, { useCallback, useState } from 'react'
 import { Search, Button } from '@trussworks/react-uswds'
 import { useHistory } from 'react-router-dom'
 
+import { SEARCH_FRAGMENT_ROUTE } from '../constants'
+
 const SearchBar = ({ hideQuickLinks }) => {
   const history = useHistory()
   const [donor, setDonor] = useState('')
@@ -11,7 +13,7 @@ const SearchBar = ({ hideQuickLinks }) => {
   const handleClick = useCallback(
     (e) => {
       e.preventDefault()
-      history.push(`/search/${donor}`)
+      history.push(`${SEARCH_FRAGMENT_ROUTE}${donor}`)
     },
     [donor, history]
   )
