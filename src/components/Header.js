@@ -5,6 +5,11 @@ import {
   PrimaryNav,
   Title,
 } from '@trussworks/react-uswds'
+import {
+  ABOUT_PAGE_ROUTE,
+  DEFAULT_ROUTE,
+  DATA_DICTIONARY_ROUTE,
+} from '../constants'
 
 const Header = () => {
   return (
@@ -18,13 +23,17 @@ const Header = () => {
           </div>
           <PrimaryNav
             items={[
-              <a key="search" className="usa-nav__link" href="/">
+              <a key="search" className="usa-nav__link" href={DEFAULT_ROUTE}>
                 <span>Search</span>
               </a>,
-              <a key="about" className="usa-nav__link" href="/candidate">
+              <a key="about" className="usa-nav__link" href={ABOUT_PAGE_ROUTE}>
                 <span>About</span>
               </a>,
-              <a key="about" className="usa-nav__link" href="/DataDictionary">
+              <a
+                key="about"
+                className="usa-nav__link"
+                href={DATA_DICTIONARY_ROUTE}
+              >
                 <span>Data Dictionary</span>
               </a>,
             ]}
