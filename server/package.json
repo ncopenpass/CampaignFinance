@@ -25,7 +25,6 @@
     "chai": "^4.2.0",
     "mocha": "^8.1.1",
     "nodemon": "^2.0.4",
-    "supertest": "^4.0.2",
-    "wtfnode": "^0.8.1"
+    "supertest": "^4.0.2"
   }
 }
