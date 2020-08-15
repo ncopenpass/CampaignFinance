@@ -244,3 +244,5 @@ app.get('/status', (req, res) => res.send({ status: 'online' }))
 app.listen(port, () => {
   console.log(`app listening on port ${port}`)
 })
+
+module.exports = app
