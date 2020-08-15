@@ -5,6 +5,51 @@ const { getClient } = require('./db')
 
 const TRIGRAM_LIMIT = 0.6
 
+const apiReprCandidate = (row) => {
+  return {
+    candidate_first_last_name: row.candidate_first_last_name,
+    candidate_first_name: row.candidate_first_name,
+    candidate_full_name: row.candidate_full_name,
+    candidate_last_name: row.candidate_last_name,
+    candidate_middle_name: row.candidate_middle_name,
+    current_status: row.current_status,
+    juris: row.juris,
+    office: row.office,
+    party: row.party,
+    committee_sboe_id: row.sboe_id,
+  }
+}
+
+const apiReprContributor = (row) => {
+  return {
+    contributor_id: row.id,
+    name: row.name,
+    city: row.city,
+    state: row.state,
+    zip_code: row.zip_code,
+    profession: row.profession,
+    employer_name: row.employer_name,
+  }
+}
+
+const apiReprContribution = (row) => {
+  return {
+    account_code: row.account_code,
+    amount: row.amount,
+    candidate_or_referendum_name: row.candidate_or_referendum_name,
+    committee_sboe_id: row.committee_sboe_id,
+    contributor_id: row.contributor_id,
+    date_occurred: row.date_occurred,
+    declaration: row.declaration,
+    form_of_payment: row.form_of_payment,
+    full_count: row.full_count,
+    purpose: row.purpose,
+    report_name: row.report_name,
+    source_contribution_id: row.source_contribution_id,
+    transaction_type: row.transaction_type,
+  }
+}
+
 const handleError = (error, res) => {
   console.error(error)
   res.status(500)
@@ -31,7 +76,12 @@ api.get('/search/contributors/:name', async (req, res) => {
       limit,
       TRIGRAM_LIMIT
     )
-    return res.send(contributors)
+    return res.send({
+      data: contributors.data.map((contributor) =>
+        apiReprContributor(contributor)
+      ),
+      count: contributors.data.length > 0 ? contributors.data[0].full_count : 0,
+    })
   } catch (error) {
     handleError(error, res)
   }
@@ -49,7 +99,10 @@ api.get('/search/candidates/:name', async (req, res) => {
       limit,
       TRIGRAM_LIMIT
     )
-    return res.send(committees)
+    return res.send({
+      data: committees.data.map((comm) => apiReprCandidate(comm)),
+      count: committees.data.length > 0 ? committees.data[0].full_count : 0,
+    })
   } catch (error) {
     handleError(error, res)
   }
@@ -74,7 +127,8 @@ api.get('/candidate/:ncsbeID', async (req, res) => {
       [ncsbeID]
     )
     return res.send({
-      data: candidate.rows.length > 0 ? candidate.rows[0] : [],
+      data:
+        candidate.rows.length > 0 ? apiReprCandidate(candidate.rows[0]) : [],
     })
   } catch (error) {
     handleError(error, res)
@@ -101,25 +155,7 @@ api.get('/candidate/:ncsbeID/contributions', async (req, res) => {
     client = await getClient()
     const contributions = await client.query(
       `select count(*) over () as full_count,
-       source_contribution_id,
-       contributor_id,
-       transaction_type,
-       committee_sboe_id,
-       report_name,
-       date_occurred,
-       account_code,
-       amount,
-       form_of_payment,
-       purpose,
-       candidate_or_referendum_name,
-       declaration,
-       id,
-       name,
-       city,
-       state,
-       zip_code,
-       profession,
-       employer_name
+       contributions.*
        from contributions
               join contributors c on contributions.contributor_id = c.id
       where lower(contributions.committee_sboe_id) = lower($1)
@@ -128,7 +164,9 @@ api.get('/candidate/:ncsbeID/contributions', async (req, res) => {
       [ncsbeID, limit, offset]
     )
     return res.send({
-      data: contributions.rows,
+      data: contributions.rows.map((contribution) =>
+        apiReprContribution(contribution)
+      ),
       count:
         contributions.rows.length > 0 ? contributions.rows[0].full_count : 0,
     })
@@ -157,7 +195,9 @@ api.get('/contributors/:contributorId/contributions', async (req, res) => {
       [contributorId, limit, offset]
     )
     return res.send({
-      data: contributions.rows,
+      data: contributions.rows.map((contribution) =>
+        apiReprContribution(contribution)
+      ),
       count:
         contributions.rows.length > 0 ? contributions.rows[0].full_count : 0,
     })
@@ -183,9 +223,7 @@ api.get('/candidates/:year', async (req, res) => {
       `with candidates_for_year as (
         select
           distinct on (committees.sboe_id)
-          committees.sboe_id,
-          candidate_last_name, candidate_first_name, candidate_middle_name,
-          party, office, candidate_full_name, candidate_first_last_name
+          committees.*
 
         from committees
         inner join contributions
@@ -201,7 +239,7 @@ api.get('/candidates/:year', async (req, res) => {
       [year, limit, offset]
     )
     return res.send({
-      data: candidates.rows,
+      data: candidates.rows.map((cand) => apiReprCandidate(cand)),
       count: candidates.rows.length > 0 ? candidates.rows[0].full_count : 0,
     })
   } catch (error) {
@@ -220,7 +258,7 @@ api.get('/contributors/:year', async (req, res) => {
     const { limit = 50, offset = 0 } = req.query
     client = await getClient()
     const contributors = await client.query(
-      `select *, count(*) over () as full_count from contributors
+      `select contributors.*, count(*) over () as full_count from contributors
       inner join contributions on
       contributions.contributor_id = contributors.id
       where date_part('year', to_date(contributions.date_occurred, 'MM/DD/YY')) = $1
@@ -231,7 +269,9 @@ api.get('/contributors/:year', async (req, res) => {
       [year, limit, offset]
     )
     return res.send({
-      data: contributors.rows,
+      data: contributors.rows.map((contributor) =>
+        apiReprContributor(contributor)
+      ),
       count: contributors.rows.length > 0 ? contributors.rows[0].full_count : 0,
     })
   } catch (error) {
@@ -266,9 +306,9 @@ api.get('/search/candidates-donors-pacs/:name', async (req, res) => {
     )
 
     return res.send({
-      candidates: committees,
+      candidates: committees.data.map((comm) => apiReprCandidate(comm)),
       donors: {
-        data: donors.data,
+        data: donors.data.map((donor) => apiReprContributor(donor)),
         count: donors.data.length > 0 ? donors.data[0].full_count : 0,
       },
       // this is placeholder until we include real pacs data
