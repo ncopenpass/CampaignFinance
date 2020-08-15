@@ -19,7 +19,7 @@ const handleError = (error, res) => {
 const api = express.Router()
 api.use(bodyParser.json())
 
-pi.get('/search/contributors/:name', async (req, res) => {
+api.get('/search/contributors/:name', async (req, res) => {
   try {
     const { name } = req.params
     const { offset = 0, limit = 50 } = req.query
