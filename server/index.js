@@ -105,8 +105,27 @@ api.get('/candidate/:ncsbeID/contributions', async (req, res) => {
 
     client = await getClient()
     const contributions = await client.query(
-      `select *, count(*) over () as full_count
-      from contributions
+      `select count(*) over () as full_count,
+       source_contribution_id,
+       contributor_id,
+       transaction_type,
+       committee_sboe_id,
+       report_name,
+       date_occurred,
+       account_code,
+       amount,
+       form_of_payment,
+       purpose,
+       candidate_or_referendum_name,
+       declaration,
+       id,
+       name,
+       city,
+       state,
+       zip_code,
+       profession,
+       employer_name
+       from contributions
               join contributors c on contributions.contributor_id = c.id
       where lower(contributions.committee_sboe_id) = lower($1)
       limit $2
