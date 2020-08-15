@@ -10,32 +10,24 @@ import '../css/candidate.scss';
 const Candidate = () => {
   const [candData, setCandData] = useState({})
   const [contData, setContData] = useState([])
-  let { candidate } = useParams()
+  let { candidateId } = useParams()
 
   // Fetches candidate data
   useEffect(() => {
-    const fetchCandData = async () => {
-      const url = `/api/search/candidates/` + encodeURIComponent(candidate);
-      const response = await fetch(url);
-      const json = await response.json();
-      setCandData(json.data[0]);
+    const fetchData = async () => {
+      const urlCand = `/api/candidate/` + encodeURIComponent(candidateId);
+      const responseCand = await fetch(urlCand);
+      const jsonCand = await responseCand.json();
+      setCandData(jsonCand.data);
+
+      const urlCont = `/api/candidate/` +  encodeURIComponent(candidateId) + `/contributions`;
+      const responseCont = await fetch(urlCont);
+      const jsonCont = await responseCont.json();
+      setContData(jsonCont.data);
     }
     
-    fetchCandData();
-  }, [candidate])
-
-  // Fetches contributions for candidate, but only if the SBOE ID is defined
-  useEffect(() => {
-    const fetchContData = async () => {
-      const url = `/api/candidate/` + candData.sboe_id + `/contributions`;
-      console.log(url);
-      const response = await fetch(url);
-      const json = await response.json()
-      setContData(json.data);
-    }
-
-    if (candData.sboe_id) fetchContData();
-  }, [candData.sboe_id])
+    fetchData();
+  }, [candidateId])
 
   const columns = useMemo(
     () => [
