@@ -52,65 +52,33 @@ after(async function () {
 })
 
 const expectedCandidateKeys = [
-  'asst_treasurer_email',
-  'asst_treasurer_first_name',
-  'asst_treasurer_last_name',
-  'asst_treasurer_middle_name',
   'candidate_first_last_name',
   'candidate_first_name',
   'candidate_full_name',
   'candidate_last_name',
   'candidate_middle_name',
-  'committee_city',
-  'committee_full_zip',
-  'committee_name',
-  'committee_state',
-  'committee_street_1',
-  'committee_street_2',
-  'committee_type',
   'current_status',
-  'first_last_sml',
-  'full_count',
-  'full_name_sml',
   'juris',
-  'last_name_sml',
   'office',
   'party',
-  'sboe_id',
-  'treasurer_city',
-  'treasurer_email',
-  'treasurer_first_name',
-  'treasurer_full_zip',
-  'treasurer_last_name',
-  'treasurer_middle_name',
-  'treasurer_state',
-  'treasurer_street_1',
-  'treasurer_street_2',
+  'committee_sboe_id',
 ]
 
 const expectedContributorKeys = [
-  'id',
+  'contributor_id',
   'name',
   'city',
   'state',
   'zip_code',
   'profession',
   'employer_name',
-  'full_count',
-  'sml',
 ]
 
 const expectedContributionKeys = [
   'account_code',
   'amount',
   'candidate_or_referendum_name',
-  'committee_city',
-  'committee_name',
   'committee_sboe_id',
-  'committee_state',
-  'committee_street_1',
-  'committee_street_2',
-  'committee_zip_code',
   'contributor_id',
   'date_occurred',
   'declaration',
@@ -124,9 +92,13 @@ const expectedContributionKeys = [
 
 describe('GET /status', function () {
   it('it should have status 200 and online status', async function () {
-    const response = await supertest(app).get('/status')
-    response.status.should.equal(200)
-    response.body.should.deep.equal({ status: 'online' })
+    try {
+      const response = await supertest(app).get('/status')
+      response.status.should.equal(200)
+      response.body.should.deep.equal({ status: 'online' })
+    } catch (err) {
+      console.error(err)
+    }
   })
 })
 
@@ -185,12 +157,38 @@ describe('GET /api/candidate/:ncsbeID', function () {
     const sboe_id = encodeURIComponent(rows[0].sboe_id)
     const response = await supertest(app).get(`/api/candidate/${sboe_id}`)
     response.status.should.equal(200)
+    response.body.should.be.an('object').that.has.all.keys(['data'])
+    response.body.data.should.be
+      .an('object')
+      .that.has.all.keys(expectedCandidateKeys)
+    Object.keys(response.body.data).length.should.equal(
+      expectedCandidateKeys.length
+    )
+  })
+})
+
+describe('GET /api/candidate/:ncsbeID/contributions', function () {
+  it('it should have status 200 and correct schema', async function () {
+    const client = await getClient()
+    const { rows } = await client.query(
+      `select sboe_id FROM committees
+      inner join contributions
+      on committees.sboe_id = contributions.committee_sboe_id
+      limit 1`,
+      []
+    )
+    client.release()
+    const id = encodeURIComponent(rows[0].sboe_id)
+    const response = await supertest(app).get(
+      `/api/candidate/${id}/contributions`
+    )
+    response.status.should.equal(200)
     response.body.should.be.an('object').that.has.all.keys(['data', 'count'])
     response.body.data[0].should.be
       .an('object')
-      .that.has.all.keys(expectedCandidateKeys)
+      .that.has.all.keys(expectedContributionKeys)
     Object.keys(response.body.data[0]).length.should.equal(
-      expectedCandidateKeys.length
+      expectedContributionKeys.length
     )
   })
 })
@@ -284,5 +282,16 @@ describe('GET /api/search/candidates-donors-pacs/:name', function () {
     response.body.should.be
       .an('object')
       .that.has.all.keys(['candidates', 'donors', 'pacs'])
+
+    if (response.body.candidates.length > 0) {
+      response.body.candidates[0].should.be
+        .an('object')
+        .that.has.all.keys(expectedCandidateKeys)
+    }
+    if (response.body.donors.length > 0) {
+      response.body.donors[0].should.be
+        .an('object')
+        .that.has.all.keys(expectedContributorKeys)
+    }
   })
 })
