@@ -19,7 +19,8 @@ const Candidate = () => {
       const jsonCand = await responseCand.json();
       setCandData(jsonCand.data[0]);
 
-      const urlCont = `/api/candidates/` + candData.sboe_id + `/contributions`;
+      const urlCont = `/api/candidate/` + candData.sboe_id + `/contributions`;
+      console.log(urlCont);
       const responseCont = await fetch(urlCont);
       const jsonCont = await responseCont.json()
       setContData(jsonCont.data);
@@ -48,7 +49,7 @@ const Candidate = () => {
       },
       {
         Header: 'Donation Date',
-        accessor: 'date_occured',
+        accessor: 'date_occurred',
       },
       {
         Header: 'Description',
