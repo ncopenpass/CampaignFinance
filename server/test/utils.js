@@ -45,7 +45,6 @@ const setUpDb = async () => {
     console.error(error)
   } finally {
     if (client !== null) {
-      console.log('finallyyyy')
       client.release()
     }
   }
@@ -81,7 +80,7 @@ const dropRows = async () => {
   let client = null
   try {
     client = await getClient()
-    client.query('truncate committees, contributions, contributors')
+    await client.query('truncate committees, contributions, contributors')
   } catch (err) {
     console.error(err)
   } finally {
