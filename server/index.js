@@ -2,6 +2,7 @@ const path = require('path')
 const express = require('express')
 const bodyParser = require('body-parser')
 const { searchContributors, searchCommittees } = require('./lib/search')
+const { getCandidateSummary } = require('./lib/queries')
 const { getClient } = require('./db')
 const app = express()
 app.use(bodyParser.json())
@@ -101,7 +102,7 @@ api.get('/candidate/:ncsbeID/contributions', async (req, res) => {
     }
 
     client = await getClient()
-    const contributions = await client.query(
+    const contributionsPromise = client.query(
       `select count(*) over () as full_count,
        source_contribution_id,
        contributor_id,
@@ -129,10 +130,19 @@ api.get('/candidate/:ncsbeID/contributions', async (req, res) => {
       offset $3`,
       [ncsbeID, limit, offset]
     )
+
+    const summaryPromise = getCandidateSummary(ncsbeID, client)
+
+    const [contributions, summary] = await Promise.all([
+      contributionsPromise,
+      summaryPromise,
+    ])
+
     return res.send({
       data: contributions.rows,
       count:
         contributions.rows.length > 0 ? contributions.rows[0].full_count : 0,
+      summary,
     })
   } catch (error) {
     handleError(error, res)
