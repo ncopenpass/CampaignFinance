@@ -70,16 +70,13 @@ api.get('/candidate/:ncsbeID', async (req, res) => {
     }
 
     client = await getClient()
-    const contributions = await client.query(
+    const candidate = await client.query(
       `select * from committees
-      where upper(committees.sboe_id) = upper($1)
-      limit 1
-      `,
+      where upper(committees.sboe_id) = upper($1)`,
       [ncsbeID]
     )
     return res.send({
-      data: contributions.rows,
-      count: 1,
+      data: candidate.rows.length > 0 ? candidate.rows[0] : [],
     })
   } catch (error) {
     handleError(error, res)
