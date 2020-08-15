@@ -1,13 +1,15 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useCallback } from 'react';
 import { useParams } from 'react-router-dom'
 import {
+  Accordion,
   Grid,
   GridContainer
 } from '@trussworks/react-uswds';
 
 import { useCandidate } from '../hooks'
+import { API_BATCH_SIZE } from '../constants'
 
-import Table from './Table';
+import SearchResultTable from './SearchResultTable'
 import '../css/candidate.scss';
 
 const Candidate = () => {
@@ -30,14 +32,28 @@ const Candidate = () => {
     }
   }, [candidateId, fetchInitialSearchData])
 
+  const fetchNextContributions = useCallback(() => {
+    fetchContributions({
+      candidateId,
+      offset: contributionOffset + API_BATCH_SIZE,
+    })
+  }, [contributionOffset, fetchContributions, candidateId])
+
+  const fetchPreviousContributions = useCallback(() => {
+    fetchContributions({
+      candidateId,
+      offset: contributionOffset - API_BATCH_SIZE,
+    })
+  }, [contributionOffset, candidateId, fetchContributions])
+
   const columns = useMemo(
     () => [
       {
-        Header: 'Donor Name',
+        Header: 'Contribution Name',
         accessor: 'name',
       },
       {
-        Header: 'Donor Type',
+        Header: 'Contribution Type',
         accessor: 'transaction_type',
       },
       {
@@ -59,7 +75,7 @@ const Candidate = () => {
     ],
     []
   )
-  
+
   return (
     <div className='container'>
       <GridContainer>
@@ -94,7 +110,16 @@ const Candidate = () => {
         </Grid>
         <Grid row>
           <Grid col>
-            <Table columns={columns} data={contributions}></Table>
+            <SearchResultTable
+              columns={columns}
+              data={contributions}
+              count={contributionCount}
+              offset={contributionOffset}
+              fetchNext={fetchNextContributions}
+              fetchPrevious={fetchPreviousContributions}
+              searchTerm={candidateId}
+              searchType="contributions"
+            />
           </Grid>
         </Grid>
       </GridContainer>
