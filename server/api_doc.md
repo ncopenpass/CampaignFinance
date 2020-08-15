@@ -25,7 +25,8 @@ response:
       "zip_code": "27103",
       "profession": "PHYSICIAN",
       "employer_name": "NOVANT HEALTH UROLOGY PARTNERS",
-      "sml": 0.6875
+      "sml": 0.6875,
+      "full_count": 2
     },
     {
       "id": "ce69d5a5-3724-4497-b554-15c4a9bd5c1c",
@@ -35,7 +36,8 @@ response:
       "zip_code": "27615",
       "profession": "CHIROPRACTOR",
       "employer_name": "SELF EMPLOYED",
-      "sml": 1
+      "sml": 1,
+      "full_count": 2
     }
   ],
   "count": 2
