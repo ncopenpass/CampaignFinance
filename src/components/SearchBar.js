@@ -1,27 +1,29 @@
-import React from 'react'
+import React, { useCallback, useState } from 'react'
 import { Search, Button } from '@trussworks/react-uswds'
-import { withRouter } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
-class SearchBar extends React.Component {
-  handleChange = (e) => {
-    this.setState({ donor: e.target.value })
-  }
+import { SEARCH_FRAGMENT_ROUTE } from '../constants'
 
-  handleClick = (e) => {
-    e.preventDefault()
-    this.props.history.push(`/Donor/${this.state.donor}`)
-  }
+const SearchBar = ({ hideQuickLinks }) => {
+  const history = useHistory()
+  const [donor, setDonor] = useState('')
 
-  render() {
-    return (
-      <div className="search-component">
-        <div className="search-bar">
-          <Search
-            onSubmit={this.handleClick}
-            onChange={this.handleChange}
-            size="big"
-          />
-        </div>
+  const handleChange = useCallback((e) => setDonor(e.target.value), [])
+
+  const handleClick = useCallback(
+    (e) => {
+      e.preventDefault()
+      history.push(`${SEARCH_FRAGMENT_ROUTE}${donor}`)
+    },
+    [donor, history]
+  )
+
+  return (
+    <div className="search-component">
+      <div className="search-bar">
+        <Search onSubmit={handleClick} onChange={handleChange} size="big" />
+      </div>
+      {!hideQuickLinks && (
         <div className="quick-search-btns">
           <p className="quick-search">Quick Search</p>
           <Button outline type="button" className="search-btn">
@@ -34,9 +36,9 @@ class SearchBar extends React.Component {
             2020 Contests
           </Button>
         </div>
-      </div>
-    )
-  }
+      )}
+    </div>
+  )
 }
 
-export default withRouter(SearchBar)
+export default SearchBar

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Table, GridContainer, Grid } from '@trussworks/react-uswds'
+import { Table, GridContainer } from '@trussworks/react-uswds'
 
 import { dictionary } from '../static/dataDictionary.json'
 
