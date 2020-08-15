@@ -18,7 +18,8 @@ const handleError = (error, res) => {
 
 const api = express.Router()
 api.use(bodyParser.json())
-api.get('/search/contributors/:name', async (req, res) => {
+
+pi.get('/search/contributors/:name', async (req, res) => {
   try {
     const { name } = req.params
     const { offset = 0, limit = 50 } = req.query
@@ -58,6 +59,36 @@ api.get('/candidate/:ncsbeID', async (req, res) => {
   let client = null
   try {
     let { ncsbeID = '' } = req.params
+    ncsbeID = decodeURIComponent(ncsbeID)
+    if (!ncsbeID) {
+      res.status(500)
+      return res.send({
+        error: 'empty ncsbeID',
+      })
+    }
+
+    client = await getClient()
+    const candidate = await client.query(
+      `select * from committees
+      where upper(committees.sboe_id) = upper($1)`,
+      [ncsbeID]
+    )
+    return res.send({
+      data: candidate.rows.length > 0 ? candidate.rows[0] : [],
+    })
+  } catch (error) {
+    handleError(error, res)
+  } finally {
+    if (client !== null) {
+      client.release()
+    }
+  }
+})
+
+api.get('/candidate/:ncsbeID/contributions', async (req, res) => {
+  let client = null
+  try {
+    let { ncsbeID = '' } = req.params
     const { limit = 50, offset = 0 } = req.query
     ncsbeID = decodeURIComponent(ncsbeID)
     if (!ncsbeID) {
@@ -69,13 +100,31 @@ api.get('/candidate/:ncsbeID', async (req, res) => {
 
     client = await getClient()
     const contributions = await client.query(
-      `select *, count(*) over() as full_count from committees
-      join contributions c on committees.sboe_id = c.committee_sboe_id
-      where upper(committees.sboe_id) = upper($1)
-      order by c.date_occurred asc
+      `select count(*) over () as full_count,
+       source_contribution_id,
+       contributor_id,
+       transaction_type,
+       committee_sboe_id,
+       report_name,
+       date_occurred,
+       account_code,
+       amount,
+       form_of_payment,
+       purpose,
+       candidate_or_referendum_name,
+       declaration,
+       id,
+       name,
+       city,
+       state,
+       zip_code,
+       profession,
+       employer_name
+       from contributions
+              join contributors c on contributions.contributor_id = c.id
+      where lower(contributions.committee_sboe_id) = lower($1)
       limit $2
-      offset $3
-      `,
+      offset $3`,
       [ncsbeID, limit, offset]
     )
     return res.send({

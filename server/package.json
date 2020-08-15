@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "test": "NODE_ENV=test mocha",
     "start-dev": "nodemon index.js",
     "migrate": "npm run parse-dot-env node-pg-migrate",
