@@ -49,11 +49,11 @@ const Candidate = () => {
   const columns = useMemo(
     () => [
       {
-        Header: 'Contribution Name',
+        Header: 'Donor Name',
         accessor: 'name',
       },
       {
-        Header: 'Contribution Type',
+        Header: 'Donor Type',
         accessor: 'transaction_type',
       },
       {
