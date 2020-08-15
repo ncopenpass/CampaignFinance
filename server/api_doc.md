@@ -100,16 +100,13 @@ response:
 
 ## GET `/api/candidate/:ncsbeID`
 
-Get a candidate and a list of contributions made to them
+Get a candidate and details about their committee
 
 The `:ncsbeID` parameter must be URIEncoded (ie: `encodeURIComponent`)
 
 Query Params (optional):
 
-- `offset` default value `0`
-- `limit` default value `50`
-
-Example: `/api/candidate/STA-C0498N-C-002?limit=2`
+Example: `/api/candidate/STA-C0498N-C-002`
 response:
 
 ```json
@@ -145,67 +142,73 @@ response:
       "office": "Governor",
       "juris": null,
       "candidate_full_name": "ROY A COOPER",
-      "candidate_first_last_name": "ROY COOPER",
-      "source_contribution_id": "27d1b119-ab89-4e9d-b2d6-f934e1220a5e",
-      "contributor_id": "5f924058-28e8-40f9-9440-89d69a231109",
+      "candidate_first_last_name": "ROY COOPER"
+    }
+  ],
+  "count": "1"
+}
+```
+
+## GET `/api/candidate/:ncsbeID/contributions`
+
+Get a list of all contributions made to a candidate
+
+The `:ncsbeID` parameter must be URIEncoded (ie: `encodeURIComponent`)
+
+Query Params (optional):
+
+- `offset` default value `0`
+- `limit` default value `50`
+
+Example: `/api/candidate/STA-C0498N-C-002/contributions?limit=2`
+response:
+
+```json
+{
+  "data": [
+    {
+      "full_count": "25059",
+      "source_contribution_id": "0359bad6-d26c-4367-9546-5d939fd6c604",
+      "contributor_id": "e0aaac84-867a-4d9e-b80e-25145e929eaf",
       "transaction_type": "Individual",
       "committee_sboe_id": "STA-C0498N-C-002",
-      "committee_zip_code": "27601",
-      "report_name": "2019 Year End Semi-Annual",
-      "date_occurred": "10/10/19",
+      "report_name": "2020 First Quarter",
+      "date_occurred": "2/11/20",
       "account_code": "Not Available",
-      "amount": 20,
-      "form_of_payment": "Check",
+      "amount": 40,
+      "form_of_payment": "Credit Card",
       "purpose": null,
       "candidate_or_referendum_name": null,
       "declaration": null,
-      "full_count": "25059"
+      "id": "e0aaac84-867a-4d9e-b80e-25145e929eaf",
+      "name": "SANDRA ACKERMAN",
+      "city": "DURHAM",
+      "state": "NC",
+      "zip_code": "27701",
+      "profession": "WRITER",
+      "employer_name": "SELF"
     },
     {
-      "sboe_id": "STA-C0498N-C-002",
-      "current_status": "Active (Non-Exempt)",
-      "committee_name": "COOPER FOR NORTH CAROLINA",
-      "committee_type": "Candidate Committee",
-      "committee_street_1": "434 FAYETTEVILLE ST   SUITE 2020",
-      "committee_street_2": null,
-      "committee_city": "RALEIGH",
-      "committee_state": "NC",
-      "committee_full_zip": "27601",
-      "candidate_first_name": "ROY",
-      "candidate_middle_name": "A",
-      "candidate_last_name": "COOPER",
-      "treasurer_first_name": "JAMES",
-      "treasurer_middle_name": "B",
-      "treasurer_last_name": "STEPHENSON",
-      "treasurer_email": "JBS@STEPHENSON-LAW.COM",
-      "asst_treasurer_first_name": null,
-      "asst_treasurer_middle_name": null,
-      "asst_treasurer_last_name": null,
-      "asst_treasurer_email": null,
-      "treasurer_street_1": "434 FAYETTEVILLE ST.   SUITE 2020",
-      "treasurer_street_2": null,
-      "treasurer_city": "RALEIGH",
-      "treasurer_state": "NC",
-      "treasurer_full_zip": "27601",
-      "party": "Democratic",
-      "office": "Governor",
-      "juris": null,
-      "candidate_full_name": "ROY A COOPER",
-      "candidate_first_last_name": "ROY COOPER",
-      "source_contribution_id": "3e7e64fa-bd88-4fdb-9db7-c7f7f7a4726b",
-      "contributor_id": "5ff15dd8-f49e-4571-a0af-df8284705374",
+      "full_count": "25059",
+      "source_contribution_id": "fe5b3577-567f-4813-991f-8fc63e60cd2c",
+      "contributor_id": "2423d2db-2dd1-493e-8bf6-d85a44c2a58d",
       "transaction_type": "Individual",
       "committee_sboe_id": "STA-C0498N-C-002",
-      "committee_zip_code": "27601",
-      "report_name": "2019 Year End Semi-Annual",
-      "date_occurred": "10/10/19",
+      "report_name": "2019 Mid Year Semi-Annual",
+      "date_occurred": "5/20/19",
       "account_code": "Not Available",
-      "amount": 50,
-      "form_of_payment": "Check",
+      "amount": 200,
+      "form_of_payment": "Credit Card",
       "purpose": null,
       "candidate_or_referendum_name": null,
       "declaration": null,
-      "full_count": "25059"
+      "id": "2423d2db-2dd1-493e-8bf6-d85a44c2a58d",
+      "name": "Reid Acree Jr",
+      "city": "Salisbury",
+      "state": "NC",
+      "zip_code": "28144-2717",
+      "profession": "Attorney",
+      "employer_name": "M. Reid Acree Jr. attorney at law"
     }
   ],
   "count": "25059"
