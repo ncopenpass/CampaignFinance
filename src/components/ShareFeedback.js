@@ -1,14 +1,14 @@
 import React from 'react'
 import { Button } from '@trussworks/react-uswds'
 
-const ReportError = () => {
+const ShareFeedback = () => {
   return (
-    <a href="https://forms.gle/ppCFunuFyjxgTq1f7" target="_blank">
+    <a href="https://forms.gle/5c4dmuTPVCznSB1s8" target="_blank">
       <Button type="button" className="report-btn">
-        Report Error
+        Share Feedback
       </Button>
     </a>
   )
 }
 
-export default ReportError
+export default ShareFeedback
