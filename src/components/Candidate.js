@@ -4,30 +4,31 @@ import {
   Grid,
   GridContainer
 } from '@trussworks/react-uswds';
+
+import { useCandidate } from '../hooks'
+
 import Table from './Table';
 import '../css/candidate.scss';
 
 const Candidate = () => {
-  const [candData, setCandData] = useState({})
-  const [contData, setContData] = useState([])
   let { candidateId } = useParams()
 
-  // Fetches candidate data
-  useEffect(() => {
-    const fetchData = async () => {
-      const urlCand = `/api/candidate/` + encodeURIComponent(candidateId);
-      const responseCand = await fetch(urlCand);
-      const jsonCand = await responseCand.json();
-      setCandData(jsonCand.data);
+  const {
+    hasError,
+    candidate,
+    contributions,
+    contributionCount,
+    contributionOffset,
+    fetchInitialSearchData,
+    fetchCandidate,
+    fetchContributions,
+  } = useCandidate();
 
-      const urlCont = `/api/candidate/` +  encodeURIComponent(candidateId) + `/contributions`;
-      const responseCont = await fetch(urlCont);
-      const jsonCont = await responseCont.json();
-      setContData(jsonCont.data);
+  useEffect(() => {
+    if (fetchInitialSearchData) {
+      fetchInitialSearchData({ candidateId })
     }
-    
-    fetchData();
-  }, [candidateId])
+  }, [candidateId, fetchInitialSearchData])
 
   const columns = useMemo(
     () => [
@@ -75,9 +76,9 @@ const Candidate = () => {
         </Grid>
         <Grid row>
           <Grid col>
-            <h1 class='candidate-name'>{ candData.candidate_first_last_name }</h1>
-            <p class='candidate-party'>{ candData.party }</p>
-            <p class='candidate-prop'><span class='candidate-prop-label'>Current Office:</span> { candData.office }</p>
+            <h1 class='candidate-name'>{ candidate.candidate_first_last_name }</h1>
+            <p class='candidate-party'>{ candidate.party }</p>
+            <p class='candidate-prop'><span class='candidate-prop-label'>Current Office:</span> { candidate.office }</p>
             {/* 
               Placeholder value for Last Contest and Associated Candidate PAC until we have that data 
               Placeholder value for href
@@ -93,7 +94,7 @@ const Candidate = () => {
         </Grid>
         <Grid row>
           <Grid col>
-            <Table columns={columns} data={contData}></Table>
+            <Table columns={columns} data={contributions}></Table>
           </Grid>
         </Grid>
       </GridContainer>
