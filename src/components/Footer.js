@@ -7,6 +7,8 @@ import {
   Logo,
 } from '@trussworks/react-uswds'
 
+import { PRIVACY_POLICY_ROUTE } from '../constants'
+
 const Footer = () => {
   return (
     <FooterComponent
@@ -15,13 +17,16 @@ const Footer = () => {
           <div className="mobile-lg:grid-col-8">
             <FooterNav
               links={[
-                <a className="usa-footer__primary-link" href="#">
+                <a className="usa-footer__primary-link" href="/">
                   Terms of Use
                 </a>,
-                <a className="usa-footer__primary-link" href="#">
+                <a className="usa-footer__primary-link" href="/">
                   Sitemap
                 </a>,
-                <a className="usa-footer__primary-link" href="#">
+                <a
+                  className="usa-footer__primary-link"
+                  href={PRIVACY_POLICY_ROUTE}
+                >
                   Privacy Policy
                 </a>,
                 <a
@@ -58,14 +63,14 @@ const Footer = () => {
       }
       secondary={
         <Logo
-          heading={<h3 className="usa-footer__logo-heading">Name of Agency</h3>}
-          image={
-            <img
-              alt="img alt text"
-              className="usa-footer__logo-img"
-              src="static/media/logo-img.c73294fe.png"
-            />
-          }
+          heading={<h3 className="usa-footer__logo-heading">OpenNC</h3>}
+          // image={
+          //   <img
+          //     alt="img alt text"
+          //     className="usa-footer__logo-img"
+          //     src="static/media/logo-img.c73294fe.png"
+          //   />
+          // }
           slim
         />
       }
@@ -74,4 +79,4 @@ const Footer = () => {
   )
 }
 
-export default FooterComponent
+export default Footer
