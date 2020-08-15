@@ -1,16 +1,16 @@
 import React from 'react'
 import {
-  Header,
+  Header as HeaderComponent,
   NavMenuButton,
   PrimaryNav,
   Title,
 } from '@trussworks/react-uswds'
 
-export default function header() {
+const Header = () => {
   return (
     <>
       <div className="usa-overlay " />
-      <Header basic>
+      <HeaderComponent basic>
         <div className="usa-nav-container">
           <div className="usa-navbar">
             <Title>Campaign Finance</Title>
@@ -24,11 +24,16 @@ export default function header() {
               <a key="about" className="usa-nav__link" href="/candidate">
                 <span>About</span>
               </a>,
+              <a key="about" className="usa-nav__link" href="/DataDictionary">
+                <span>Data Dictionary</span>
+              </a>,
             ]}
             onToggleMobileNav={function noRefCheck() {}}
           ></PrimaryNav>
         </div>
-      </Header>
+      </HeaderComponent>
     </>
   )
 }
+
+export default Header
