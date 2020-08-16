@@ -19,7 +19,7 @@ const query = (text, params) => pool.query(text, params)
 /**
  * @returns {Promise<pg.PoolClient>}
  */
-const getClient = async () => await pool.connect()
+const getClient = () => pool.connect()
 
 const insertContributor = async ({
   name,
