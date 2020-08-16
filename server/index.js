@@ -1,6 +1,7 @@
 const path = require('path')
 const express = require('express')
 const bodyParser = require('body-parser')
+const sanitize = require('sanitize-filename')
 const { parse } = require('json2csv')
 const { searchContributors, searchCommittees } = require('./lib/search')
 const {
@@ -34,7 +35,10 @@ const handleError = (error, res) => {
  */
 const sendCSV = (data, filename, res) => {
   res.setHeader('Content-type', 'text/csv')
-  res.setHeader('Content-disposition', `attachment; filename=${filename}`)
+  res.setHeader(
+    'Content-disposition',
+    `attachment; filename=${sanitize(filename)}`
+  )
 
   const fields = Object.keys(data[0])
   const csv = parse(data, { fields })
@@ -160,17 +164,14 @@ api.get('/candidate/:ncsbeID/contributions', async (req, res) => {
       }
 
       // Due to some data integrity issues, not all candidates have a full_name field,
-      // this falls back to the first_last_name field,
-      // and then to the sboe_id
+      // So we fallback to the committee_name
       const candidateName = candidate.candidate_full_name
         ? candidate.candidate_full_name
-        : candidate.candidate_first_last
-        ? candidate.candidate_first_last
-        : candidate.sboe_id
+        : candidate.committee_name
 
       sendCSV(
         contributions.rows,
-        `${candidateName.replace(/ /g, '_')}_contributions.csv`,
+        `${candidateName.replace(/ /g, '_').toLowerCase()}_contributions.csv`,
         res
       )
     }
