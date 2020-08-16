@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useCallback } from 'react'
 import { useParams } from 'react-router-dom'
 import { Grid, GridContainer } from '@trussworks/react-uswds'
+import NumberFormat from 'react-number-format'
 
 import { useCandidate } from '../hooks'
 import { API_BATCH_SIZE } from '../constants'
@@ -114,19 +115,50 @@ const Candidate = () => {
           </Grid>
           <Grid col>
             {/* Placeholder value for Total Funding until we have that data */}
-            <p className="total-funding">${summary.sum}</p>
+            <p className="summary-stat">
+              <NumberFormat
+                className="total-funding"
+                value={summary.sum}
+                displayType={'text'}
+                decimalScale={0}
+                fixedDecimalScale={true}
+                thousandSeparator={true}
+                prefix={'$'}
+              />
+            </p>
             <p className="total-funding-tooltip">Total Funding</p>
             <p className="summary-stat">
               Total number of donations:{' '}
-              <span className="summary-num">{summary.count}</span>
+              <NumberFormat
+                className="summary-num"
+                value={summary.count}
+                displayType={'text'}
+                thousandSeparator={true}
+              />
             </p>
             <p className="summary-stat">
               Average donation amount:{' '}
-              <span className="summary-num">${summary.avg}</span>
+              <NumberFormat
+                className="summary-num"
+                value={summary.avg}
+                displayType={'text'}
+                decimalScale={2}
+                fixedDecimalScale={true}
+                thousandSeparator={true}
+                prefix={'$'}
+              />
             </p>
             <p className="summary-stat">
               Largest donation amount:{' '}
-              <span className="summary-num">${summary.max}</span>
+              <NumberFormat
+                className="summary-num"
+                value={summary.max}
+                displayType={'text'}
+                decimalScale={2}
+                fixedDecimalScale={true}
+                thousandSeparator={true}
+                prefix={'$'}
+              />
             </p>
           </Grid>
         </Grid>
