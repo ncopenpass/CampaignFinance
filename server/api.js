@@ -103,9 +103,7 @@ api.get('/search/contributors/:name', async (req, res) => {
       TRIGRAM_LIMIT
     )
     return res.send({
-      data: contributors.data.map((contributor) =>
-        apiReprContributor(contributor)
-      ),
+      data: contributors.data.map(apiReprContributor),
       count: contributors.data.length > 0 ? contributors.data[0].full_count : 0,
     })
   } catch (error) {
@@ -126,7 +124,7 @@ api.get('/search/candidates/:name', async (req, res) => {
       TRIGRAM_LIMIT
     )
     return res.send({
-      data: committees.data.map((comm) => apiReprCandidate(comm)),
+      data: committees.data.map(apiReprCandidate),
       count: committees.data.length > 0 ? committees.data[0].full_count : 0,
     })
   } catch (error) {
@@ -195,9 +193,7 @@ api.get('/candidate/:ncsbeID/contributions', async (req, res) => {
       ])
 
       return res.send({
-        data: contributions.rows.map((contribution) =>
-          apiReprContribution(contribution)
-        ),
+        data: contributions.rows.map(apiReprContribution),
         count:
           contributions.rows.length > 0 ? contributions.rows[0].full_count : 0,
         summary,
@@ -228,9 +224,7 @@ api.get('/candidate/:ncsbeID/contributions', async (req, res) => {
         : candidate.committee_name
 
       sendCSV(
-        contributions.rows.map((contribution) =>
-          apiReprContribution(contribution)
-        ),
+        contributions.rows.map(apiReprContribution),
         `${candidateName.replace(/ /g, '_').toLowerCase()}_contributions.csv`,
         res
       )
@@ -260,9 +254,7 @@ api.get('/contributors/:contributorId/contributions', async (req, res) => {
       [contributorId, limit, offset]
     )
     return res.send({
-      data: contributions.rows.map((contribution) =>
-        apiReprContribution(contribution)
-      ),
+      data: contributions.rows.map(apiReprContribution),
       count:
         contributions.rows.length > 0 ? contributions.rows[0].full_count : 0,
     })
@@ -304,7 +296,7 @@ api.get('/candidates/:year', async (req, res) => {
       [year, limit, offset]
     )
     return res.send({
-      data: candidates.rows.map((cand) => apiReprCandidate(cand)),
+      data: candidates.rows.map(apiReprCandidate),
       count: candidates.rows.length > 0 ? candidates.rows[0].full_count : 0,
     })
   } catch (error) {
@@ -334,9 +326,7 @@ api.get('/contributors/:year', async (req, res) => {
       [year, limit, offset]
     )
     return res.send({
-      data: contributors.rows.map((contributor) =>
-        apiReprContributor(contributor)
-      ),
+      data: contributors.rows.map(apiReprContributor),
       count: contributors.rows.length > 0 ? contributors.rows[0].full_count : 0,
     })
   } catch (error) {
@@ -372,11 +362,11 @@ api.get('/search/candidates-donors-pacs/:name', async (req, res) => {
 
     return res.send({
       candidates: {
-        data: committees.data.map((comm) => apiReprCandidate(comm)),
+        data: committees.data.map(apiReprCandidate),
         count: committees.data.length > 0 ? committees.data[0].full_count : 0,
       },
       donors: {
-        data: donors.data.map((donor) => apiReprContributor(donor)),
+        data: donors.data.map(apiReprContributor),
         count: donors.data.length > 0 ? donors.data[0].full_count : 0,
       },
       // this is placeholder until we include real pacs data
