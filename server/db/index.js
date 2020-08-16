@@ -1,10 +1,12 @@
 const _ = require('lodash')
-const pg = require('pg')
-const { Pool } = pg
+const { Pool } = require('pg')
 require('dotenv').config()
 
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
+  connectionString:
+    process.env.NODE_ENV === 'test'
+      ? process.env.TEST_DATABASE_URL
+      : process.env.DATABASE_URL,
   ssl:
     !process.env.DB_IGNORE_SSL && process.env.NODE_ENV === 'production'
       ? {
@@ -12,6 +14,7 @@ const pool = new Pool({
         }
       : undefined,
 })
+
 const query = (text, params) => pool.query(text, params)
 /**
  * @returns {Promise<pg.PoolClient>}
