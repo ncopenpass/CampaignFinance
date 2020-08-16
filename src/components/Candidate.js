@@ -1,30 +1,25 @@
-import React, { useEffect, useMemo, useCallback } from 'react';
+import React, { useEffect, useMemo, useCallback } from 'react'
 import { useParams } from 'react-router-dom'
-import {
-  Accordion,
-  Grid,
-  GridContainer
-} from '@trussworks/react-uswds';
+import { Grid, GridContainer } from '@trussworks/react-uswds'
 
 import { useCandidate } from '../hooks'
 import { API_BATCH_SIZE } from '../constants'
 
 import SearchResultTable from './SearchResultTable'
-import '../css/candidate.scss';
+import '../css/candidate.scss'
 
 const Candidate = () => {
   let { candidateId } = useParams()
 
   const {
-    hasError,
     candidate,
     contributions,
+    summary,
     contributionCount,
     contributionOffset,
     fetchInitialSearchData,
-    fetchCandidate,
     fetchContributions,
-  } = useCandidate();
+  } = useCandidate()
 
   useEffect(() => {
     if (fetchInitialSearchData) {
@@ -32,6 +27,7 @@ const Candidate = () => {
     }
   }, [candidateId, fetchInitialSearchData])
 
+  // Fetch next batch of contributions for pagination
   const fetchNextContributions = useCallback(() => {
     fetchContributions({
       candidateId,
@@ -39,6 +35,7 @@ const Candidate = () => {
     })
   }, [contributionOffset, fetchContributions, candidateId])
 
+  // Fetch previous batch of contributions for pagination
   const fetchPreviousContributions = useCallback(() => {
     fetchContributions({
       candidateId,
@@ -70,42 +67,67 @@ const Candidate = () => {
       },
       {
         Header: 'Description',
-        accessor: 'purpose'
-      }
+        accessor: 'purpose',
+      },
     ],
     []
   )
 
   return (
-    <div className='container'>
+    <div classNameName="container">
       <GridContainer>
         <Grid row>
           <Grid col>
             {/* Placeholder value for href */}
-            <a href='/'>Back to search results</a>
+            <a href="/">Back to search results</a>
           </Grid>
         </Grid>
         <Grid row>
           <Grid col>
-            <p class='candidate-label'>CANDIDATE</p>
+            <p className="candidate-label">CANDIDATE</p>
           </Grid>
         </Grid>
         <Grid row>
           <Grid col>
-            <h1 class='candidate-name'>{ candidate.candidate_first_last_name }</h1>
-            <p class='candidate-party'>{ candidate.party }</p>
-            <p class='candidate-prop'><span class='candidate-prop-label'>Current Office:</span> { candidate.office }</p>
+            <h1 className="candidate-name">
+              {candidate.candidate_first_last_name}
+            </h1>
+            <p className="candidate-party">{candidate.party}</p>
+            <p className="candidate-prop">
+              <span className="candidate-prop-label">Current Office:</span>{' '}
+              {candidate.office}
+            </p>
             {/* 
               Placeholder value for Last Contest and Associated Candidate PAC until we have that data 
               Placeholder value for href
             */}
-            <p class='candidate-prop'><span class='candidate-prop-label'>Last Contest:</span> <a href='/'>Gubernatorial Election 2020</a></p>
-            <p class='candidate-prop'><span class='candidate-prop-label'>Associated Candidate PAC:</span> Cooper for North Carolina</p>
+            <p className="candidate-prop">
+              <span className="candidate-prop-label">Last Contest:</span>{' '}
+              <a href="/">Gubernatorial Election 2020</a>
+            </p>
+            <p className="candidate-prop">
+              <span className="candidate-prop-label">
+                Associated Candidate PAC:
+              </span>{' '}
+              Cooper for North Carolina
+            </p>
           </Grid>
           <Grid col>
             {/* Placeholder value for Total Funding until we have that data */}
-            <p class='total-funding'>$234,138.53</p>
-            <p class='total-funding-tooltip'>Total Funding</p>
+            <p className="total-funding">${summary.sum}</p>
+            <p className="total-funding-tooltip">Total Funding</p>
+            <p className="summary-stat">
+              Total number of donations:{' '}
+              <span className="summary-num">{summary.count}</span>
+            </p>
+            <p className="summary-stat">
+              Average donation amount:{' '}
+              <span className="summary-num">${summary.avg}</span>
+            </p>
+            <p className="summary-stat">
+              Largest donation amount:{' '}
+              <span className="summary-num">${summary.max}</span>
+            </p>
           </Grid>
         </Grid>
         <Grid row>
@@ -127,4 +149,4 @@ const Candidate = () => {
   )
 }
 
-export default Candidate;
+export default Candidate

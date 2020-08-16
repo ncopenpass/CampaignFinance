@@ -17,16 +17,17 @@ export const useCandidate = () => {
   const [hasError, setHasError] = useState(false)
   const [candidate, setCandidate] = useState([])
   const [contributions, setContributions] = useState([])
+  const [summary, setSummary] = useState([])
   const [contributionCount, setContributionCount] = useState(0)
   const [contributionOffset, setContributionOffset] = useState(0)
 
-  const getDataAndCount = useCallback(
+  const getDataCountSummary = useCallback(
     async (url) => {
       setHasError(false)
       try {
         const response = await fetch(url)
-        const { data, count } = await response.json()
-        return { data, count }
+        const { data, count, summary } = await response.json()
+        return { data, count, summary }
       } catch (e) {
         console.log(e)
         setHasError(true)
@@ -44,13 +45,13 @@ export const useCandidate = () => {
         offset,
       })
       try {
-        const { data } = await getDataAndCount(url)
+        const { data } = await getDataCountSummary(url)
         setCandidate(data)
       } catch (e) {
         console.log(e)
       }
     },
-    [getDataAndCount]
+    [getDataCountSummary]
   )
 
   const fetchContributions = useCallback(
@@ -63,15 +64,18 @@ export const useCandidate = () => {
       })
       setHasError(false)
       try {
-        const { data, count } = await getDataAndCount(url)
+        console.log(url)
+        const { data, count, summary } = await getDataCountSummary(url)
         setContributions(data)
+        console.log(data, count, summary)
+        setSummary(summary)
         setContributionCount(count)
         setContributionOffset(offset)
       } catch (e) {
         console.log(e)
       }
     },
-    [getDataAndCount]
+    [getDataCountSummary]
   )
 
   const fetchInitialSearchData = useCallback(
@@ -83,13 +87,12 @@ export const useCandidate = () => {
   )
 
   return {
-    hasError,
     candidate,
     contributions,
+    summary,
     contributionCount,
     contributionOffset,
     fetchInitialSearchData,
-    fetchCandidate,
     fetchContributions,
   }
 }
