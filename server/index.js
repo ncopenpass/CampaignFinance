@@ -170,7 +170,7 @@ api.get('/candidate/:ncsbeID/contributions', async (req, res) => {
 
       sendCSV(
         contributions.rows,
-        `${candidateName.replace(' ', '_')}_contributions.csv`,
+        `${candidateName.replace(/ /g, '_')}_contributions.csv`,
         res
       )
     }
