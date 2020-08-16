@@ -42,7 +42,6 @@ const apiReprContribution = (row) => {
     date_occurred: row.date_occurred,
     declaration: row.declaration,
     form_of_payment: row.form_of_payment,
-    full_count: row.full_count,
     purpose: row.purpose,
     report_name: row.report_name,
     source_contribution_id: row.source_contribution_id,

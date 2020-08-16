@@ -83,7 +83,6 @@ const expectedContributionKeys = [
   'date_occurred',
   'declaration',
   'form_of_payment',
-  'full_count',
   'purpose',
   'report_name',
   'source_contribution_id',
