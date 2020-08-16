@@ -211,7 +211,13 @@ response:
       "employer_name": "M. Reid Acree Jr. attorney at law"
     }
   ],
-  "count": "25059"
+  "count": "25059",
+  "summary": {
+    "sum": 7348500,
+    "avg": 293.247912627501,
+    "max": 158187,
+    "count": 25059
+  }
 }
 ```
 
