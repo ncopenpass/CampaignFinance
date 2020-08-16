@@ -1,5 +1,7 @@
 const http = require('http')
 const chai = require('chai')
+// eslint-disable-next-line no-unused-vars
+const deepEqualInAnyOrder = require('deep-equal-in-any-order')
 const supertest = require('supertest')
 
 const app = require('../app')
@@ -9,6 +11,7 @@ const { getClient } = require('../db')
 const { PORT: port = 3001 } = process.env
 
 chai.should()
+chai.use(deepEqualInAnyOrder)
 
 let server
 
@@ -203,7 +206,7 @@ describe('GET /api/candidate/:ncsbeID/contributions', function () {
 })
 
 describe('GET /api/candidate/:ncsbeID/contributions CSV download', function () {
-  it('it should have status 200', async function () {
+  it('it should have status 200 and right headers', async function () {
     const client = await getClient()
     const { rows } = await client.query(
       `select sboe_id FROM committees
@@ -215,9 +218,16 @@ describe('GET /api/candidate/:ncsbeID/contributions CSV download', function () {
     client.release()
     const id = encodeURIComponent(rows[0].sboe_id)
     const response = await supertest(app)
-      .get(`/api/candidate/${id}/contributions?toCsv=true`)
+      .get(`/api/candidate/${id}/contributions`)
+      .query({ toCSV: 'true' })
       .set('Accept', 'text/csv')
+      .set('Content-Type', 'text/csv')
     response.status.should.equal(200)
+    response.text
+      .split('\n')[0]
+      .split(',')
+      .map((item) => item.replace(/"/g, ''))
+      .should.deep.equalInAnyOrder(expectedContributionKeys)
   })
 })
 
