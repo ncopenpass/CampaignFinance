@@ -18,29 +18,25 @@ response:
 {
   "data": [
     {
-      "id": "eaf72678-370f-47cd-a826-69c050c9c689",
+      "contributor_id": "8ce7bc9f-2c13-45ac-8395-3e46b4191490",
+      "name": "John D. Smith II",
+      "city": "Eden",
+      "state": "NC",
+      "zip_code": "27289-0590",
+      "profession": "Property Management",
+      "employer_name": "Self"
+    },
+    {
+      "contributor_id": "eaf72678-370f-47cd-a826-69c050c9c689",
       "name": "JOHN J SMITH III",
       "city": "WINSTON-SALEM",
       "state": "NC",
       "zip_code": "27103",
       "profession": "PHYSICIAN",
-      "employer_name": "NOVANT HEALTH UROLOGY PARTNERS",
-      "sml": 0.6875,
-      "full_count": 2
-    },
-    {
-      "id": "ce69d5a5-3724-4497-b554-15c4a9bd5c1c",
-      "name": "JOHN SMITH",
-      "city": "RALEIGH",
-      "state": "NC",
-      "zip_code": "27615",
-      "profession": "CHIROPRACTOR",
-      "employer_name": "SELF EMPLOYED",
-      "sml": 1,
-      "full_count": 2
+      "employer_name": "NOVANT HEALTH UROLOGY PARTNERS"
     }
   ],
-  "count": 2
+  "count": "3"
 }
 ```
 
@@ -62,41 +58,19 @@ response:
 {
   "data": [
     {
-      "sboe_id": "STA-C0498N-C-002",
-      "current_status": "Active (Non-Exempt)",
-      "committee_name": "COOPER FOR NORTH CAROLINA",
-      "committee_type": "Candidate Committee",
-      "committee_street_1": "434 FAYETTEVILLE ST   SUITE 2020",
-      "committee_street_2": null,
-      "committee_city": "RALEIGH",
-      "committee_state": "NC",
-      "committee_full_zip": "27601",
-      "candidate_first_name": "ROY",
-      "candidate_middle_name": "A",
-      "candidate_last_name": "COOPER",
-      "treasurer_first_name": "JAMES",
-      "treasurer_middle_name": "B",
-      "treasurer_last_name": "STEPHENSON",
-      "treasurer_email": "JBS@STEPHENSON-LAW.COM",
-      "asst_treasurer_first_name": null,
-      "asst_treasurer_middle_name": null,
-      "asst_treasurer_last_name": null,
-      "asst_treasurer_email": null,
-      "treasurer_street_1": "434 FAYETTEVILLE ST.   SUITE 2020",
-      "treasurer_street_2": null,
-      "treasurer_city": "RALEIGH",
-      "treasurer_state": "NC",
-      "treasurer_full_zip": "27601",
-      "party": "Democratic",
-      "office": "Governor",
-      "juris": null,
-      "candidate_full_name": "ROY A COOPER",
       "candidate_first_last_name": "ROY COOPER",
-      "first_last_sml": 1,
-      "full_name_sml": 0.846154
+      "candidate_first_name": "ROY",
+      "candidate_full_name": "ROY A COOPER",
+      "candidate_last_name": "COOPER",
+      "candidate_middle_name": "A",
+      "current_status": "Active (Non-Exempt)",
+      "juris": null,
+      "office": "Governor",
+      "party": "Democratic",
+      "committee_sboe_id": "STA-C0498N-C-002"
     }
   ],
-  "count": 1
+  "count": "1"
 }
 ```
 
@@ -113,41 +87,18 @@ response:
 
 ```json
 {
-  "data": [
-    {
-      "sboe_id": "STA-C0498N-C-002",
-      "current_status": "Active (Non-Exempt)",
-      "committee_name": "COOPER FOR NORTH CAROLINA",
-      "committee_type": "Candidate Committee",
-      "committee_street_1": "434 FAYETTEVILLE ST   SUITE 2020",
-      "committee_street_2": null,
-      "committee_city": "RALEIGH",
-      "committee_state": "NC",
-      "committee_full_zip": "27601",
-      "candidate_first_name": "ROY",
-      "candidate_middle_name": "A",
-      "candidate_last_name": "COOPER",
-      "treasurer_first_name": "JAMES",
-      "treasurer_middle_name": "B",
-      "treasurer_last_name": "STEPHENSON",
-      "treasurer_email": "JBS@STEPHENSON-LAW.COM",
-      "asst_treasurer_first_name": null,
-      "asst_treasurer_middle_name": null,
-      "asst_treasurer_last_name": null,
-      "asst_treasurer_email": null,
-      "treasurer_street_1": "434 FAYETTEVILLE ST.   SUITE 2020",
-      "treasurer_street_2": null,
-      "treasurer_city": "RALEIGH",
-      "treasurer_state": "NC",
-      "treasurer_full_zip": "27601",
-      "party": "Democratic",
-      "office": "Governor",
-      "juris": null,
-      "candidate_full_name": "ROY A COOPER",
-      "candidate_first_last_name": "ROY COOPER"
-    }
-  ],
-  "count": "1"
+  "data": {
+    "candidate_first_last_name": "ROY COOPER",
+    "candidate_first_name": "ROY",
+    "candidate_full_name": "ROY A COOPER",
+    "candidate_last_name": "COOPER",
+    "candidate_middle_name": "A",
+    "current_status": "Active (Non-Exempt)",
+    "juris": null,
+    "office": "Governor",
+    "party": "Democratic",
+    "committee_sboe_id": "STA-C0498N-C-002"
+  }
 }
 ```
 
@@ -169,48 +120,32 @@ response:
 {
   "data": [
     {
-      "full_count": "25059",
-      "source_contribution_id": "0359bad6-d26c-4367-9546-5d939fd6c604",
-      "contributor_id": "e0aaac84-867a-4d9e-b80e-25145e929eaf",
-      "transaction_type": "Individual",
-      "committee_sboe_id": "STA-C0498N-C-002",
-      "report_name": "2020 First Quarter",
-      "date_occurred": "2/11/20",
       "account_code": "Not Available",
       "amount": 40,
+      "candidate_or_referendum_name": null,
+      "committee_sboe_id": "STA-C0498N-C-002",
+      "contributor_id": "e0aaac84-867a-4d9e-b80e-25145e929eaf",
+      "date_occurred": "2/11/20",
+      "declaration": null,
       "form_of_payment": "Credit Card",
       "purpose": null,
-      "candidate_or_referendum_name": null,
-      "declaration": null,
-      "id": "e0aaac84-867a-4d9e-b80e-25145e929eaf",
-      "name": "SANDRA ACKERMAN",
-      "city": "DURHAM",
-      "state": "NC",
-      "zip_code": "27701",
-      "profession": "WRITER",
-      "employer_name": "SELF"
+      "report_name": "2020 First Quarter",
+      "source_contribution_id": "0359bad6-d26c-4367-9546-5d939fd6c604",
+      "transaction_type": "Individual"
     },
     {
-      "full_count": "25059",
-      "source_contribution_id": "fe5b3577-567f-4813-991f-8fc63e60cd2c",
-      "contributor_id": "2423d2db-2dd1-493e-8bf6-d85a44c2a58d",
-      "transaction_type": "Individual",
-      "committee_sboe_id": "STA-C0498N-C-002",
-      "report_name": "2019 Mid Year Semi-Annual",
-      "date_occurred": "5/20/19",
       "account_code": "Not Available",
       "amount": 200,
+      "candidate_or_referendum_name": null,
+      "committee_sboe_id": "STA-C0498N-C-002",
+      "contributor_id": "2423d2db-2dd1-493e-8bf6-d85a44c2a58d",
+      "date_occurred": "5/20/19",
+      "declaration": null,
       "form_of_payment": "Credit Card",
       "purpose": null,
-      "candidate_or_referendum_name": null,
-      "declaration": null,
-      "id": "2423d2db-2dd1-493e-8bf6-d85a44c2a58d",
-      "name": "Reid Acree Jr",
-      "city": "Salisbury",
-      "state": "NC",
-      "zip_code": "28144-2717",
-      "profession": "Attorney",
-      "employer_name": "M. Reid Acree Jr. attorney at law"
+      "report_name": "2019 Mid Year Semi-Annual",
+      "source_contribution_id": "fe5b3577-567f-4813-991f-8fc63e60cd2c",
+      "transaction_type": "Individual"
     }
   ],
   "count": "25059"
@@ -233,49 +168,35 @@ response:
 {
   "data": [
     {
-      "source_contribution_id": "d418ce8e-b2b4-4cf0-b1f9-ad72a4cceb7d",
-      "contributor_id": "2423d2db-2dd1-493e-8bf6-d85a44c2a58d",
-      "transaction_type": "Individual",
-      "committee_name": "JUSTICE MARK DAVIS COMMITTEE",
-      "committee_sboe_id": "STA-196F43-C-002",
-      "committee_street_1": "PO BOX 807",
-      "committee_street_2": null,
-      "committee_city": "RALEIGH",
-      "committee_state": "NC",
-      "committee_zip_code": "27602",
-      "report_name": "2019 Mid Year Semi-Annual (Amendment)",
-      "date_occurred": "6/27/19",
       "account_code": "Not Available",
-      "amount": 500,
+      "amount": 250,
+      "candidate_or_referendum_name": null,
+      "committee_sboe_id": "STA-D34P1G-C-001",
+      "contributor_id": "2423d2db-2dd1-493e-8bf6-d85a44c2a58d",
+      "date_occurred": "11/20/19",
+      "declaration": null,
       "form_of_payment": "Credit Card",
       "purpose": null,
-      "candidate_or_referendum_name": null,
-      "declaration": null,
-      "full_count": "2"
+      "report_name": "2019 Year End Semi-Annual",
+      "source_contribution_id": "1223e0c7-05d3-411f-932f-d1ac90fde0b7",
+      "transaction_type": "Individual"
     },
     {
-      "source_contribution_id": "e7f83a5e-c948-4d4f-a151-fd91d18143c7",
-      "contributor_id": "2423d2db-2dd1-493e-8bf6-d85a44c2a58d",
-      "transaction_type": "Individual",
-      "committee_name": "JOSH STEIN FOR ATTORNEY GENERAL",
-      "committee_sboe_id": "STA-WP1LKA-C-001",
-      "committee_street_1": "434 FAYETTEVILLE STREET, SUITE 2020",
-      "committee_street_2": null,
-      "committee_city": "RALEIGH",
-      "committee_state": "NC",
-      "committee_zip_code": "27601",
-      "report_name": "2019 Year End Semi-Annual",
-      "date_occurred": "8/1/19",
       "account_code": "Not Available",
       "amount": 500,
+      "candidate_or_referendum_name": null,
+      "committee_sboe_id": "STA-D34P1G-C-001",
+      "contributor_id": "2423d2db-2dd1-493e-8bf6-d85a44c2a58d",
+      "date_occurred": "1/27/20",
+      "declaration": null,
       "form_of_payment": "Credit Card",
       "purpose": null,
-      "candidate_or_referendum_name": null,
-      "declaration": null,
-      "full_count": "2"
-    },
-    "count": "2"
-  ]
+      "report_name": "2020 First Quarter",
+      "source_contribution_id": "306a9814-876c-405b-9f53-9b0301d37bdb",
+      "transaction_type": "Individual"
+    }
+  ],
+  "count": "5"
 }
 ```
 
@@ -295,63 +216,25 @@ response:
 {
   "data": [
     {
-      "id": "146755ab-c8b9-4b7d-8ba8-81d66bd725e1",
-      "name": ".PAM MINSHEW",
-      "city": "PRINCETON",
-      "state": "NC",
-      "zip_code": "27569-7117",
-      "profession": "RETIRED",
-      "employer_name": null,
-      "source_contribution_id": "e8864a3e-a22a-4056-b592-6e4677901f9d",
-      "contributor_id": "146755ab-c8b9-4b7d-8ba8-81d66bd725e1",
-      "transaction_type": "Individual",
-      "committee_name": "WAYNE DEC",
-      "committee_sboe_id": "STA-C3941N-C-001",
-      "committee_street_1": "PO BOX 2024",
-      "committee_street_2": null,
-      "committee_city": "GOLDSBORO",
-      "committee_state": "NC",
-      "committee_zip_code": "27533",
-      "report_name": "2019 Mid Year Semi-Annual (Amendment)",
-      "date_occurred": "2/20/19",
-      "account_code": "Not Available",
-      "amount": 100,
-      "form_of_payment": "Check",
-      "purpose": null,
-      "candidate_or_referendum_name": null,
-      "declaration": null,
-      "full_count": "133614"
-    },
-    {
-      "id": "21fd4377-fe56-4889-accd-a0ef3a29f7b7",
+      "contributor_id": "21fd4377-fe56-4889-accd-a0ef3a29f7b7",
       "name": "03RD CONGRESSIONAL DISTRICT REC",
       "city": "WASHINGTON",
       "state": "NC",
       "zip_code": "27889",
       "profession": null,
-      "employer_name": null,
-      "source_contribution_id": "1b69b74a-c594-43bf-a8a0-3239c7fb7179",
+      "employer_name": null
+    },
+    {
       "contributor_id": "21fd4377-fe56-4889-accd-a0ef3a29f7b7",
-      "transaction_type": "Party Comm",
-      "committee_name": "CRAVEN RBF",
-      "committee_sboe_id": "STA-13Y14M-C-001",
-      "committee_street_1": "P O BOX 13466",
-      "committee_street_2": null,
-      "committee_city": "NEW BERN",
-      "committee_state": "NC",
-      "committee_zip_code": "28561",
-      "report_name": "2019 Year End Semi-Annual",
-      "date_occurred": "9/27/19",
-      "account_code": "Not Available",
-      "amount": 500,
-      "form_of_payment": "Check",
-      "purpose": null,
-      "candidate_or_referendum_name": null,
-      "declaration": null,
-      "full_count": "133614"
+      "name": "03RD CONGRESSIONAL DISTRICT REC",
+      "city": "WASHINGTON",
+      "state": "NC",
+      "zip_code": "27889",
+      "profession": null,
+      "employer_name": null
     }
   ],
-  "count": "133614"
+  "count": "183929"
 }
 ```
 
@@ -414,40 +297,16 @@ response:
   "candidates": {
     "data": [
       {
-        "sboe_id": "STA-C0498N-C-002",
-        "current_status": "Active (Non-Exempt)",
-        "committee_name": "COOPER FOR NORTH CAROLINA",
-        "committee_type": "Candidate Committee",
-        "committee_street_1": "434 FAYETTEVILLE ST   SUITE 2020",
-        "committee_street_2": null,
-        "committee_city": "RALEIGH",
-        "committee_state": "NC",
-        "committee_full_zip": "27601",
-        "candidate_first_name": "ROY",
-        "candidate_middle_name": "A",
-        "candidate_last_name": "COOPER",
-        "treasurer_first_name": "JAMES",
-        "treasurer_middle_name": "B",
-        "treasurer_last_name": "STEPHENSON",
-        "treasurer_email": "JBS@STEPHENSON-LAW.COM",
-        "asst_treasurer_first_name": null,
-        "asst_treasurer_middle_name": null,
-        "asst_treasurer_last_name": null,
-        "asst_treasurer_email": null,
-        "treasurer_street_1": "434 FAYETTEVILLE ST.   SUITE 2020",
-        "treasurer_street_2": null,
-        "treasurer_city": "RALEIGH",
-        "treasurer_state": "NC",
-        "treasurer_full_zip": "27601",
-        "party": "Democratic",
-        "office": "Governor",
-        "juris": null,
-        "candidate_full_name": "ROY A COOPER",
         "candidate_first_last_name": "ROY COOPER",
-        "last_name_sml": 1,
-        "first_last_sml": 0.6363636,
-        "full_name_sml": 0.53846157,
-        "full_count": "1"
+        "candidate_first_name": "ROY",
+        "candidate_full_name": "ROY A COOPER",
+        "candidate_last_name": "COOPER",
+        "candidate_middle_name": "A",
+        "current_status": "Active (Non-Exempt)",
+        "juris": null,
+        "office": "Governor",
+        "party": "Democratic",
+        "committee_sboe_id": "STA-C0498N-C-002"
       }
     ],
     "count": "1"
@@ -455,15 +314,13 @@ response:
   "donors": {
     "data": [
       {
-        "id": "7351285a-cce4-4dfd-aeee-bfc297ee8139",
+        "contributor_id": "7351285a-cce4-4dfd-aeee-bfc297ee8139",
         "name": "KAY COOPER",
         "city": "HILLSBOROUGH",
         "state": "NC",
         "zip_code": "27278",
         "profession": "RETIRED",
-        "employer_name": "RETIRED",
-        "full_count": "1",
-        "sml": 0.6363636
+        "employer_name": "RETIRED"
       }
     ],
     "count": "1"

@@ -305,7 +305,10 @@ api.get('/search/candidates-donors-pacs/:name', async (req, res) => {
     )
 
     return res.send({
-      candidates: committees.data.map((comm) => apiReprCandidate(comm)),
+      candidates: {
+        data: committees.data.map((comm) => apiReprCandidate(comm)),
+        count: committees.data.length > 0 ? committees.data[0].full_count : 0,
+      },
       donors: {
         data: donors.data.map((donor) => apiReprContributor(donor)),
         count: donors.data.length > 0 ? donors.data[0].full_count : 0,
