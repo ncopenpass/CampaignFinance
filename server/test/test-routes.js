@@ -202,6 +202,25 @@ describe('GET /api/candidate/:ncsbeID/contributions', function () {
   })
 })
 
+describe('GET /api/candidate/:ncsbeID/contributions CSV download', function () {
+  it('it should have status 200', async function () {
+    const client = await getClient()
+    const { rows } = await client.query(
+      `select sboe_id FROM committees
+      inner join contributions
+      on committees.sboe_id = contributions.committee_sboe_id
+      limit 1`,
+      []
+    )
+    client.release()
+    const id = encodeURIComponent(rows[0].sboe_id)
+    const response = await supertest(app)
+      .get(`/api/candidate/${id}/contributions?toCsv=true`)
+      .set('Accept', 'text/csv')
+    response.status.should.equal(200)
+  })
+})
+
 describe('GET /api/contributors/:contributorId/contributions', function () {
   it('it should have status 200 and correct schema', async function () {
     const client = await getClient()
