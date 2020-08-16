@@ -181,8 +181,18 @@ describe('GET /api/candidate/:ncsbeID/contributions', function () {
     const response = await supertest(app).get(
       `/api/candidate/${id}/contributions`
     )
+
+    const expectedSummaryKeys = ['sum', 'avg', 'max', 'count']
     response.status.should.equal(200)
-    response.body.should.be.an('object').that.has.all.keys(['data', 'count'])
+    response.body.should.be
+      .an('object')
+      .that.has.all.keys(['data', 'count', 'summary'])
+    response.body.summary.should.be
+      .an('object')
+      .that.has.all.keys(expectedSummaryKeys)
+    Object.keys(response.body.summary).length.should.equal(
+      expectedSummaryKeys.length
+    )
     response.body.data[0].should.be
       .an('object')
       .that.has.all.keys(expectedContributionKeys)

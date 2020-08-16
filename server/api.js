@@ -195,7 +195,9 @@ api.get('/candidate/:ncsbeID/contributions', async (req, res) => {
       ])
 
       return res.send({
-        data: contributions.rows,
+        data: contributions.rows.map((contribution) =>
+          apiReprContribution(contribution)
+        ),
         count:
           contributions.rows.length > 0 ? contributions.rows[0].full_count : 0,
         summary,
@@ -226,7 +228,9 @@ api.get('/candidate/:ncsbeID/contributions', async (req, res) => {
         : candidate.committee_name
 
       sendCSV(
-        contributions.rows,
+        contributions.rows.map((contribution) =>
+          apiReprContribution(contribution)
+        ),
         `${candidateName.replace(/ /g, '_').toLowerCase()}_contributions.csv`,
         res
       )
