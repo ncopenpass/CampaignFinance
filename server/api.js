@@ -1,6 +1,14 @@
 const express = require('express')
 const bodyParser = require('body-parser')
+const sanitize = require('sanitize-filename')
+const { parse } = require('json2csv')
+
 const { searchContributors, searchCommittees } = require('./lib/search')
+const {
+  getCandidateSummary,
+  getCandidateContributions,
+  getCandidate,
+} = require('./lib/queries')
 const { getClient } = require('./db')
 
 const TRIGRAM_LIMIT = 0.6
@@ -58,6 +66,25 @@ const handleError = (error, res) => {
       ? `unable to process request: ${error.message}`
       : 'unable to process request'
   res.send({ error: message })
+}
+
+/**
+ * Takes an array of data and sends a CSV file
+ * The field names of the first item in the array will be the header row
+ * @param {Array<Object>} data
+ * @param {String} filename
+ * @param {import('express').Response} res
+ */
+const sendCSV = (data, filename, res) => {
+  res.setHeader('Content-type', 'text/csv')
+  res.setHeader(
+    'Content-disposition',
+    `attachment; filename=${sanitize(filename)}`
+  )
+
+  const fields = Object.keys(data[0])
+  const csv = parse(data, { fields })
+  res.send(csv)
 }
 
 const api = express.Router()
@@ -142,7 +169,7 @@ api.get('/candidate/:ncsbeID/contributions', async (req, res) => {
   let client = null
   try {
     let { ncsbeID = '' } = req.params
-    const { limit = 50, offset = 0 } = req.query
+    const { limit = 50, offset = 0, toCSV = false } = req.query
     ncsbeID = decodeURIComponent(ncsbeID)
     if (!ncsbeID) {
       res.status(500)
@@ -150,25 +177,60 @@ api.get('/candidate/:ncsbeID/contributions', async (req, res) => {
         error: 'empty ncsbeID',
       })
     }
-
     client = await getClient()
-    const contributions = await client.query(
-      `select count(*) over () as full_count,
-       contributions.*
-       from contributions
-              join contributors c on contributions.contributor_id = c.id
-      where lower(contributions.committee_sboe_id) = lower($1)
-      limit $2
-      offset $3`,
-      [ncsbeID, limit, offset]
-    )
-    return res.send({
-      data: contributions.rows.map((contribution) =>
-        apiReprContribution(contribution)
-      ),
-      count:
-        contributions.rows.length > 0 ? contributions.rows[0].full_count : 0,
-    })
+
+    if (!toCSV) {
+      const contributionsPromise = getCandidateContributions({
+        ncsbeID,
+        limit,
+        offset,
+        client,
+      })
+
+      const summaryPromise = getCandidateSummary(ncsbeID, client)
+
+      const [contributions, summary] = await Promise.all([
+        contributionsPromise,
+        summaryPromise,
+      ])
+
+      return res.send({
+        data: contributions.rows,
+        count:
+          contributions.rows.length > 0 ? contributions.rows[0].full_count : 0,
+        summary,
+      })
+    } else {
+      const contributionsPromise = await getCandidateContributions({
+        ncsbeID,
+        client,
+      })
+      const candidatePromise = await getCandidate(ncsbeID, client)
+
+      const [contributions, candidate] = await Promise.all([
+        contributionsPromise,
+        candidatePromise,
+      ])
+
+      if (contributions.rows.length < 1 || !candidate) {
+        return handleError(
+          new Error(`no results found for candidate with id: ${ncsbeID}`),
+          res
+        )
+      }
+
+      // Due to some data integrity issues, not all candidates have a full_name field,
+      // So we fallback to the committee_name
+      const candidateName = candidate.candidate_full_name
+        ? candidate.candidate_full_name
+        : candidate.committee_name
+
+      sendCSV(
+        contributions.rows,
+        `${candidateName.replace(/ /g, '_').toLowerCase()}_contributions.csv`,
+        res
+      )
+    }
   } catch (error) {
     handleError(error, res)
   } finally {
