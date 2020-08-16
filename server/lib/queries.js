@@ -71,7 +71,23 @@ const getCandidateContributions = ({
   )
 }
 
+/**
+ *
+ * @param {string} ncsbeID
+ * @param {import('pg').PoolClient} client
+ * @returns {Promise<Object|null>}
+ */
+const getCandidate = async (ncsbeID, client) => {
+  const result = await client.query(
+    `select * from committees
+      where upper(committees.sboe_id) = upper($1)`,
+    [ncsbeID]
+  )
+  return result.rows.length > 0 ? result.rows[0] : null
+}
+
 module.exports = {
   getCandidateSummary,
   getCandidateContributions,
+  getCandidate,
 }

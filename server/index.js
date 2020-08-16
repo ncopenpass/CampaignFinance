@@ -6,6 +6,7 @@ const { searchContributors, searchCommittees } = require('./lib/search')
 const {
   getCandidateSummary,
   getCandidateContributions,
+  getCandidate,
 } = require('./lib/queries')
 const { getClient } = require('./db')
 const app = express()
@@ -32,7 +33,7 @@ const handleError = (error, res) => {
  * @param {import('express').Response} res
  */
 const sendCSV = (data, filename, res) => {
-  res.setHeader('Content-type', 'application/octet-stream')
+  res.setHeader('Content-type', 'text/csv')
   res.setHeader('Content-disposition', `attachment; filename=${filename}`)
 
   const fields = Object.keys(data[0])
@@ -91,13 +92,9 @@ api.get('/candidate/:ncsbeID', async (req, res) => {
     }
 
     client = await getClient()
-    const candidate = await client.query(
-      `select * from committees
-      where upper(committees.sboe_id) = upper($1)`,
-      [ncsbeID]
-    )
+    const candidate = await getCandidate(ncsbeID, client)
     return res.send({
-      data: candidate.rows.length > 0 ? candidate.rows[0] : [],
+      data: candidate,
     })
   } catch (error) {
     handleError(error, res)
@@ -144,16 +141,38 @@ api.get('/candidate/:ncsbeID/contributions', async (req, res) => {
         summary,
       })
     } else {
-      const contributions = await getCandidateContributions({ ncsbeID, client })
+      const contributionsPromise = await getCandidateContributions({
+        ncsbeID,
+        client,
+      })
+      const candidatePromise = await getCandidate(ncsbeID, client)
 
-      if (contributions.rows.length < 1) {
+      const [contributions, candidate] = await Promise.all([
+        contributionsPromise,
+        candidatePromise,
+      ])
+
+      if (contributions.rows.length < 1 || !candidate) {
         return handleError(
           new Error(`no results found for candidate with id: ${ncsbeID}`),
           res
         )
       }
 
-      sendCSV(contributions.rows, `${ncsbeID}_contributions.csv`, res)
+      // Due to some data integrity issues, not all candidates have a full_name field,
+      // this falls back to the first_last_name field,
+      // and then to the sboe_id
+      const candidateName = candidate.candidate_full_name
+        ? candidate.candidate_full_name
+        : candidate.candidate_first_last
+        ? candidate.candidate_first_last
+        : candidate.sboe_id
+
+      sendCSV(
+        contributions.rows,
+        `${candidateName.replace(' ', '_')}_contributions.csv`,
+        res
+      )
     }
   } catch (error) {
     handleError(error, res)
