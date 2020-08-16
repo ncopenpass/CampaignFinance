@@ -165,13 +165,13 @@ response: A CSV file
 When `toCSV` is true, the `offset` and `limit` will be ignored.
 When `toCSV` is true, the endpoint will work as an `href` or with a `fetch` call. Using it as an `href` should automatically download it as a file
 
-> "full_count","source_contribution_id","contributor_id","transaction_type","committee_sboe_id","report_name","date_occurred","account_code","amount","form_of_payment","purpose","candidate_or_referendum_name","declaration","id","name","city","state","zip_code","profession","employer_name"
-> "6","cf9be735-ef73-4f49-a024-0fa3c9c77321","64ef975f-01ae-4207-ad8f-6cb46c732957","Outstanding Loan","177-AGM31F-C-001","2019 Year End Semi-Annual","7/1/19","Not Available",2000,"Check",,,,"64ef975f-01ae-4207-ad8f-6cb46c732957","CHARLES DINGEE","GARNER","NC","27529","SELF GPS TRACKING",
-> "6","d3414cc1-2ca7-426d-8a6a-f8427a3b2947","c586843a-4be8-4d34-b50b-ae18922ee9fb","Individual","177-AGM31F-C-001","2019 Mid Year Semi-Annual","6/20/19","Not Available",60,"Credit Card",,,,"c586843a-4be8-4d34-b50b-ae18922ee9fb","BRENNAN BROOKS","CARY","NC","27518","ATTORNEY","LAW OFFICE OF B TYLER BROOKS, PLLC"
-> "6","94ba281e-97ec-4593-9f81-86a074df1c09","64ef975f-01ae-4207-ad8f-6cb46c732957","Outstanding Loan","177-AGM31F-C-001","2019 Pre-Election","7/1/19","Not Available",2000,"Check",,,,"64ef975f-01ae-4207-ad8f-6cb46c732957","CHARLES DINGEE","GARNER","NC","27529","SELF GPS TRACKING",
-> "6","ae30b904-d7d1-40bf-81b5-633d472b8e70","03d76952-bb20-4b75-9f32-29c6d1ff6ad2","Non-Party Comm","177-AGM31F-C-001","2019 Year End Semi-Annual","10/29/19","Not Available",250,"Check",,,,"03d76952-bb20-4b75-9f32-29c6d1ff6ad2","JOHN HARDISTER FOR NC HOUSE","GREENSBORO","NC","27404",,
-> "6","8c1875b1-6660-4e24-8e54-12bfe8891fb1","b3488386-f0ca-4ae9-929d-6cfd86024026","Individual","177-AGM31F-C-001","2019 Year End Semi-Annual","10/29/19","Not Available",100,"Check",,,,"b3488386-f0ca-4ae9-929d-6cfd86024026","CAROL JONES","RALEIGH","NC","27615","RETIRED",
-> "6","ce993345-dd38-4610-ba29-fb343789e7ae","aaf94246-1448-44a6-b1dd-5548c23f3a7d","Outside Source","177-AGM31F-C-001","2019 Year End Semi-Annual","10/29/19","Not Available",400,"Check",,,,"aaf94246-1448-44a6-b1dd-5548c23f3a7d","REPUBLICAN WOMEN OF CARY","CARY","NC","27512",,
+> "account_code","amount","candidate_or_referendum_name","committee_sboe_id","contributor_id","date_occurred","declaration","form_of_payment","purpose","report_name","source_contribution_id","transaction_type"
+> "Not Available",60,,"177-AGM31F-C-001","c586843a-4be8-4d34-b50b-ae18922ee9fb","6/20/19",,"Credit Card",,"2019 Mid Year Semi-Annual","d3414cc1-2ca7-426d-8a6a-f8427a3b2947","Individual"
+> "Not Available",250,,"177-AGM31F-C-001","03d76952-bb20-4b75-9f32-29c6d1ff6ad2","10/29/19",,"Check",,"2019 Year End Semi-Annual","ae30b904-d7d1-40bf-81b5-633d472b8e70","Non-Party Comm"
+> "Not Available",100,,"177-AGM31F-C-001","b3488386-f0ca-4ae9-929d-6cfd86024026","10/29/19",,"Check",,"2019 Year End Semi-Annual","8c1875b1-6660-4e24-8e54-12bfe8891fb1","Individual"
+> "Not Available",400,,"177-AGM31F-C-001","aaf94246-1448-44a6-b1dd-5548c23f3a7d","10/29/19",,"Check",,"2019 Year End Semi-Annual","ce993345-dd38-4610-ba29-fb343789e7ae","Outside Source"
+> "Not Available",2000,,"177-AGM31F-C-001","64ef975f-01ae-4207-ad8f-6cb46c732957","7/1/19",,"Check",,"2019 Year End Semi-Annual","cf9be735-ef73-4f49-a024-0fa3c9c77321","Outstanding Loan"
+> "Not Available",2000,,"177-AGM31F-C-001","64ef975f-01ae-4207-ad8f-6cb46c732957","7/1/19",,"Check",,"2019 Pre-Election","94ba281e-97ec-4593-9f81-86a074df1c09","Outstanding Loan"
 
 ## GET `/api/contributors/:contributorId/contributions`
 
