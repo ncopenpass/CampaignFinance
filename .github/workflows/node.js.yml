@@ -24,8 +24,8 @@ jobs:
       uses: actions/cache@v2.1.0
       with:
         path: |
-          ~/.npm
-          ~/server/.npm
+          ~/node_modules
+          ~/server/node_modules
         key: ${{ runner.os }}-${{ hashFiles('**/lockfiles')}}
     - name: Install dependencies
       if: steps.cache.outputs.cache-hit != 'true' 
