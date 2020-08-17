@@ -3,7 +3,7 @@ name: Build & tests
 on: push
 
 jobs:
-  build:
+  build-test:
     runs-on: ubuntu-latest
     env:
       TEST_DATABASE_URL: postgres://postgres:postgres@localhost:54322/campaign-finance-test
@@ -31,7 +31,7 @@ jobs:
         run: cd server && npm test
   deploy:
     runs-on: ubuntu-latest
-    needs: test
+    needs: build-test
     if: github.ref == 'refs/heads/master'
     steps:
       - name: Deploy app
