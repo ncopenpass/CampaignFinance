@@ -31,7 +31,7 @@ jobs:
         run: cd server && npm test
   deploy:
     runs-on: ubuntu-latest
-    needs: build-test
+    needs: test-server
     if: github.ref == 'refs/heads/master'
     steps:
       - uses: actions/checkout@v2
