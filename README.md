@@ -1,13 +1,19 @@
 ﻿# Campaign Finance Dashboard
 
-[Join the Google Group](https://groups.google.com/forum/#!forum/raleigh-brigade-cfd) to join the discussion.  
+<!-- markdownlint-disable no-inline-html -->
+<p align="left">
+  <a href="https://github.com/ncopenpass/CampaignFinance/actions?query=workflow%3A%22Server-side%22tests"><img alt="server-side tests status" src="https://github.com/ncopenppass/CampaignFinance/workflows/Server-side%20tests/badge.svg"></a>
+</p>
+<!-- markdownlint-enable no-inline-html -->
+
+[Join the Google Group](https://groups.google.com/forum/#!forum/raleigh-brigade-cfd) to join the discussion.
 [Join us on Slack](http://code-for-nc-slack-invitations.herokuapp.com/)
 
 - After registering join the `#campaign-finance-dash-dev`, `#campaign-finance-dash-ux`, and `#campaign-finance-dash-data` channels
 
 ## Getting Started
 
-See the [contributing](./CONTRIBUTING.md) guide for instructions on running the project and more.  
+See the [contributing](./CONTRIBUTING.md) guide for instructions on running the project and more.
 See the [project board](https://github.com/ncopenpass/CampaignFinance/projects/3) for open tasks
 
 ## Code of Conduct
