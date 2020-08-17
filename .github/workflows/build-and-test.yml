@@ -26,7 +26,7 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         run: cd server && npm install
       - name: Run dockerized db
-        run: docker-compose -f docker-compose.yml up -d
+        run: docker-compose -f docker-compose.yml up -d postgres-test
       - name: Run tests
         run: cd server && npm test
   deploy:
