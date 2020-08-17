@@ -87,12 +87,14 @@ export const useCandidate = () => {
   )
 
   return {
+    hasError,
     candidate,
     contributions,
     summary,
     contributionCount,
     contributionOffset,
     fetchInitialSearchData,
+    fetchCandidate,
     fetchContributions,
   }
 }
