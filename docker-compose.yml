@@ -32,12 +32,3 @@ services:
       POSTGRES_USER: postgres
     ports:
       - 54322:5432
-  pgweb-test:
-    container_name: campaign-finance-dashboard-test-pgweb
-    image: sosedoff/pgweb
-    ports:
-      - '8082:8082'
-    links:
-      - postgres:postgres
-    depends_on:
-      - postgres-test
