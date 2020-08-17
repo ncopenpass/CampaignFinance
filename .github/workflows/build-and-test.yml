@@ -3,7 +3,7 @@ name: Build & tests
 on: push
 
 jobs:
-  build-test:
+  test-server:
     runs-on: ubuntu-latest
     env:
       TEST_DATABASE_URL: postgres://postgres:postgres@localhost:54322/campaign-finance-test
@@ -34,5 +34,10 @@ jobs:
     needs: build-test
     if: github.ref == 'refs/heads/master'
     steps:
-      - name: Deploy app
-        run: exit 0
+      - uses: actions/checkout@v2
+      - uses: akhileshns/heroku-deploy@v3.4.6
+        with:
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
+          heroku_email: ${{ secrets.HEROKU_EMAIL }}
+          buildpack: 'https://github.com/heroku/heroku-buildpack-nodejs.git'
