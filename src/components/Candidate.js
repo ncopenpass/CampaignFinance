@@ -1,9 +1,9 @@
-import React, { useEffect, useMemo, useCallback } from 'react'
+import React, { useEffect, useCallback } from 'react'
 import { useParams } from 'react-router-dom'
 import { Grid, GridContainer } from '@trussworks/react-uswds'
 import NumberFormat from 'react-number-format'
 
-import { useCandidate } from '../hooks'
+import { useCandidate, useTableColumns } from '../hooks'
 import { API_BATCH_SIZE } from '../constants'
 
 import SearchResultTable from './SearchResultTable'
@@ -44,35 +44,7 @@ const Candidate = () => {
     })
   }, [contributionOffset, candidateId, fetchContributions])
 
-  const columns = useMemo(
-    () => [
-      {
-        Header: 'Donor Name',
-        accessor: 'name',
-      },
-      {
-        Header: 'Donor Type',
-        accessor: 'transaction_type',
-      },
-      {
-        Header: 'Amount',
-        accessor: 'amount',
-      },
-      {
-        Header: 'Donation Type',
-        accessor: 'form_of_payment',
-      },
-      {
-        Header: 'Donation Date',
-        accessor: 'date_occurred',
-      },
-      {
-        Header: 'Description',
-        accessor: 'purpose',
-      },
-    ],
-    []
-  )
+  const { candidateContributionColumns } = useTableColumns()
 
   return (
     <div classNameName="container">
@@ -165,7 +137,7 @@ const Candidate = () => {
         <Grid row>
           <Grid col>
             <SearchResultTable
-              columns={columns}
+              columns={candidateContributionColumns}
               data={contributions}
               count={contributionCount}
               offset={contributionOffset}
