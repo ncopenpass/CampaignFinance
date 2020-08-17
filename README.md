@@ -2,7 +2,7 @@
 
 <!-- markdownlint-disable no-inline-html -->
 <p align="left">
-  <a href="https://github.com/ncopenpass/CampaignFinance/actions?query=workflow%3A%22Build+%26+test%22"><img alt="server-side tests status" src="https://github.com/ncopenpass/CampaignFinance/workflows/Build%20%26%20test/badge.svg"></a>
+  <a href="https://github.com/ncopenpass/CampaignFinance/actions?query=workflow%3A%22Build+%26+test%22"><img alt="build and test status badge" src="https://github.com/ncopenpass/CampaignFinance/workflows/Build%20&%20test/badge.svg"></a>
 </p>
 <!-- markdownlint-enable no-inline-html -->
 
