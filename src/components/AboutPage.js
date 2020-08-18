@@ -4,7 +4,7 @@ import { GridContainer } from '@trussworks/react-uswds'
 const AboutPage = () => {
   return (
     <GridContainer>
-      <h1>About North Carolina Campaing Finance Data </h1>
+      <h1>About North Carolina Campaign Finance Data </h1>
       <p>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
         tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
