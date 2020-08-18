@@ -8,7 +8,7 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
-    "@trussworks/react-uswds": "^1.7.0",
+    "@trussworks/react-uswds": "^1.9.1",
     "campaign-finance-server": "file:server",
     "match-sorter": "^4.2.0",
     "node-sass": "^4.14.1",
