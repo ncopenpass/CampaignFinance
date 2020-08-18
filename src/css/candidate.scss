@@ -18,6 +18,7 @@
 
 .candidate-prop-label {
   font-weight: bold;
+  margin-right: 5px;
 }
 
 .total-funding {
@@ -30,6 +31,7 @@
 .total-funding-tooltip {
   text-align: right;
   margin: auto;
+  margin-bottom: 0.5em;
 }
 
 .summary-stat {
@@ -38,5 +40,6 @@
 }
 
 .summary-num {
+  margin-left: 5px;
   font-weight: bold;
 }

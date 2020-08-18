@@ -5,9 +5,9 @@ import NumberFormat from 'react-number-format'
 
 import { useCandidate, useTableColumns } from '../hooks'
 import { API_BATCH_SIZE } from '../constants'
+import '../css/candidate.scss'
 
 import SearchResultTable from './SearchResultTable'
-import '../css/candidate.scss'
 
 const Candidate = () => {
   let { candidateId } = useParams()
@@ -47,7 +47,7 @@ const Candidate = () => {
   const { candidateContributionColumns } = useTableColumns()
 
   return (
-    <div classNameName="container">
+    <div className="container">
       <GridContainer>
         <Grid row>
           <Grid col>
@@ -67,7 +67,7 @@ const Candidate = () => {
             </h1>
             <p className="candidate-party">{candidate.party}</p>
             <p className="candidate-prop">
-              <span className="candidate-prop-label">Current Office:</span>{' '}
+              <span className="candidate-prop-label">Current Office:</span>
               {candidate.office}
             </p>
             {/* 
@@ -75,61 +75,60 @@ const Candidate = () => {
               Placeholder value for href
             */}
             <p className="candidate-prop">
-              <span className="candidate-prop-label">Last Contest:</span>{' '}
+              <span className="candidate-prop-label">Last Contest:</span>
               <a href="/">Gubernatorial Election 2020</a>
             </p>
             <p className="candidate-prop">
               <span className="candidate-prop-label">
                 Associated Candidate PAC:
-              </span>{' '}
+              </span>
               Cooper for North Carolina
             </p>
           </Grid>
           <Grid col>
-            {/* Placeholder value for Total Funding until we have that data */}
             <p className="summary-stat">
               <NumberFormat
                 className="total-funding"
                 value={summary.sum}
-                displayType={'text'}
+                displayType="text"
                 decimalScale={0}
                 fixedDecimalScale={true}
                 thousandSeparator={true}
-                prefix={'$'}
+                prefix="$"
               />
             </p>
             <p className="total-funding-tooltip">Total Funding</p>
             <p className="summary-stat">
-              Total number of donations:{' '}
+              Total number of donations:
               <NumberFormat
                 className="summary-num"
                 value={summary.count}
-                displayType={'text'}
+                displayType="text"
                 thousandSeparator={true}
               />
             </p>
             <p className="summary-stat">
-              Average donation amount:{' '}
+              Average donation amount:
               <NumberFormat
                 className="summary-num"
                 value={summary.avg}
-                displayType={'text'}
+                displayType="text"
                 decimalScale={2}
                 fixedDecimalScale={true}
                 thousandSeparator={true}
-                prefix={'$'}
+                prefix="$"
               />
             </p>
             <p className="summary-stat">
-              Largest donation amount:{' '}
+              Largest donation amount:
               <NumberFormat
                 className="summary-num"
                 value={summary.max}
-                displayType={'text'}
+                displayType="text"
                 decimalScale={2}
                 fixedDecimalScale={true}
                 thousandSeparator={true}
-                prefix={'$'}
+                prefix="$"
               />
             </p>
           </Grid>
