@@ -63,14 +63,14 @@ const Footer = () => {
       }
       secondary={
         <Logo
-          heading={<h3 className="usa-footer__logo-heading">Name of Agency</h3>}
-          image={
-            <img
-              alt="img alt text"
-              className="usa-footer__logo-img"
-              src="static/media/logo-img.c73294fe.png"
-            />
-          }
+          heading={<h3 className="usa-footer__logo-heading">OpenNC</h3>}
+          // image={
+          //   <img
+          //     alt="img alt text"
+          //     className="usa-footer__logo-img"
+          //     src="static/media/logo-img.c73294fe.png"
+          //   />
+          // }
           slim
         />
       }

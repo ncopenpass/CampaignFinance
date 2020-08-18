@@ -11,6 +11,12 @@ import {
   DATA_DICTIONARY_ROUTE,
 } from '../constants'
 
+import {
+  DEFAULT_ROUTE,
+  CANDIDATE_ROUTE,
+  DATA_DICTIONARY_ROUTE,
+} from '../constants'
+
 const Header = () => {
   return (
     <>
@@ -26,7 +32,7 @@ const Header = () => {
               <a key="search" className="usa-nav__link" href={DEFAULT_ROUTE}>
                 <span>Search</span>
               </a>,
-              <a key="about" className="usa-nav__link" href={ABOUT_PAGE_ROUTE}>
+              <a key="about" className="usa-nav__link" href={CANDIDATE_ROUTE}>
                 <span>About</span>
               </a>,
               <a
