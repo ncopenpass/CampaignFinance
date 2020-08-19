@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
 import {
   SEARCH_ROUTE,
+  CANDIDATE_ROUTE,
   TABLE_ROUTE,
   DATA_DICTIONARY_ROUTE,
   DEFAULT_ROUTE,
@@ -16,6 +17,7 @@ import SearchResults from './SearchResults'
 import Table from './Table'
 import DataDictionary from './DataDictionary'
 import PrivacyPolicy from './PrivacyPolicy'
+import Candidate from './Candidate'
 
 export default function App() {
   return (
@@ -26,6 +28,9 @@ export default function App() {
         <Switch>
           <Route path={SEARCH_ROUTE}>
             <SearchResults />
+          </Route>
+          <Route path={CANDIDATE_ROUTE}>
+            <Candidate />
           </Route>
           <Route path={PRIVACY_POLICY_ROUTE}>
             <PrivacyPolicy />

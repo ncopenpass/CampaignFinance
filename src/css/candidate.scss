@@ -1,0 +1,45 @@
+.container {
+  background-color: lighten($color: gainsboro, $amount: 8);
+  padding-top: 50px;
+  margin-top: 0;
+}
+
+.candidate-name {
+  margin: auto;
+}
+
+.candidate-party {
+  margin: auto;
+}
+
+.candidate-prop {
+  margin: auto;
+}
+
+.candidate-prop-label {
+  font-weight: bold;
+  margin-right: 5px;
+}
+
+.total-funding {
+  font-size: 1.5em;
+  font-weight: bold;
+  text-align: right;
+  margin: auto;
+}
+
+.total-funding-tooltip {
+  text-align: right;
+  margin: auto;
+  margin-bottom: 0.5em;
+}
+
+.summary-stat {
+  text-align: right;
+  margin: auto;
+}
+
+.summary-num {
+  margin-left: 5px;
+  font-weight: bold;
+}
