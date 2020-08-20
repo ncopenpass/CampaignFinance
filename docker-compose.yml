@@ -21,3 +21,14 @@ services:
       - DATABASE_URL=postgres://postgres:postgres@postgres:5432/postgres?sslmode=disable
     depends_on:
       - postgres
+
+  postgres-test:
+    container_name: campaign-finance-dashboard-test-db
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: campaign-finance-test
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+    ports:
+      - 54322:5432
