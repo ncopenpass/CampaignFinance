@@ -46,8 +46,39 @@ export const useTableColumns = () => {
     []
   )
 
+  const candidateContributionColumns = useMemo(
+    () => [
+      {
+        Header: 'Donor Name',
+        accessor: 'name',
+      },
+      {
+        Header: 'Donor Type',
+        accessor: 'transaction_type',
+      },
+      {
+        Header: 'Amount',
+        accessor: 'amount',
+      },
+      {
+        Header: 'Donation Type',
+        accessor: 'form_of_payment',
+      },
+      {
+        Header: 'Donation Date',
+        accessor: 'date_occurred',
+      },
+      {
+        Header: 'Description',
+        accessor: 'purpose',
+      },
+    ],
+    []
+  )
+
   return {
     donorColumns,
     candidateColumns,
+    candidateContributionColumns,
   }
 }
