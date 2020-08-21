@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useCallback } from 'react'
-import { useParams } from 'react-router'
+import { useParams, useLocation } from 'react-router'
 import { GridContainer, Alert, Accordion } from '@trussworks/react-uswds'
 import styled from '@emotion/styled'
 
@@ -14,6 +14,12 @@ const SearchBarContainer = styled.div`
 `
 const SearchResults = React.memo(() => {
   let { searchTerm } = useParams()
+  let location = useLocation()
+  let quickSearchParam
+  if (location.state !== undefined) {
+    quickSearchParam = location.state.candidateQuickSearch
+  }
+
   const {
     hasError,
     donors,
@@ -25,6 +31,7 @@ const SearchResults = React.memo(() => {
     fetchCandidates,
     fetchDonors,
     fetchInitialSearchData,
+    fetchQuickCandidates,
   } = useSearch()
   const { donorColumns, candidateColumns } = useTableColumns()
 
@@ -48,6 +55,13 @@ const SearchResults = React.memo(() => {
     })
   }, [candidateOffset, searchTerm, fetchCandidates])
 
+  const quickCandidates = useCallback(() => {
+    fetchQuickCandidates({
+      searchTerm,
+      offset: candidateOffset + API_BATCH_SIZE,
+    })
+  }, [candidateOffset, fetchQuickCandidates, searchTerm])
+
   const fetchNextDonors = useCallback(() => {
     fetchDonors({
       searchTerm,
@@ -62,60 +76,95 @@ const SearchResults = React.memo(() => {
     })
   }, [donorOffset, searchTerm, fetchDonors])
 
-  const resultsTables = useMemo(
-    () => [
-      {
-        title: `Candidates (${candidateCount}) matching "${searchTerm}"`,
-        content: (
-          <SearchResultTable
-            columns={candidateColumns}
-            data={candidates}
-            count={candidateCount}
-            offset={candidateOffset}
-            fetchNext={fetchNextCandidates}
-            fetchPrevious={fetchPreviousCandidates}
-            searchTerm={searchTerm}
-            searchType="candidates"
-          />
-        ),
-        expanded: true,
-        id: 'candidates',
-      },
-      {
-        title: `Donors (${donorCount}) matching "${searchTerm}"`,
-        content: (
-          <SearchResultTable
-            columns={donorColumns}
-            data={donors}
-            count={donorCount}
-            offset={donorOffset}
-            fetchNext={fetchNextDonors}
-            fetchPrevious={fetchPreviousDonors}
-            searchTerm={searchTerm}
-            searchType="donors"
-          />
-        ),
-        expanded: true,
-        id: 'donors',
-      },
-    ],
-    [
-      candidateColumns,
-      candidates,
-      candidateCount,
-      candidateOffset,
-      donorColumns,
-      donors,
-      donorCount,
-      donorOffset,
-      searchTerm,
-      fetchNextCandidates,
-      fetchPreviousCandidates,
-      fetchNextDonors,
-      fetchPreviousDonors,
-    ]
-  )
+  let resultsTables
 
+  if (quickSearchParam) {
+    resultsTables = useMemo(
+      () => [
+        {
+          title: `Candidates (${candidateCount}) matching "${searchTerm}"`,
+          content: (
+            <SearchResultTable
+              columns={candidateColumns}
+              data={candidates}
+              count={candidateCount}
+              offset={candidateOffset}
+              fetchNext={quickCandidates}
+              //fetchPrevious={fetchPreviousCandidates}
+              searchTerm={searchTerm}
+              searchType="candidates"
+            />
+          ),
+          expanded: true,
+          id: 'candidates',
+        },
+      ],
+      [
+        candidateColumns,
+        candidates,
+        candidateCount,
+        candidateOffset,
+        searchTerm,
+        quickCandidates,
+        //fetchNextCandidates,
+        //fetchPreviousCandidates,
+      ]
+    )
+  } else {
+    resultsTables = useMemo(
+      () => [
+        {
+          title: `Candidates (${candidateCount}) matching "${searchTerm}"`,
+          content: (
+            <SearchResultTable
+              columns={candidateColumns}
+              data={candidates}
+              count={candidateCount}
+              offset={candidateOffset}
+              fetchNext={fetchNextCandidates}
+              fetchPrevious={fetchPreviousCandidates}
+              searchTerm={searchTerm}
+              searchType="candidates"
+            />
+          ),
+          expanded: true,
+          id: 'candidates',
+        },
+        {
+          title: `Donors (${donorCount}) matching "${searchTerm}"`,
+          content: (
+            <SearchResultTable
+              columns={donorColumns}
+              data={donors}
+              count={donorCount}
+              offset={donorOffset}
+              fetchNext={fetchNextDonors}
+              fetchPrevious={fetchPreviousDonors}
+              searchTerm={searchTerm}
+              searchType="donors"
+            />
+          ),
+          expanded: true,
+          id: 'donors',
+        },
+      ],
+      [
+        candidateColumns,
+        candidates,
+        candidateCount,
+        candidateOffset,
+        donorColumns,
+        donors,
+        donorCount,
+        donorOffset,
+        searchTerm,
+        fetchNextCandidates,
+        fetchPreviousCandidates,
+        fetchNextDonors,
+        fetchPreviousDonors,
+      ]
+    )
+  }
   return (
     <GridContainer>
       {hasError ? (

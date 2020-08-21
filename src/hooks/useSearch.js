@@ -3,6 +3,7 @@ import { API_BATCH_SIZE } from '../constants'
 
 const CONTRIBUTORS_URL = '/api/search/contributors/'
 const CANDIDATES_URL = '/api/search/candidates/'
+const QUICK_CANDIDATES_URL = '/api/candidates/'
 
 const constructSearchUrl = ({ url, searchTerm, limit, offset }) =>
   `${url}${searchTerm}?limit=${limit}&offset=${offset}`
@@ -35,6 +36,26 @@ export const useSearch = () => {
     async ({ searchTerm, limit = API_BATCH_SIZE, offset = 0 } = {}) => {
       const url = constructSearchUrl({
         url: CANDIDATES_URL,
+        searchTerm,
+        limit,
+        offset,
+      })
+      try {
+        const { data, count } = await getDataAndCount(url)
+        setCandidates(data)
+        setCandidateCount(count)
+        setCandidateOffset(offset)
+      } catch (e) {
+        console.log(e)
+      }
+    },
+    [getDataAndCount]
+  )
+
+  const fetchQuickCandidates = useCallback(
+    async ({ searchTerm, limit = API_BATCH_SIZE, offset = 0 } = {}) => {
+      const url = constructSearchUrl({
+        url: QUICK_CANDIDATES_URL,
         searchTerm,
         limit,
         offset,
@@ -91,5 +112,6 @@ export const useSearch = () => {
     fetchInitialSearchData,
     fetchCandidates,
     fetchDonors,
+    fetchQuickCandidates,
   }
 }
