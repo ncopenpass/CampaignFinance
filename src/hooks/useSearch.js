@@ -101,6 +101,12 @@ export const useSearch = () => {
     [fetchCandidates, fetchDonors]
   )
 
+  const fetchInitialQuickCandidate = useCallback(
+    async ({ searchTerm }) => {
+      await fetchQuickCandidates({ searchTerm })
+    },
+    [fetchQuickCandidates]
+  )
   return {
     hasError,
     candidates,
@@ -113,5 +119,6 @@ export const useSearch = () => {
     fetchCandidates,
     fetchDonors,
     fetchQuickCandidates,
+    fetchInitialQuickCandidate,
   }
 }

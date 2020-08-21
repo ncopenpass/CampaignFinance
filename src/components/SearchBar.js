@@ -21,6 +21,7 @@ const SearchBar = ({ hideQuickLinks }) => {
   let quickSearch = ''
   const handleQuickLink = useCallback(
     (e) => {
+      e.preventDefault()
       quickSearch = e.target.id
       history.push(`${SEARCH_FRAGMENT_ROUTE}${e.target.id}`, {
         candidateQuickSearch: true,

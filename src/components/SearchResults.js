@@ -31,6 +31,7 @@ const SearchResults = React.memo(() => {
     fetchCandidates,
     fetchDonors,
     fetchInitialSearchData,
+    fetchInitialQuickCandidate,
     fetchQuickCandidates,
   } = useSearch()
   const { donorColumns, candidateColumns } = useTableColumns()
@@ -40,6 +41,12 @@ const SearchResults = React.memo(() => {
       fetchInitialSearchData({ searchTerm })
     }
   }, [searchTerm, fetchInitialSearchData])
+
+  useEffect(() => {
+    if (fetchInitialQuickCandidate) {
+      fetchInitialQuickCandidate({ searchTerm })
+    }
+  }, [searchTerm, fetchInitialQuickCandidate])
 
   const fetchNextCandidates = useCallback(() => {
     fetchCandidates({
