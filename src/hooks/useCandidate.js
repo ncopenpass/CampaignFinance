@@ -13,6 +13,11 @@ const constructContributionsUrl = ({ url, candidateId, limit, offset }) => {
   return `${url}${candidateId}/contributions?limit=${limit}&offset=${offset}`
 }
 
+const constructContributionsCsvUrl = ({ url, candidateId }) => {
+  candidateId = encodeURIComponent(candidateId)
+  return `${url}${candidateId}/contributions?toCSV=true`
+}
+
 export const useCandidate = () => {
   const [hasError, setHasError] = useState(false)
   const [candidate, setCandidate] = useState([])
@@ -28,6 +33,22 @@ export const useCandidate = () => {
         const response = await fetch(url)
         const { data, count, summary } = await response.json()
         return { data, count, summary }
+      } catch (e) {
+        console.log(e)
+        setHasError(true)
+      }
+    },
+    [setHasError]
+  )
+
+  const getDataCsv = useCallback(
+    async (url) => {
+      setHasError(false)
+      try {
+        const response = await fetch(url)
+        const blob = await response.blob()
+        const downloadUrl = URL.createObjectURL(blob)
+        return downloadUrl
       } catch (e) {
         console.log(e)
         setHasError(true)
@@ -64,10 +85,8 @@ export const useCandidate = () => {
       })
       setHasError(false)
       try {
-        console.log(url)
         const { data, count, summary } = await getDataCountSummary(url)
         setContributions(data)
-        console.log(data, count, summary)
         setSummary(summary)
         setContributionCount(count)
         setContributionOffset(offset)
@@ -76,6 +95,25 @@ export const useCandidate = () => {
       }
     },
     [getDataCountSummary]
+  )
+
+  const fetchContributionsCsv = useCallback(
+    async ({ candidateId } = {}) => {
+      console.log(candidateId)
+      const url = constructContributionsCsvUrl({
+        url: CANDIDATE_URL,
+        candidateId,
+      })
+      setHasError(false)
+      try {
+        const downloadUrl = await getDataCsv(url)
+        window.open(downloadUrl, '_blank')
+        URL.revokeObjectURL(downloadUrl)
+      } catch (e) {
+        console.log(e)
+      }
+    },
+    [getDataCsv]
   )
 
   const fetchInitialSearchData = useCallback(
@@ -96,5 +134,6 @@ export const useCandidate = () => {
     fetchInitialSearchData,
     fetchCandidate,
     fetchContributions,
+    fetchContributionsCsv,
   }
 }
