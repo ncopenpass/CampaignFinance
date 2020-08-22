@@ -18,16 +18,24 @@ const SearchBar = ({ hideQuickLinks }) => {
     [donor, history]
   )
 
-  let quickSearch = ''
-  const handleQuickLink = useCallback(
+  const handleQuickCandidateLink = useCallback(
     (e) => {
       e.preventDefault()
-      quickSearch = e.target.id
       history.push(`${SEARCH_FRAGMENT_ROUTE}${e.target.id}`, {
         candidateQuickSearch: true,
       })
     },
-    [quickSearch, history]
+    [history]
+  )
+
+  const handleQuickDonorLink = useCallback(
+    (e) => {
+      e.preventDefault()
+      history.push(`${SEARCH_FRAGMENT_ROUTE}${e.target.id}`, {
+        donorQuickSearch: true,
+      })
+    },
+    [history]
   )
 
   return (
@@ -48,11 +56,17 @@ const SearchBar = ({ hideQuickLinks }) => {
             type="button"
             className="search-btn"
             id="2020"
-            onClick={handleQuickLink}
+            onClick={handleQuickCandidateLink}
           >
             2020 Candidates
           </Button>
-          <Button outline type="button" className="search-btn">
+          <Button
+            outline
+            type="button"
+            className="search-btn"
+            id="2020"
+            onClick={handleQuickDonorLink}
+          >
             2020 Donors
           </Button>
           <Button outline type="button" className="search-btn">

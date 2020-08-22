@@ -4,6 +4,7 @@ import { API_BATCH_SIZE } from '../constants'
 const CONTRIBUTORS_URL = '/api/search/contributors/'
 const CANDIDATES_URL = '/api/search/candidates/'
 const QUICK_CANDIDATES_URL = '/api/candidates/'
+const QUICK_DONORS_URL = '/api/contributors/'
 
 const constructSearchUrl = ({ url, searchTerm, limit, offset }) =>
   `${url}${searchTerm}?limit=${limit}&offset=${offset}`
@@ -72,6 +73,27 @@ export const useSearch = () => {
     [getDataAndCount]
   )
 
+  const fetchQuickDonors = useCallback(
+    async ({ searchTerm, limit = API_BATCH_SIZE, offset = 0 } = {}) => {
+      const url = constructSearchUrl({
+        url: QUICK_DONORS_URL,
+        searchTerm,
+        limit,
+        offset,
+      })
+      setHasError(false)
+      try {
+        const { data, count } = await getDataAndCount(url)
+        setDonors(data)
+        setDonorCount(count)
+        setDonorOffset(offset)
+      } catch (e) {
+        console.log(e)
+      }
+    },
+    [getDataAndCount]
+  )
+
   const fetchDonors = useCallback(
     async ({ searchTerm, limit = API_BATCH_SIZE, offset = 0 } = {}) => {
       const url = constructSearchUrl({
@@ -107,6 +129,13 @@ export const useSearch = () => {
     },
     [fetchQuickCandidates]
   )
+
+  const fetchInitialQuickDonor = useCallback(
+    async ({ searchTerm }) => {
+      await fetchQuickDonors({ searchTerm })
+    },
+    [fetchQuickDonors]
+  )
   return {
     hasError,
     candidates,
@@ -119,6 +148,8 @@ export const useSearch = () => {
     fetchCandidates,
     fetchDonors,
     fetchQuickCandidates,
+    fetchQuickDonors,
     fetchInitialQuickCandidate,
+    fetchInitialQuickDonor,
   }
 }
