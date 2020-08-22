@@ -37,6 +37,15 @@ const SearchBar = ({ hideQuickLinks }) => {
     },
     [history]
   )
+  const handleQuickContestLink = useCallback(
+    (e) => {
+      e.preventDefault()
+      history.push(`${SEARCH_FRAGMENT_ROUTE}${e.target.id}`, {
+        contestQuickSearch: true,
+      })
+    },
+    [history]
+  )
 
   return (
     <div className="search-component">
@@ -69,7 +78,13 @@ const SearchBar = ({ hideQuickLinks }) => {
           >
             2020 Donors
           </Button>
-          <Button outline type="button" className="search-btn">
+          <Button
+            outline
+            type="button"
+            className="search-btn"
+            id="2020"
+            onClick={handleQuickContestLink}
+          >
             2020 Contests
           </Button>
         </div>
