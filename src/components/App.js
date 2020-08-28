@@ -8,7 +8,6 @@ import {
   DATA_DICTIONARY_ROUTE,
   DEFAULT_ROUTE,
   PRIVACY_POLICY_ROUTE,
-  ABOUT_PAGE_ROUTE,
 } from '../constants'
 
 import Header from './Header'
@@ -18,7 +17,6 @@ import SearchResults from './SearchResults'
 import Table from './Table'
 import DataDictionary from './DataDictionary'
 import PrivacyPolicy from './PrivacyPolicy'
-import AboutPage from './AboutPage'
 import Candidate from './Candidate'
 
 export default function App() {
@@ -39,9 +37,6 @@ export default function App() {
           </Route>
           <Route path={TABLE_ROUTE}>
             <Table />
-          </Route>
-          <Route path={ABOUT_PAGE_ROUTE}>
-            <AboutPage />
           </Route>
           <Route path={DATA_DICTIONARY_ROUTE}>
             <DataDictionary />
