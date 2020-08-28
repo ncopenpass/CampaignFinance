@@ -20,13 +20,15 @@ jobs:
         id: cache
         uses: actions/cache@v2.1.0
         with:
-          path: '**/node_modules'
+          path: "**/node_modules"
           key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json')}}
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: cd server && npm install
       - name: Run dockerized db
         run: docker-compose -f docker-compose.yml up -d postgres-test
+      - name: Wait for db to be ready
+        run: ./scripts/wait-for-postgres.sh ${TEST_DATABASE_URL}
       - name: Run tests
         run: cd server && npm test
   deploy:
@@ -35,9 +37,7 @@ jobs:
     if: github.ref == 'refs/heads/master'
     steps:
       - uses: actions/checkout@v2
-      - uses: akhileshns/heroku-deploy@v3.4.6
         with:
-          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
-          heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
-          heroku_email: ${{ secrets.HEROKU_EMAIL }}
-          buildpack: 'https://github.com/heroku/heroku-buildpack-nodejs.git'
+          fetch-depth: 0
+      - name: Deploy to Heroku
+        run: git push https://heroku:${{ secrets.HEROKU_API_KEY }}@git.heroku.com/${{ secrets.HEROKU_APP_NAME }}.git master
