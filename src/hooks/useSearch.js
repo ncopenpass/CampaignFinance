@@ -68,6 +68,7 @@ export const useSearch = () => {
     },
     [fetchCandidates, fetchDonors]
   )
+
   return {
     hasError,
     candidates,

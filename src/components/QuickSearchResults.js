@@ -1,16 +1,16 @@
-import React, { useEffect, useCallback } from 'react'
+import React, { useEffect, useCallback, useMemo } from 'react'
 import { useParams } from 'react-router'
 import { GridContainer, Alert } from '@trussworks/react-uswds'
 
 import { useQuickSearch, useTableColumns } from '../hooks'
-import { API_BATCH_SIZE, CANDIDATES } from '../constants'
+import {
+  API_BATCH_SIZE,
+  CANDIDATES,
+  CONTRIBUTORS,
+  ELECTION_YEAR,
+} from '../constants'
 
 import SearchResultTable from './SearchResultTable'
-
-const quickSearchDisplayMap = {
-  candidates: 'Candidates',
-  contributors: 'Donors',
-}
 
 const SearchResults = React.memo(() => {
   const { searchTerm } = useParams()
@@ -30,6 +30,28 @@ const SearchResults = React.memo(() => {
       fetchInitialQuickSearchData({ searchTerm })
     }
   }, [searchTerm, fetchInitialQuickSearchData])
+
+  const columns = useMemo(() => {
+    switch (searchTerm) {
+      case CANDIDATES:
+        return candidateColumns
+      case CONTRIBUTORS:
+        return donorColumns
+      default:
+        return []
+    }
+  }, [searchTerm, candidateColumns, donorColumns])
+
+  const displaySearchTerm = useMemo(() => {
+    switch (searchTerm) {
+      case CANDIDATES:
+        return 'Candidates'
+      case CONTRIBUTORS:
+        return 'Donors'
+      default:
+        return ''
+    }
+  }, [searchTerm])
 
   const fetchNextResults = useCallback(() => {
     fetchQuickSearchData({
@@ -54,22 +76,20 @@ const SearchResults = React.memo(() => {
       ) : (
         <>
           <h1>
-            {`Quick Search Results: 2020 ${quickSearchDisplayMap[searchTerm]}`}
+            {`Quick Search Results: ${ELECTION_YEAR} ${displaySearchTerm}`}
           </h1>
           <h4>
             <>{`${resultsCount} Results`}</>
           </h4>
           <SearchResultTable
-            columns={
-              searchTerm === CANDIDATES ? candidateColumns : donorColumns
-            }
+            columns={columns}
             data={results}
             count={resultsCount}
             offset={resultsOffset}
             fetchNext={fetchNextResults}
             fetchPrevious={fetchPreviousResults}
-            searchTerm="2020"
-            searchType={searchTerm ? quickSearchDisplayMap[searchTerm] : ''}
+            searchTerm={ELECTION_YEAR}
+            searchType={displaySearchTerm}
           />
         </>
       )}
