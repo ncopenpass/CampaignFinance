@@ -7,6 +7,7 @@ import {
   QUICK_SEARCH_FRAGMENT_ROUTE,
   CANDIDATES,
   CONTRIBUTORS,
+  ELECTION_YEAR,
 } from '../constants'
 
 const SearchBar = ({ hideQuickLinks }) => {
@@ -58,7 +59,7 @@ const SearchBar = ({ hideQuickLinks }) => {
             className="search-btn"
             onClick={handleQuickCandidateLink}
           >
-            2020 Candidates
+            {`${ELECTION_YEAR} Candidates`}
           </Button>
           <Button
             outline
@@ -66,7 +67,7 @@ const SearchBar = ({ hideQuickLinks }) => {
             className="search-btn"
             onClick={handleQuickDonorLink}
           >
-            2020 Donors
+            {`${ELECTION_YEAR} Donors`}
           </Button>
         </div>
       )}

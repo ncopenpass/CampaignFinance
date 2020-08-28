@@ -1,5 +1,8 @@
 import { useCallback, useState } from 'react'
+
 import { API_BATCH_SIZE } from '../constants'
+
+import { useApi } from './useApi'
 
 const CONTRIBUTORS_URL = '/api/search/contributors/'
 const CANDIDATES_URL = '/api/search/candidates/'
@@ -8,28 +11,13 @@ const constructSearchUrl = ({ url, searchTerm, limit, offset }) =>
   `${url}${searchTerm}?limit=${limit}&offset=${offset}`
 
 export const useSearch = () => {
-  const [hasError, setHasError] = useState(false)
+  const { hasError, setHasError, getDataAndCount } = useApi()
   const [candidates, setCandidates] = useState([])
   const [candidateCount, setCandidateCount] = useState(0)
   const [candidateOffset, setCandidateOffset] = useState(0)
   const [donors, setDonors] = useState([])
   const [donorCount, setDonorCount] = useState(0)
   const [donorOffset, setDonorOffset] = useState(0)
-
-  const getDataAndCount = useCallback(
-    async (url) => {
-      setHasError(false)
-      try {
-        const response = await fetch(url)
-        const { data, count } = await response.json()
-        return { data, count }
-      } catch (e) {
-        console.log(e)
-        setHasError(true)
-      }
-    },
-    [setHasError]
-  )
 
   const fetchCandidates = useCallback(
     async ({ searchTerm, limit = API_BATCH_SIZE, offset = 0 } = {}) => {
@@ -39,6 +27,7 @@ export const useSearch = () => {
         limit,
         offset,
       })
+      setHasError(false)
       try {
         const { data, count } = await getDataAndCount(url)
         setCandidates(data)
@@ -48,7 +37,7 @@ export const useSearch = () => {
         console.log(e)
       }
     },
-    [getDataAndCount]
+    [getDataAndCount, setHasError]
   )
 
   const fetchDonors = useCallback(
@@ -69,7 +58,7 @@ export const useSearch = () => {
         console.log(e)
       }
     },
-    [getDataAndCount]
+    [getDataAndCount, setHasError]
   )
 
   const fetchInitialSearchData = useCallback(
