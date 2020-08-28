@@ -1,5 +1,7 @@
 export const SEARCH_ROUTE = '/search/:searchTerm'
 export const SEARCH_FRAGMENT_ROUTE = '/search/'
+export const QUICK_SEARCH_ROUTE = '/quick-search/:searchTerm'
+export const QUICK_SEARCH_FRAGMENT_ROUTE = '/quick-search/'
 export const TABLE_ROUTE = '/table'
 export const DATA_DICTIONARY_ROUTE = '/data-dictionary'
 export const DEFAULT_ROUTE = '/'
