@@ -1,26 +1,15 @@
-import { useCallback, useState } from 'react'
+import { useCallback } from 'react'
 
 export const useApi = () => {
-  const [hasError, setHasError] = useState(false)
-
-  const getDataAndCount = useCallback(
-    async (url) => {
-      setHasError(false)
-      try {
-        const response = await fetch(url)
-        const { data, count } = await response.json()
-        return { data, count }
-      } catch (e) {
-        console.log(e)
-        setHasError(true)
-      }
-    },
-    [setHasError]
-  )
+  const getDataAndCount = useCallback(async (url) => {
+    // consumers of this function should surround calls in a try catch block
+    // this function does NOT catch its own errors
+    const response = await fetch(url)
+    const { data, count } = await response.json()
+    return { data, count }
+  }, [])
 
   return {
-    hasError,
-    setHasError,
     getDataAndCount,
   }
 }

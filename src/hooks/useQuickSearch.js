@@ -8,7 +8,8 @@ const constructQuickSearchUrl = ({ url, searchTerm, limit, offset }) =>
   `/api/${searchTerm}/${ELECTION_YEAR}?limit=${limit}&offset=${offset}`
 
 export const useQuickSearch = () => {
-  const { hasError, setHasError, getDataAndCount } = useApi()
+  const { getDataAndCount } = useApi()
+  const [hasError, setHasError] = useState(false)
   const [results, setResults] = useState([])
   const [resultsCount, setResultsCount] = useState(0)
   const [resultsOffset, setResultsOffset] = useState(0)
@@ -28,9 +29,10 @@ export const useQuickSearch = () => {
         setResultsOffset(offset)
       } catch (e) {
         console.log(e)
+        setHasError(true)
       }
     },
-    [getDataAndCount, setHasError]
+    [getDataAndCount]
   )
 
   const fetchInitialQuickSearchData = useCallback(

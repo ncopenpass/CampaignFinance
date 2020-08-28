@@ -11,7 +11,8 @@ const constructSearchUrl = ({ url, searchTerm, limit, offset }) =>
   `${url}${searchTerm}?limit=${limit}&offset=${offset}`
 
 export const useSearch = () => {
-  const { hasError, setHasError, getDataAndCount } = useApi()
+  const { getDataAndCount } = useApi()
+  const [hasError, setHasError] = useState(false)
   const [candidates, setCandidates] = useState([])
   const [candidateCount, setCandidateCount] = useState(0)
   const [candidateOffset, setCandidateOffset] = useState(0)
@@ -35,9 +36,10 @@ export const useSearch = () => {
         setCandidateOffset(offset)
       } catch (e) {
         console.log(e)
+        setHasError(true)
       }
     },
-    [getDataAndCount, setHasError]
+    [getDataAndCount]
   )
 
   const fetchDonors = useCallback(
@@ -56,9 +58,10 @@ export const useSearch = () => {
         setDonorOffset(offset)
       } catch (e) {
         console.log(e)
+        setHasError(true)
       }
     },
-    [getDataAndCount, setHasError]
+    [getDataAndCount]
   )
 
   const fetchInitialSearchData = useCallback(
