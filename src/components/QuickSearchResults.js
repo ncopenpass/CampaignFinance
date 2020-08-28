@@ -78,9 +78,7 @@ const QuickSearchResults = React.memo(() => {
           <h1>
             {`Quick Search Results: ${ELECTION_YEAR} ${displaySearchTerm}`}
           </h1>
-          <h4>
-            <>{`${resultsCount} Results`}</>
-          </h4>
+          <h4>{`${resultsCount} Results`}</h4>
           <SearchResultTable
             columns={columns}
             data={results}

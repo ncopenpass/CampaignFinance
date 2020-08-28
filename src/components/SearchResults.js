@@ -27,7 +27,7 @@ const SearchResults = React.memo(() => {
     fetchContributors,
     fetchInitialSearchData,
   } = useSearch()
-  const { donorColumns, candidateColumns } = useTableColumns()
+  const { contributorColumns, candidateColumns } = useTableColumns()
 
   useEffect(() => {
     if (fetchInitialSearchData) {
@@ -86,7 +86,7 @@ const SearchResults = React.memo(() => {
         title: `Contributors (${contributorCount}) matching "${searchTerm}"`,
         content: (
           <SearchResultTable
-            columns={donorColumns}
+            columns={contributorColumns}
             data={contributors}
             count={contributorCount}
             offset={contributorOffset}
@@ -105,7 +105,7 @@ const SearchResults = React.memo(() => {
       candidates,
       candidateCount,
       candidateOffset,
-      donorColumns,
+      contributorColumns,
       contributors,
       contributorCount,
       contributorOffset,
