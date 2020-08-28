@@ -23,7 +23,7 @@ const QuickSearchResults = React.memo(() => {
     fetchQuickSearchData,
     fetchInitialQuickSearchData,
   } = useQuickSearch()
-  const { donorColumns, candidateColumns } = useTableColumns()
+  const { contributorColumns, candidateColumns } = useTableColumns()
 
   useEffect(() => {
     if (fetchInitialQuickSearchData) {
@@ -36,18 +36,18 @@ const QuickSearchResults = React.memo(() => {
       case CANDIDATES:
         return candidateColumns
       case CONTRIBUTORS:
-        return donorColumns
+        return contributorColumns
       default:
         return []
     }
-  }, [searchTerm, candidateColumns, donorColumns])
+  }, [searchTerm, candidateColumns, contributorColumns])
 
   const displaySearchTerm = useMemo(() => {
     switch (searchTerm) {
       case CANDIDATES:
         return 'Candidates'
       case CONTRIBUTORS:
-        return 'Donors'
+        return 'Contributors'
       default:
         return ''
     }

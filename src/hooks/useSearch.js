@@ -16,9 +16,9 @@ export const useSearch = () => {
   const [candidates, setCandidates] = useState([])
   const [candidateCount, setCandidateCount] = useState(0)
   const [candidateOffset, setCandidateOffset] = useState(0)
-  const [donors, setDonors] = useState([])
-  const [donorCount, setDonorCount] = useState(0)
-  const [donorOffset, setDonorOffset] = useState(0)
+  const [contributors, setContributors] = useState([])
+  const [contributorCount, setContributorCount] = useState(0)
+  const [contributorOffset, setContributorOffset] = useState(0)
 
   const fetchCandidates = useCallback(
     async ({ searchTerm, limit = API_BATCH_SIZE, offset = 0 } = {}) => {
@@ -42,7 +42,7 @@ export const useSearch = () => {
     [getDataAndCount]
   )
 
-  const fetchDonors = useCallback(
+  const fetchContributors = useCallback(
     async ({ searchTerm, limit = API_BATCH_SIZE, offset = 0 } = {}) => {
       const url = constructSearchUrl({
         url: CONTRIBUTORS_URL,
@@ -53,9 +53,9 @@ export const useSearch = () => {
       setHasError(false)
       try {
         const { data, count } = await getDataAndCount(url)
-        setDonors(data)
-        setDonorCount(count)
-        setDonorOffset(offset)
+        setContributors(data)
+        setContributorCount(count)
+        setContributorOffset(offset)
       } catch (e) {
         console.log(e)
         setHasError(true)
@@ -67,9 +67,9 @@ export const useSearch = () => {
   const fetchInitialSearchData = useCallback(
     async ({ searchTerm, limit, offset }) => {
       await fetchCandidates({ searchTerm })
-      await fetchDonors({ searchTerm })
+      await fetchContributors({ searchTerm })
     },
-    [fetchCandidates, fetchDonors]
+    [fetchCandidates, fetchContributors]
   )
 
   return {
@@ -77,11 +77,11 @@ export const useSearch = () => {
     candidates,
     candidateCount,
     candidateOffset,
-    donors,
-    donorCount,
-    donorOffset,
+    contributors,
+    contributorCount,
+    contributorOffset,
     fetchInitialSearchData,
     fetchCandidates,
-    fetchDonors,
+    fetchContributors,
   }
 }

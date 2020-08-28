@@ -44,7 +44,7 @@ const SearchBar = ({ hideQuickLinks }) => {
     <div className="search-component">
       <div className="search-bar">
         <Search
-          placeholder="Search by Candidate or Donor"
+          placeholder="Search by Candidate or Contributor"
           onSubmit={handleSearch}
           onChange={handleChange}
           size="big"
@@ -67,7 +67,7 @@ const SearchBar = ({ hideQuickLinks }) => {
             className="search-btn"
             onClick={handleQuickDonorLink}
           >
-            {`${ELECTION_YEAR} Donors`}
+            {`${ELECTION_YEAR} Contributors`}
           </Button>
         </div>
       )}
