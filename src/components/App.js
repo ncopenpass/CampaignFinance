@@ -12,7 +12,7 @@ import {
 
 import Header from './Header'
 import Footer from './Footer'
-import Search from './Search'
+import Home from './Home'
 import SearchResults from './SearchResults'
 import Table from './Table'
 import DataDictionary from './DataDictionary'
@@ -42,7 +42,7 @@ export default function App() {
             <DataDictionary />
           </Route>
           <Route path={DEFAULT_ROUTE}>
-            <Search />
+            <Home />
           </Route>
         </Switch>
 
