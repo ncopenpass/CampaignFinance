@@ -12,7 +12,7 @@ import {
 
 import SearchResultTable from './SearchResultTable'
 
-const SearchResults = React.memo(() => {
+const QuickSearchResults = React.memo(() => {
   const { searchTerm } = useParams()
 
   const {
@@ -97,4 +97,4 @@ const SearchResults = React.memo(() => {
   )
 })
 
-export default SearchResults
+export default QuickSearchResults
