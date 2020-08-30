@@ -2,28 +2,50 @@ import React, { useCallback, useState } from 'react'
 import { Search, Button } from '@trussworks/react-uswds'
 import { useHistory } from 'react-router-dom'
 
-import { SEARCH_FRAGMENT_ROUTE } from '../constants'
+import {
+  SEARCH_FRAGMENT_ROUTE,
+  QUICK_SEARCH_FRAGMENT_ROUTE,
+  CANDIDATES,
+  CONTRIBUTORS,
+  ELECTION_YEAR,
+} from '../constants'
 
 const SearchBar = ({ hideQuickLinks }) => {
   const history = useHistory()
-  const [donor, setDonor] = useState('')
+  const [searchTerm, setSearchTerm] = useState('')
 
-  const handleChange = useCallback((e) => setDonor(e.target.value), [])
+  const handleChange = useCallback((e) => setSearchTerm(e.target.value), [])
 
-  const handleClick = useCallback(
+  const handleSearch = useCallback(
     (e) => {
       e.preventDefault()
-      history.push(`${SEARCH_FRAGMENT_ROUTE}${donor}`)
+      history.push(`${SEARCH_FRAGMENT_ROUTE}${searchTerm}`)
     },
-    [donor, history]
+    [searchTerm, history]
+  )
+
+  const handleQuickCandidateLink = useCallback(
+    (e) => {
+      e.preventDefault()
+      history.push(`${QUICK_SEARCH_FRAGMENT_ROUTE}${CANDIDATES}`)
+    },
+    [history]
+  )
+
+  const handleQuickDonorLink = useCallback(
+    (e) => {
+      e.preventDefault()
+      history.push(`${QUICK_SEARCH_FRAGMENT_ROUTE}${CONTRIBUTORS}`)
+    },
+    [history]
   )
 
   return (
     <div className="search-component">
       <div className="search-bar">
         <Search
-          placeholder="Search by Candidate or Donor"
-          onSubmit={handleClick}
+          placeholder="Search by Candidate or Contributor"
+          onSubmit={handleSearch}
           onChange={handleChange}
           size="big"
         />
@@ -31,14 +53,21 @@ const SearchBar = ({ hideQuickLinks }) => {
       {!hideQuickLinks && (
         <div className="quick-search-btns">
           <p className="quick-search">Quick Search</p>
-          <Button outline type="button" className="search-btn">
-            2020 Candidates
+          <Button
+            outline
+            type="button"
+            className="search-btn"
+            onClick={handleQuickCandidateLink}
+          >
+            {`${ELECTION_YEAR} Candidates`}
           </Button>
-          <Button outline type="button" className="search-btn">
-            2020 Donors
-          </Button>
-          <Button outline type="button" className="search-btn">
-            2020 Contests
+          <Button
+            outline
+            type="button"
+            className="search-btn"
+            onClick={handleQuickDonorLink}
+          >
+            {`${ELECTION_YEAR} Contributors`}
           </Button>
         </div>
       )}
