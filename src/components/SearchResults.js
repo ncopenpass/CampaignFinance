@@ -127,7 +127,6 @@ const SearchResults = React.memo(() => {
         </Alert>
       ) : (
         <>
-          <ReportError />
           <SearchBarContainer>
             <SearchBar hideQuickLinks />
           </SearchBarContainer>
