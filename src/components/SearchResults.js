@@ -13,20 +13,21 @@ const SearchBarContainer = styled.div`
   padding: 20px 0px;
 `
 const SearchResults = React.memo(() => {
-  let { searchTerm } = useParams()
+  const { searchTerm } = useParams()
+
   const {
     hasError,
-    donors,
+    contributors,
     candidates,
-    donorCount,
+    contributorCount,
     candidateCount,
-    donorOffset,
+    contributorOffset,
     candidateOffset,
     fetchCandidates,
-    fetchDonors,
+    fetchContributors,
     fetchInitialSearchData,
   } = useSearch()
-  const { donorColumns, candidateColumns } = useTableColumns()
+  const { contributorColumns, candidateColumns } = useTableColumns()
 
   useEffect(() => {
     if (fetchInitialSearchData) {
@@ -48,19 +49,19 @@ const SearchResults = React.memo(() => {
     })
   }, [candidateOffset, searchTerm, fetchCandidates])
 
-  const fetchNextDonors = useCallback(() => {
-    fetchDonors({
+  const fetchNextContributors = useCallback(() => {
+    fetchContributors({
       searchTerm,
-      offset: donorOffset + API_BATCH_SIZE,
+      offset: contributorOffset + API_BATCH_SIZE,
     })
-  }, [donorOffset, fetchDonors, searchTerm])
+  }, [contributorOffset, fetchContributors, searchTerm])
 
-  const fetchPreviousDonors = useCallback(() => {
-    fetchDonors({
+  const fetchPreviousContributors = useCallback(() => {
+    fetchContributors({
       searchTerm,
-      offset: donorOffset - API_BATCH_SIZE,
+      offset: contributorOffset - API_BATCH_SIZE,
     })
-  }, [donorOffset, searchTerm, fetchDonors])
+  }, [contributorOffset, searchTerm, fetchContributors])
 
   const resultsTables = useMemo(
     () => [
@@ -82,21 +83,21 @@ const SearchResults = React.memo(() => {
         id: 'candidates',
       },
       {
-        title: `Donors (${donorCount}) matching "${searchTerm}"`,
+        title: `Contributors (${contributorCount}) matching "${searchTerm}"`,
         content: (
           <SearchResultTable
-            columns={donorColumns}
-            data={donors}
-            count={donorCount}
-            offset={donorOffset}
-            fetchNext={fetchNextDonors}
-            fetchPrevious={fetchPreviousDonors}
+            columns={contributorColumns}
+            data={contributors}
+            count={contributorCount}
+            offset={contributorOffset}
+            fetchNext={fetchNextContributors}
+            fetchPrevious={fetchPreviousContributors}
             searchTerm={searchTerm}
-            searchType="donors"
+            searchType="contributors"
           />
         ),
         expanded: true,
-        id: 'donors',
+        id: 'contributors',
       },
     ],
     [
@@ -104,15 +105,15 @@ const SearchResults = React.memo(() => {
       candidates,
       candidateCount,
       candidateOffset,
-      donorColumns,
-      donors,
-      donorCount,
-      donorOffset,
+      contributorColumns,
+      contributors,
+      contributorCount,
+      contributorOffset,
       searchTerm,
       fetchNextCandidates,
       fetchPreviousCandidates,
-      fetchNextDonors,
-      fetchPreviousDonors,
+      fetchNextContributors,
+      fetchPreviousContributors,
     ]
   )
 
