@@ -31,6 +31,12 @@ const Footer = () => {
                 </a>,
                 <a
                   className="usa-footer__primary-link"
+                  href="https://forms.gle/5c4dmuTPVCznSB1s8"
+                >
+                  Share Feedback
+                </a>,
+                <a
+                  className="usa-footer__primary-link"
                   href="https://github.com/ncopenpass/CampaignFinance"
                 >
                   Github

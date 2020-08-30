@@ -9,6 +9,8 @@ import { API_BATCH_SIZE } from '../constants'
 import SearchBar from './SearchBar'
 import SearchResultTable from './SearchResultTable'
 
+import ReportError from './ReportError'
+
 const SearchBarContainer = styled.div`
   padding: 20px 0px;
 `
@@ -125,6 +127,7 @@ const SearchResults = React.memo(() => {
         </Alert>
       ) : (
         <>
+          <ReportError />
           <SearchBarContainer>
             <SearchBar hideQuickLinks />
           </SearchBarContainer>
