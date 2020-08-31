@@ -13,7 +13,7 @@
     {
       "name": "Amount",
       "definition": "Value of contribution in dollars",
-      "source": "North Carolina State Board of Elections form CRO-1210 Contributions from Individuals field k"
+      "source":  "NC State Board of Elections form CRO-1210 Contributions from Individuals field k Amount, CRO 1220 Contributions from Political Party Committees field h Amount, or CRO 1230 Contributions from Other Political Committees field j Amount OR Amount entered on Receipt Information screen of Remote Filing Software."
     },
     {
       "name": "Form of Payment",
