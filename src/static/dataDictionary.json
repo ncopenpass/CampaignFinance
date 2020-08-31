@@ -3,44 +3,32 @@
     {
       "name": "Committee Name",
       "definition": "Name of committee to which contribution was made. Name associated with committee SBOE-ID.",
-      "published": true,
-      "source": "Reported by committee to North Carolina State Board of Elections on Form CRO-1210 Contributions from Individuals Field 1 Committee Full Name (and Fund if applicable) [will expand to include other relevant forms]."
+      "source": "Reported by committee to NC State Board of Elections in Field 1 Committee Full Name (and Fund if applicable) of Form CRO-1210 Contributions from Individuals, CRO 1220 Contributions from Political Party Committees, or CRO 1230 Contributions from Other Political Committees."
     },
     {
-      "name": "Committee City",
-      "definition": "City of address of committee to which contribution was made",
-      "published": true,
-      "source": "As reported to North Carolina State Board of Elections on CRO-2100A Statement of Organization - Candidate Committee Field b. Associated with ID Number. [will add more more committee types]"
-    },
-    {
-      "name": "Committee State",
-      "definition": "State of address of committee to which contribution was made",
-      "published": true,
-      "source": "As reported to North Carolina State Board of Elections on CRO-2100A Statement of Organization - Candidate Committee Field b. Associated with ID Number. [will add more more committee types]"
+      "name": "Date Ocurred",
+      "definition": "Date on which the contribution was received by the committee",
+      "source": "NC State Board of Elections Form CRO 1210 Contributions from Individuals field j Date, CRO 1220 Contributions from Political Party Committees field g Date, or CRO 1230 Contributions from Other Political Committees field i Date OR Date entered on Receipt Information screen of Remote Filing Software."
     },
     {
       "name": "Amount",
       "definition": "Value of contribution in dollars",
-      "published": true,
       "source": "North Carolina State Board of Elections form CRO-1210 Contributions from Individuals field k"
     },
     {
-      "name": "Name",
-      "definition": "First and last name of individual, name of committee, or name of business",
-      "published": true,
-      "source": "Reported by committee to North Carolina State Board of Elections on Form CRO-1210 Contributions from Individuals Field 3a Contributor Information [will expand to include other relevant forms]."
+      "name": "Form of Payment",
+      "definition": "Financial instrument used to make the contribution.",
+      "source": "NC State Board of Elections form CRO-1210 Contributions from Individuals field h Form of Payment, CRO 1220 Contributions from Political Party Committees field e Form of Payment Code, or CRO 1230 Contributions from Other Political Committees field g Form of Payment OR Form of Payment entered on Receipt Information screen of Remote Filing Software."
     },
     {
-      "name": "Contributor City",
-      "definition": "City of contributor's address",
-      "published": true,
-      "source": "Reported by committee to North Carolina State Board of Elections on Form CRO-1210 Contributions from Individuals Field 3a Contributor Information [will expand to include other relevant forms]."
+      "name": "Comment",
+      "definition": "Purpose of expenditure or comment made about contribution or other transaction.",
+      "source": "NC State Board of Elections. Source is unclear, possibly form CRO-1210 Contributions from Individuals field d Comments, CRO 1220 Contributions from Political Party.  Committees field b Comments, or CRO 1230 Contributions from Other Political Committees field d Comments"
     },
     {
-      "name": "Contributor State",
-      "definition": "State of contributor's address",
-      "published": true,
-      "source": "Reported by committee to North Carolina State Board of Elections on Form CRO-1210 Contributions from Individuals Field 3a Contributor Information [will expand to include other relevant forms]."
+      "name": "Contributor Type",
+      "definition": "Type of entity making the contribution.",
+      "source": "Assigned by project team."
     }
   ]
 }
