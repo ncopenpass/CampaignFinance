@@ -17,7 +17,6 @@ const DataDictionary = () => {
         </thead>
         <tbody>
           {dictionary
-            .filter(({ published }) => published)
             .sort((a, b) => {
               const nameA = a.name.toUpperCase()
               const nameB = b.name.toUpperCase()
