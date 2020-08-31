@@ -1,10 +1,10 @@
 import { useMemo } from 'react'
 
 export const useTableColumns = () => {
-  const donorColumns = useMemo(
+  const contributorColumns = useMemo(
     () => [
       {
-        Header: 'Donor Name',
+        Header: 'Contributor Name',
         accessor: 'name',
       },
       {
@@ -20,7 +20,7 @@ export const useTableColumns = () => {
         accessor: 'profession',
       },
       {
-        Header: 'Total Donations',
+        Header: 'Total Contributions',
         accessor: 'total',
       },
     ],
@@ -49,11 +49,11 @@ export const useTableColumns = () => {
   const candidateContributionColumns = useMemo(
     () => [
       {
-        Header: 'Donor Name',
+        Header: 'Contributor Name',
         accessor: 'name',
       },
       {
-        Header: 'Donor Type',
+        Header: 'Contributor Type',
         accessor: 'transaction_type',
       },
       {
@@ -61,11 +61,11 @@ export const useTableColumns = () => {
         accessor: 'amount',
       },
       {
-        Header: 'Donation Type',
+        Header: 'Contribution Type',
         accessor: 'form_of_payment',
       },
       {
-        Header: 'Donation Date',
+        Header: 'Contribution Date',
         accessor: 'date_occurred',
       },
       {
@@ -77,7 +77,7 @@ export const useTableColumns = () => {
   )
 
   return {
-    donorColumns,
+    contributorColumns,
     candidateColumns,
     candidateContributionColumns,
   }

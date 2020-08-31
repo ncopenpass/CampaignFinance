@@ -8,17 +8,17 @@ import {
   DATA_DICTIONARY_ROUTE,
   DEFAULT_ROUTE,
   PRIVACY_POLICY_ROUTE,
-  ABOUT_PAGE_ROUTE,
+  QUICK_SEARCH_ROUTE,
 } from '../constants'
 
 import Header from './Header'
 import Footer from './Footer'
-import Search from './Search'
+import Home from './Home'
 import SearchResults from './SearchResults'
+import QuickSearchResults from './QuickSearchResults'
 import Table from './Table'
 import DataDictionary from './DataDictionary'
 import PrivacyPolicy from './PrivacyPolicy'
-import AboutPage from './AboutPage'
 import Candidate from './Candidate'
 
 export default function App() {
@@ -31,6 +31,9 @@ export default function App() {
           <Route path={SEARCH_ROUTE}>
             <SearchResults />
           </Route>
+          <Route path={QUICK_SEARCH_ROUTE}>
+            <QuickSearchResults />
+          </Route>
           <Route path={CANDIDATE_ROUTE}>
             <Candidate />
           </Route>
@@ -40,14 +43,11 @@ export default function App() {
           <Route path={TABLE_ROUTE}>
             <Table />
           </Route>
-          <Route path={ABOUT_PAGE_ROUTE}>
-            <AboutPage />
-          </Route>
           <Route path={DATA_DICTIONARY_ROUTE}>
             <DataDictionary />
           </Route>
           <Route path={DEFAULT_ROUTE}>
-            <Search />
+            <Home />
           </Route>
         </Switch>
 

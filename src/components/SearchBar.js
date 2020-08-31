@@ -2,28 +2,32 @@ import React, { useCallback, useState } from 'react'
 import { Search, Button } from '@trussworks/react-uswds'
 import { useHistory } from 'react-router-dom'
 
-import { SEARCH_FRAGMENT_ROUTE } from '../constants'
+import {
+  SEARCH_FRAGMENT_ROUTE,
+  QUICK_SEARCH_FRAGMENT_ROUTE,
+  CANDIDATES,
+  CONTRIBUTORS,
+  ELECTION_YEAR,
+} from '../constants'
 
 const SearchBar = ({ hideQuickLinks }) => {
   const history = useHistory()
-  const [donor, setDonor] = useState('')
+  const [searchTerm, setSearchTerm] = useState('')
 
-  const handleChange = useCallback((e) => setDonor(e.target.value), [])
+  const handleChange = useCallback((e) => setSearchTerm(e.target.value), [])
 
-  const handleClick = useCallback(
+  const handleSearch = useCallback(
     (e) => {
       e.preventDefault()
-      history.push(`${SEARCH_FRAGMENT_ROUTE}${donor}`)
+      history.push(`${SEARCH_FRAGMENT_ROUTE}${searchTerm}`)
     },
-    [donor, history]
+    [searchTerm, history]
   )
 
   const handleQuickCandidateLink = useCallback(
     (e) => {
       e.preventDefault()
-      history.push(`${SEARCH_FRAGMENT_ROUTE}${e.target.id}`, {
-        candidateQuickSearch: true,
-      })
+      history.push(`${QUICK_SEARCH_FRAGMENT_ROUTE}${CANDIDATES}`)
     },
     [history]
   )
@@ -31,18 +35,7 @@ const SearchBar = ({ hideQuickLinks }) => {
   const handleQuickDonorLink = useCallback(
     (e) => {
       e.preventDefault()
-      history.push(`${SEARCH_FRAGMENT_ROUTE}${e.target.id}`, {
-        donorQuickSearch: true,
-      })
-    },
-    [history]
-  )
-  const handleQuickContestLink = useCallback(
-    (e) => {
-      e.preventDefault()
-      history.push(`${SEARCH_FRAGMENT_ROUTE}${e.target.id}`, {
-        contestQuickSearch: true,
-      })
+      history.push(`${QUICK_SEARCH_FRAGMENT_ROUTE}${CONTRIBUTORS}`)
     },
     [history]
   )
@@ -51,8 +44,8 @@ const SearchBar = ({ hideQuickLinks }) => {
     <div className="search-component">
       <div className="search-bar">
         <Search
-          placeholder="Search by Candidate or Donor"
-          onSubmit={handleClick}
+          placeholder="Search by Candidate or Contributor"
+          onSubmit={handleSearch}
           onChange={handleChange}
           size="big"
         />
@@ -64,28 +57,17 @@ const SearchBar = ({ hideQuickLinks }) => {
             outline
             type="button"
             className="search-btn"
-            id="2020"
             onClick={handleQuickCandidateLink}
           >
-            2020 Candidates
+            {`${ELECTION_YEAR} Candidates`}
           </Button>
           <Button
             outline
             type="button"
             className="search-btn"
-            id="2020"
             onClick={handleQuickDonorLink}
           >
-            2020 Donors
-          </Button>
-          <Button
-            outline
-            type="button"
-            className="search-btn"
-            id="2020"
-            onClick={handleQuickContestLink}
-          >
-            2020 Contests
+            {`${ELECTION_YEAR} Contributors`}
           </Button>
         </div>
       )}
