@@ -20,7 +20,13 @@ const DataDictionary = () => {
             .sort((a, b) => {
               const nameA = a.name.toUpperCase()
               const nameB = b.name.toUpperCase()
-              return nameA - nameB
+              if (nameA > nameB) {
+                return 1
+              } else if (nameA < nameB) {
+                return -1
+              } else {
+                return 0
+              }
             })
             .map(({ name, definition, source }) => (
               <tr key={name}>
