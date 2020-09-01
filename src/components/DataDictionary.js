@@ -31,7 +31,7 @@ const DataDictionary = () => {
             .map(({ name, definition, source }) => (
               <tr key={name}>
                 <th scope="row">{name}</th>
-                <td>{definition}</td>
+                <td style={{ width: '300px' }}>{definition}</td>
                 <td>{source}</td>
               </tr>
             ))}
