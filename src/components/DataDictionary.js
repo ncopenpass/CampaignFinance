@@ -15,7 +15,7 @@ const DataDictionary = () => {
             <th scope="col">Source</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody style={{ verticalAlign: 'top', overflowWrap: 'break-word' }}>
           {dictionary
             .sort((a, b) => {
               const nameA = a.name.toUpperCase()
@@ -31,7 +31,7 @@ const DataDictionary = () => {
             .map(({ name, definition, source }) => (
               <tr key={name}>
                 <th scope="row">{name}</th>
-                <td style={{ width: '300px' }}>{definition}</td>
+                <td style={{ maxWidth: '400px' }}>{definition}</td>
                 <td>{source}</td>
               </tr>
             ))}
