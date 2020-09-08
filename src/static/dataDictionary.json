@@ -1,46 +1,79 @@
 {
   "dictionary": [
     {
-      "name": "Committee Name",
-      "definition": "Name of committee to which contribution was made. Name associated with committee SBOE-ID.",
-      "published": true,
-      "source": "Reported by committee to North Carolina State Board of Elections on Form CRO-1210 Contributions from Individuals Field 1 Committee Full Name (and Fund if applicable) [will expand to include other relevant forms]."
-    },
-    {
-      "name": "Committee City",
-      "definition": "City of address of committee to which contribution was made",
-      "published": true,
-      "source": "As reported to North Carolina State Board of Elections on CRO-2100A Statement of Organization - Candidate Committee Field b. Associated with ID Number. [will add more more committee types]"
-    },
-    {
-      "name": "Committee State",
-      "definition": "State of address of committee to which contribution was made",
-      "published": true,
-      "source": "As reported to North Carolina State Board of Elections on CRO-2100A Statement of Organization - Candidate Committee Field b. Associated with ID Number. [will add more more committee types]"
-    },
-    {
       "name": "Amount",
-      "definition": "Value of contribution in dollars",
-      "published": true,
-      "source": "North Carolina State Board of Elections form CRO-1210 Contributions from Individuals field k"
+      "definition": "Value of contribution in dollars. Dashboard displays sum of amounts that match filter criteria for a Contributor ID.",
+      "source": "Reported by committee to NC State Board of Elections on Form CRO-1210 Contributions from Individuals field k Amount, CRO 1220 Contributions from Political Party Committees field h Amount, or CRO 1230 Contributions from Other Political Committees field j Amount."
     },
     {
-      "name": "Name",
-      "definition": "First and last name of individual, name of committee, or name of business",
-      "published": true,
-      "source": "Reported by committee to North Carolina State Board of Elections on Form CRO-1210 Contributions from Individuals Field 3a Contributor Information [will expand to include other relevant forms]."
+      "name": "Candidate Name",
+      "definition": "Full name of candidate. \"[An individual who has filed either a notice of candidacy for public office or a petition requesting to be a candidate. It also refers to an individual who has been certified as a nominee of a political party for a vacancy or has qualified by an authorized means as a candidate. An individual is also considered a candidate if he or she has made a public announcement of a definite intent to run for public office in a particular election. An individual is also considered a candidate even if he or she has not met any of the above criteria, but has received funds, made payments, or consented for anyone else to receive funds or transfer anything of value for the purpose of bringing about that individual’s nomination or election to office.\" (Campaign Finance Manual version 12.19 https://s3.amazonaws.com/dl.ncsbe.gov/Campaign_Finance/Campaign%20Finance%20Manual%20Version%2012.19.pdf)",
+      "source": "Reported to NC State Board of Elections on CRO-2100A Statement of Organization - Candidate Committee Field 2a Full name"
     },
     {
       "name": "Contributor City",
       "definition": "City of contributor's address",
-      "published": true,
-      "source": "Reported by committee to North Carolina State Board of Elections on Form CRO-1210 Contributions from Individuals Field 3a Contributor Information [will expand to include other relevant forms]."
+      "source": "Reported by committee to NC State Board of Elections in field 3a Contributor Information of Form CRO-1210 Contributions from Individuals,  CRO 1220 Contributions from Political Party Committees field b Comments, or CRO 1230 Contributions from Other Political Committees."
+    },
+    {
+      "name": "Committee Name",
+      "definition": "Name of committee to which contribution was made. Name associated with committee SBOE-ID, the unique ID the Board of Elections assigns to each committee.",
+      "source": "Reported by committee to NC State Board of Elections in Field 1 Committee Full Name (and Fund if applicable) of Form CRO-1210 Contributions from Individuals, CRO 1220 Contributions from Political Party Committees, or CRO 1230 Contributions from Other Political Committees."
+    },
+    {
+      "name": "Contribution Date",
+      "definition": "Date on which the contribution was received by the committee",
+      "source": "Reported by committee to NC State Board of Elections on Form CRO 1210 Contributions from Individuals field j Date, CRO 1220 Contributions from Political Party Committees field g Date, or CRO 1230 Contributions from Other Political Committees field i Date."
+    },
+    {
+      "name": "Employed Name or Specific Field",
+      "definition": "Name of contributor's employer. \"Committees must report the principal occupation of the contributor on the date the contribution is made. See N.C.G.S. § 163-278.11(a)(1). A committee fulfills this requirement by disclosing the contributor’s “job title or profession” and “employer’s name or employer’s specific field of business activity.”\" (Campaign Finance Manual version 12.19 https://s3.amazonaws.com/dl.ncsbe.gov/Campaign_Finance/Campaign%20Finance%20Manual%20Version%2012.19.pdf)",
+      "source": "Reported by committee to NC State Board of Elections in Field 3c Employer's Name/Specific Field on Form CRO-1210 Contributions from Individuals. "
+    },
+    {
+      "name": "Form of Payment",
+      "definition": "Financial instrument used to make the contribution.",
+      "source": "Reported by committee to NC State Board of Elections on Form CRO-1210 Contributions from Individuals field h Form of Payment, CRO 1220 Contributions from Political Party Committees field e Form of Payment Code, or CRO 1230 Contributions from Other Political Committees field g Form of Payment OR Form of Payment entered on Receipt Information screen of Remote Filing Software."
+    },
+    {
+      "name": "Jurisdiction",
+      "definition": "Unit of Government",
+      "source": "Reported to NC State Board of Elections on CRO-2100A Statement of Organization - Candidate Committee Field 2i Jurisdiction" 
+    },
+    {
+      "name": "Contributor Name",
+      "definition": "First and last name of individual, name of committee, or name of business",
+      "source": "Reported by committee to NC State Board of Elections in field 3a Contributor Information of Form CRO-1210 Contributions from Individuals,  CRO 1220 Contributions from Political Party Committees field b Comments, or CRO 1230 Contributions from Other Political Committees. "
+    },
+    {
+      "name": "Office Sought",
+      "definition": "Public office sought by a candidate",
+      "source": "Reported to NC State Board of Elections on CRO-2100A Statement of Organization - Candidate Committee Field 2g Office Sought."
+    },
+    {
+      "name": "Party",
+      "definition": "A political party organized and operating in North Carolina",
+      "source": "Reported to NC State Board of Elections on CRO-2100A Statement of Organization - Candidate Committee Field 2f Party affiliation."
+    },
+    {
+      "name": "Profession or Job Title",
+      "definition": "Contributor's profession. \"Committees must report the principal occupation of the contributor on the date the contribution is made. See N.C.G.S. § 163-278.11(a)(1). A committee fulfills this requirement by disclosing the contributor’s “job title or profession” and “employer’s name or employer’s specific field of business activity.”\" (Campaign Finance Manual version 12.19 https://s3.amazonaws.com/dl.ncsbe.gov/Campaign_Finance/Campaign%20Finance%20Manual%20Version%2012.19.pdf)",
+      "source": "Reported by committee to NC State Board of Elections in Field 3b Job title / Profession on Form CRO-1210 Contributions from Individuals "
+    },
+    {
+      "name": "Comment",
+      "definition": "Purpose of expenditure or comment made about contribution or other transaction.",
+      "source": "Reported by committee to NC State Board of Elections on Form  CRO-1210 Contributions from Individuals field d Comments, CRO 1220 Contributions from Political Party.  Committees field b Comments, or CRO 1230 Contributions from Other Political Committees field d Comments"
     },
     {
       "name": "Contributor State",
       "definition": "State of contributor's address",
-      "published": true,
-      "source": "Reported by committee to North Carolina State Board of Elections on Form CRO-1210 Contributions from Individuals Field 3a Contributor Information [will expand to include other relevant forms]."
+      "source": "Reported by committee to NC State Board of Elections in field 3a Contributor Information of Form CRO-1210 Contributions from Individuals,  CRO 1220 Contributions from Political Party Committees field b Comments, or CRO 1230 Contributions from Other Political Committees. "
+    },
+    {
+      "name": "Transaction Type",
+      "definition": "A set of categories that includes both types of contributions and types of contributors.",
+      "source": "Coded by State Board of Elections based on form received."
     }
   ]
 }

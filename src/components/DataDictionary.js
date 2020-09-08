@@ -15,18 +15,23 @@ const DataDictionary = () => {
             <th scope="col">Source</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody style={{ verticalAlign: 'top', overflowWrap: 'break-word' }}>
           {dictionary
-            .filter(({ published }) => published)
             .sort((a, b) => {
               const nameA = a.name.toUpperCase()
               const nameB = b.name.toUpperCase()
-              return nameA - nameB
+              if (nameA > nameB) {
+                return 1
+              } else if (nameA < nameB) {
+                return -1
+              } else {
+                return 0
+              }
             })
             .map(({ name, definition, source }) => (
               <tr key={name}>
                 <th scope="row">{name}</th>
-                <td>{definition}</td>
+                <td style={{ maxWidth: '400px' }}>{definition}</td>
                 <td>{source}</td>
               </tr>
             ))}

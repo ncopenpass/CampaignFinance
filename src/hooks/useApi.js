@@ -2,11 +2,20 @@ import { useCallback } from 'react'
 
 export const useApi = () => {
   const getDataAndCount = useCallback(async (url) => {
-    // consumers of this function should surround calls in a try catch block
-    // this function does NOT catch its own errors
-    const response = await fetch(url)
-    const { data, count } = await response.json()
-    return { data, count }
+    try {
+      const res = await fetch(url)
+      // fetch will almost never throw an error 🤬
+      // so we need to check the status code and throw the error ourselves
+      if (res.status >= 200 && res.status <= 299) {
+        const { data, count } = await res.json()
+        return { data, count }
+      } else {
+        throw Error(res.statusText)
+      }
+    } catch (e) {
+      // catch network related errors here
+      throw e
+    }
   }, [])
 
   return {

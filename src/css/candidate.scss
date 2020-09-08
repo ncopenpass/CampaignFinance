@@ -43,3 +43,20 @@
   margin-left: 5px;
   font-weight: bold;
 }
+
+.table-label {
+  position: absolute;
+  bottom: 0;
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.csv-download-button {
+  margin-top: 15px;
+  float: right;
+}
+
+.csv-download-link {
+  color: white;
+  text-decoration: none;
+}

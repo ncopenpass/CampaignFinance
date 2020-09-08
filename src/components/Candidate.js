@@ -1,6 +1,6 @@
 import React, { useEffect, useCallback } from 'react'
 import { useParams } from 'react-router-dom'
-import { Grid, GridContainer } from '@trussworks/react-uswds'
+import { Grid, GridContainer, Button } from '@trussworks/react-uswds'
 import NumberFormat from 'react-number-format'
 
 import { useCandidate, useTableColumns } from '../hooks'
@@ -20,6 +20,7 @@ const Candidate = () => {
     contributionOffset,
     fetchInitialSearchData,
     fetchContributions,
+    fetchContributionsCsv,
   } = useCandidate()
 
   useEffect(() => {
@@ -131,6 +132,20 @@ const Candidate = () => {
                 prefix="$"
               />
             </p>
+          </Grid>
+        </Grid>
+        <Grid row>
+          <Grid col>
+            <p className="table-label">Donors</p>
+          </Grid>
+          <Grid col>
+            <Button
+              className="csv-download-button"
+              type="button"
+              onClick={() => fetchContributionsCsv({ candidateId })}
+            >
+              Download Results
+            </Button>
           </Grid>
         </Grid>
         <Grid row>
