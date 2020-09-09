@@ -14,36 +14,38 @@ const Footer = () => {
     <FooterComponent
       primary={
         <div className="usa-footer__primary-container grid-row">
-          <div className="mobile-lg:grid-col-8">
-            <FooterNav
-              links={[
-                <a className="usa-footer__primary-link" href="/">
-                  Terms of Use
-                </a>,
-                <a className="usa-footer__primary-link" href="/">
-                  Sitemap
-                </a>,
-                <a
-                  className="usa-footer__primary-link"
-                  href={PRIVACY_POLICY_ROUTE}
-                >
-                  Privacy Policy
-                </a>,
-                <a
-                  className="usa-footer__primary-link"
-                  href="https://forms.gle/5c4dmuTPVCznSB1s8"
-                >
-                  Share Feedback
-                </a>,
-                <a
-                  className="usa-footer__primary-link"
-                  href="https://github.com/ncopenpass/CampaignFinance"
-                >
-                  GitHub
-                </a>,
-              ]}
-              size="slim"
-            />
+          <div className="grid-col-12 mobile-lg:grid-col-12">
+            <div className="footer-nav">
+              <FooterNav
+                links={[
+                  <a className="usa-footer__primary-link" href="/">
+                    Terms of Use
+                  </a>,
+                  <a className="usa-footer__primary-link" href="/">
+                    Sitemap
+                  </a>,
+                  <a
+                    className="usa-footer__primary-link"
+                    href={PRIVACY_POLICY_ROUTE}
+                  >
+                    Privacy Policy
+                  </a>,
+                  <a
+                    className="usa-footer__primary-link"
+                    href="https://forms.gle/5c4dmuTPVCznSB1s8"
+                  >
+                    Share Feedback
+                  </a>,
+                  <a
+                    className="usa-footer__primary-link"
+                    href="https://github.com/ncopenpass/CampaignFinance"
+                  >
+                    GitHub
+                  </a>,
+                ]}
+                size="slim"
+              />
+            </div>
           </div>
           {/*
           <div className="tablet:grid-col-4">
