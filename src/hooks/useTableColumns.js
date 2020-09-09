@@ -1,4 +1,7 @@
-import { useMemo } from 'react'
+import React, { useMemo } from 'react'
+import { Link } from 'react-router-dom'
+
+const CANDIDATE_URL = '/candidate/'
 
 export const useTableColumns = () => {
   const contributorColumns = useMemo(
@@ -31,7 +34,12 @@ export const useTableColumns = () => {
     () => [
       {
         Header: 'Name',
-        accessor: 'candidate_full_name',
+        accessor: ({ candidate_full_name, committee_sboe_id }) => (
+          <Link to={CANDIDATE_URL + committee_sboe_id}>
+            {' '}
+            {candidate_full_name}
+          </Link>
+        ),
       },
       {
         Header: 'Party',

@@ -29,6 +29,7 @@ const SearchResults = React.memo(() => {
     fetchContributors,
     fetchInitialSearchData,
   } = useSearch()
+
   const { contributorColumns, candidateColumns } = useTableColumns()
 
   useEffect(() => {
