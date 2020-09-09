@@ -6,7 +6,7 @@ const { getClient } = require('../db')
 
 const DIRECTORY = process.argv[2] || './'
 
-const tables = ['contributors', 'contributions']
+const tables = ['contributors', 'contributions', 'committees']
 
 const streamToFile = (client, table = '') =>
   new Promise((resolve, reject) => {
