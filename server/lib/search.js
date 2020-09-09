@@ -25,9 +25,12 @@ const searchContributors = async (
   try {
     client = await getClient()
     await client.query('select set_limit($1)', [trigramLimit])
+    // searches by full name or the first word of the name
+    // because of data integrity, we can't guarantee the first split string is the first name
     const results = await client.query(
       `select *, count(*) over() as full_count, similarity(name, $1) as sml
       from contributors where name % $1
+        or split_part(name, ' ', 1) % $1
       order by sml
       limit $2 offset $3`,
       [name, limit, offset]
