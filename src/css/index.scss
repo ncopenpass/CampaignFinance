@@ -4,7 +4,26 @@
 /* GLOBAL STYLES */
 body {
   background-color: #eff3fe;
+  min-height: 100%;
 }
+
+h1 {
+  text-align: center;
+}
+
+p {
+  font-size: 20px;
+}
+
+a {
+  color: #3C64B1;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #9C9C9C;
+}
+
 
 /* HEADER */
 .usa-header {
@@ -60,3 +79,10 @@ body {
 .report-btn {
   background-color: #8F110E;
 }
+
+/* FOOTER */
+.usa-footer {
+  position: relative;
+  bottom: -79px;
+}
+

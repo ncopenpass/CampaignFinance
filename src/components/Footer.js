@@ -39,12 +39,13 @@ const Footer = () => {
                   className="usa-footer__primary-link"
                   href="https://github.com/ncopenpass/CampaignFinance"
                 >
-                  Github
+                  GitHub
                 </a>,
               ]}
               size="slim"
             />
           </div>
+          {/*
           <div className="tablet:grid-col-4">
             <Address
               items={[
@@ -58,30 +59,31 @@ const Footer = () => {
               slim
             />
           </div>
+            */}
         </div>
       }
-      returnToTop={
-        <div className="grid-container usa-footer__return-to-top">
-          <Button type="button" unstyled>
-            Return to top
-          </Button>
-        </div>
-      }
-      secondary={
-        <Logo
-          heading={<h3 className="usa-footer__logo-heading">OpenNC</h3>}
-          // image={
-          //   <img
-          //     alt="img alt text"
-          //     className="usa-footer__logo-img"
-          //     src="static/media/logo-img.c73294fe.png"
-          //   />
-          // }
-          slim
-        />
-      }
-      size="slim"
+      // returnToTop={
+      //   <div className="grid-container usa-footer__return-to-top">
+      //     <Button type="button" unstyled>
+      //       Return to top
+      //     </Button>
+      //   </div>
+      // }
+      //secondary={
+      // <Logo
+      //heading={<h3 className="usa-footer__logo-heading"><a href="">OpenNC</a></h3>}
+      // image={
+      //   <img
+      //     alt="img alt text"
+      //     className="usa-footer__logo-img"
+      //     src="static/media/logo-img.c73294fe.png"
+      //   />
+      // }
+      //slim
     />
+    //}
+    //size="slim"
+    ///>
   )
 }
 
