@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 import { Grid, GridContainer, Button } from '@trussworks/react-uswds'
 import NumberFormat from 'react-number-format'
 
@@ -12,6 +12,15 @@ import ReportError from './ReportError'
 
 const Candidate = () => {
   let { candidateId } = useParams()
+  const history = useHistory()
+
+  const handleBackLink = useCallback(
+    (e) => {
+      e.preventDefault()
+      history.goBack()
+    },
+    [history]
+  )
 
   const {
     candidate,
@@ -72,8 +81,9 @@ const Candidate = () => {
       <GridContainer>
         <Grid row>
           <Grid col>
-            {/* Placeholder value for href */}
-            <a href="/">Back to search results</a>
+            <span className="candidate-back-link" onClick={handleBackLink}>
+              Back to search results
+            </span>
           </Grid>
         </Grid>
         <Grid row>

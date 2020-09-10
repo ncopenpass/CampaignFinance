@@ -1,5 +1,5 @@
 .container {
-  background-color: #EFF3FE;
+  background-color: #eff3fe;
   padding-top: 50px;
   margin-top: 0;
 }
@@ -60,4 +60,10 @@
 .csv-download-link {
   color: white;
   text-decoration: none;
+}
+
+.candidate-back-link {
+  cursor: pointer;
+  color: blue;
+  text-decoration: underline;
 }
