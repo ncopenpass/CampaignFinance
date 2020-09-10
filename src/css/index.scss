@@ -2,13 +2,49 @@
 @import '~@trussworks/react-uswds/lib/uswds.css';
 
 /* GLOBAL STYLES */
-body {
-  background-color: #eff3fe;
+#root {
+  min-height: 100vh;
+  overflow: hidden;
+  display: block;
+  position: relative;
+  padding-bottom: 100px;
 }
+
+html, body {
+  background-color: #eff3fe;
+  height: 100%;
+  position: relative;
+}
+
+h1 {
+  text-align: center;
+}
+
+p {
+  font-size: 1em;
+}
+
+a {
+  color: #3C64B1;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #9C9C9C;
+}
+
 
 /* HEADER */
 .usa-header {
   background-color: #fff;
+}
+
+.usa-nav__primary .usa-nav__primary-item a {
+  font-size: 1em;
+}
+
+.usa-menu-btn {
+  margin-left: auto;
 }
 
 /* SEARCH PAGE */
@@ -19,11 +55,7 @@ body {
 
 .search-header {
   text-align: center;
-  font-size: 50px;
-  // position: absolute;
-  // top: 50%;
-  // left: 50%;
-  // transform: translate(-50%, -50%);
+  font-size: 3em;
 }
 
 .home-search {
@@ -54,4 +86,21 @@ body {
   .search-btn {
     margin: 5px;
   }
+}
+
+/* REPORT ERROR MODAL + BTN */
+.report-btn {
+  background-color: #8F110E;
+}
+
+/* FOOTER */
+.usa-footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  
+}
+
+.footer-nav {
+  display: flex;
 }

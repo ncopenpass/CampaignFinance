@@ -6,7 +6,7 @@ import {
   Title,
 } from '@trussworks/react-uswds'
 
-import { DEFAULT_ROUTE, DATA_DICTIONARY_ROUTE } from '../constants'
+import { DEFAULT_ROUTE, DATA_DICTIONARY_ROUTE, ABOUT_ROUTE } from '../constants'
 
 const Header = () => {
   return (
@@ -15,7 +15,9 @@ const Header = () => {
       <HeaderComponent basic>
         <div className="usa-nav-container">
           <div className="usa-navbar">
-            <Title>Campaign Finance</Title>
+            <a href={DEFAULT_ROUTE}>
+              <Title>Campaign Finance</Title>
+            </a>
             <NavMenuButton label="Menu" onClick={function noRefCheck() {}} />
           </div>
           <PrimaryNav
@@ -23,7 +25,7 @@ const Header = () => {
               <a key="search" className="usa-nav__link" href={DEFAULT_ROUTE}>
                 <span>Search</span>
               </a>,
-              <a key="about" className="usa-nav__link" href={DEFAULT_ROUTE}>
+              <a key="about" className="usa-nav__link" href={ABOUT_ROUTE}>
                 <span>About</span>
               </a>,
               <a
