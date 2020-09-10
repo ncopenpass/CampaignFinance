@@ -24,7 +24,7 @@ function SelectColumnFilter({
   return (
     <Select
       onChange={(value, action) => {
-        setFilter(value.value || undefined)
+        setFilter(value?.value || undefined)
       }}
       isMulti={true}
       options={options}
