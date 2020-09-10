@@ -3,11 +3,17 @@
 
 /* GLOBAL STYLES */
 #root {
-  padding-bottom: 60px;
+  min-height: 100vh;
+  overflow: hidden;
+  display: block;
+  position: relative;
+  padding-bottom: 100px;
 }
 
-body {
+html, body {
   background-color: #eff3fe;
+  height: 100%;
+  position: relative;
 }
 
 h1 {
@@ -90,9 +96,9 @@ a:hover {
 /* FOOTER */
 .usa-footer {
   position: absolute;
-  left: 0;
   bottom: 0;
-  right: 0;
+  width: 100%;
+  
 }
 
 .footer-nav {
