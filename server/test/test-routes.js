@@ -92,6 +92,11 @@ const expectedContributionKeys = [
   'transaction_type',
 ]
 
+// Combine contributor and contribution fields and remove duplicates
+const expectedContributorContributionsKeys = [
+  ...new Set([...expectedContributionKeys, ...expectedContributorKeys]),
+]
+
 describe('GET /status', function () {
   it('it should have status 200 and online status', async function () {
     try {
@@ -205,9 +210,9 @@ describe('GET /api/candidate/:ncsbeID/contributions', function () {
     )
     response.body.data[0].should.be
       .an('object')
-      .that.has.all.keys(expectedContributionKeys)
+      .that.has.all.keys(expectedContributorContributionsKeys)
     Object.keys(response.body.data[0]).length.should.equal(
-      expectedContributionKeys.length
+      expectedContributorContributionsKeys.length
     )
   })
 })
@@ -234,7 +239,7 @@ describe('GET /api/candidate/:ncsbeID/contributions CSV download', function () {
       .split('\n')[0]
       .split(',')
       .map((item) => item.replace(/"/g, ''))
-      .should.deep.equalInAnyOrder(expectedContributionKeys)
+      .should.deep.equalInAnyOrder(expectedContributorContributionsKeys)
   })
 })
 
