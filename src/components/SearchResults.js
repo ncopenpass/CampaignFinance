@@ -9,8 +9,6 @@ import { API_BATCH_SIZE } from '../constants'
 import SearchBar from './SearchBar'
 import SearchResultTable from './SearchResultTable'
 
-import ReportError from './ReportError'
-
 const SearchBarContainer = styled.div`
   padding: 20px 0px;
 `
