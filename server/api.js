@@ -8,6 +8,7 @@ const {
   getCandidateSummary,
   getCandidateContributions,
   getCandidate,
+  getCandidateContributionsForDownload,
 } = require('./lib/queries')
 const { getClient } = require('./db')
 
@@ -57,6 +58,14 @@ const apiReprContribution = (row) => {
   }
 }
 
+// the combined view for contributor + contributions
+const apiReprContributorContributions = (row) => {
+  return {
+    ...apiReprContributor(row),
+    ...apiReprContribution(row),
+  }
+}
+
 const handleError = (error, res) => {
   console.error(error)
   res.status(500)
@@ -76,10 +85,11 @@ const handleError = (error, res) => {
  * @param {import('express').Response} res
  */
 const sendCSV = (data, filename, res) => {
+  console.log('filename', sanitize(filename))
   res.setHeader('Content-type', 'text/csv')
   res.setHeader(
     'Content-disposition',
-    `attachment; filename=${sanitize(filename)}`
+    `attachment; filename="${sanitize(filename)}"`
   )
 
   const fields = Object.keys(data[0])
@@ -193,16 +203,17 @@ api.get('/candidate/:ncsbeID/contributions', async (req, res) => {
       ])
 
       return res.send({
-        data: contributions.rows.map(apiReprContribution),
+        data: contributions.rows.map(apiReprContributorContributions),
         count:
           contributions.rows.length > 0 ? contributions.rows[0].full_count : 0,
         summary,
       })
     } else {
-      const contributionsPromise = await getCandidateContributions({
+      const contributionsPromise = await getCandidateContributionsForDownload({
         ncsbeID,
         client,
       })
+
       const candidatePromise = await getCandidate(ncsbeID, client)
 
       const [contributions, candidate] = await Promise.all([
@@ -224,7 +235,7 @@ api.get('/candidate/:ncsbeID/contributions', async (req, res) => {
         : candidate.committee_name
 
       sendCSV(
-        contributions.rows.map(apiReprContribution),
+        contributions.rows.map(apiReprContributorContributions),
         `${candidateName.replace(/ /g, '_').toLowerCase()}_contributions.csv`,
         res
       )
