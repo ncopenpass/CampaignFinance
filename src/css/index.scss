@@ -2,9 +2,12 @@
 @import '~@trussworks/react-uswds/lib/uswds.css';
 
 /* GLOBAL STYLES */
+#root {
+  padding-bottom: 60px;
+}
+
 body {
   background-color: #eff3fe;
-  min-height: 100%;
 }
 
 h1 {
@@ -12,7 +15,7 @@ h1 {
 }
 
 p {
-  font-size: 20px;
+  font-size: 1em;
 }
 
 a {
@@ -28,11 +31,10 @@ a:hover {
 /* HEADER */
 .usa-header {
   background-color: #fff;
-  padding-bottom: 12px;
 }
 
 .usa-nav__primary .usa-nav__primary-item a {
-  font-size: 15px;
+  font-size: 1em;
 }
 
 /* SEARCH PAGE */
@@ -43,11 +45,7 @@ a:hover {
 
 .search-header {
   text-align: center;
-  font-size: 50px;
-  // position: absolute;
-  // top: 50%;
-  // left: 50%;
-  // transform: translate(-50%, -50%);
+  font-size: 3em;
 }
 
 .home-search {
@@ -87,8 +85,10 @@ a:hover {
 
 /* FOOTER */
 .usa-footer {
-  position: relative;
-  bottom: -108px;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  right: 0;
 }
 
 .footer-nav {
