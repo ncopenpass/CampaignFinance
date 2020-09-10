@@ -57,9 +57,11 @@ const searchCommittees = async (
   name,
   offset = 0,
   limit = 50,
-  trigramLimit = 0.6
+  trigramLimit = 0.6,
+  sort = 'first_last_sml'
 ) => {
   let client = null
+  const order = sort.startsWith('-') ? `${sort} DESC` : sort
   try {
     client = await getClient()
     await client.query('select set_limit($1)', [trigramLimit])
@@ -72,9 +74,9 @@ const searchCommittees = async (
       from committees
         where
           candidate_full_name % $1 OR candidate_last_name % $1
-        order by first_last_sml
+        order by $4
         limit $2 offset $3`,
-      [name, limit, offset]
+      [name, limit, offset, order]
     )
 
     return {
