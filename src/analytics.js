@@ -1,10 +1,10 @@
 // Check if browser supports Do Not Track flag
 // Also checks if in a production or dev environment.  Disabled analytics in dev.
+
 if (
-  (window.doNotTrack ||
-    navigator.doNotTrack ||
-    navigator.msDoNotTrack ||
-    'msTrackingProtectionEnabled' in window.external) &&
+  (window.doNotTrack !== undefined ||
+    navigator.doNotTrack !== undefined ||
+    navigator.msDoNotTrack !== undefined) &&
   process.env.NODE_ENV === 'production'
 ) {
   // Check if browser Do Not Track flag is enabled
@@ -12,9 +12,18 @@ if (
     window.doNotTrack !== '1' &&
     navigator.doNotTrack !== 'yes' &&
     navigator.doNotTrack !== '1' &&
-    navigator.msDoNotTrack !== '1' &&
-    !window.external.msTrackingProtectionEnabled()
+    navigator.msDoNotTrack !== '1'
   ) {
+    // Enable Analytics if Do Not Track flag is not enabled
+    enableAnalytics()
+  }
+} else if (window.external !== undefined) {
+  if (
+    'msTrackingProtectionEnabled' in window.external &&
+    !window.external.msTrackingProtectionEnabled() &&
+    process.env.NODE_ENV === 'production'
+  ) {
+    // MS Browser-Specific
     // Enable Analytics if Do Not Track flag is not enabled
     enableAnalytics()
   }
