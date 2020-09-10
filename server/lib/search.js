@@ -61,7 +61,10 @@ const searchCommittees = async (
   sort = 'first_last_sml'
 ) => {
   let client = null
-  const order = sort.startsWith('-') ? `${sort} DESC` : sort
+  let order = ['first_last_sml', '-first_last_sml'].includes(sort)
+    ? sort
+    : 'first_last_sml'
+  order = order.startsWith('-') ? `${sort} DESC` : sort
   try {
     client = await getClient()
     await client.query('select set_limit($1)', [trigramLimit])
