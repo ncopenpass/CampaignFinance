@@ -75,7 +75,7 @@ const Candidate = () => {
               Placeholder value for Last Contest and Associated Candidate PAC until we have that data 
               Placeholder value for href
             */}
-            <p className="candidate-prop">
+            {/* <p className="candidate-prop">
               <span className="candidate-prop-label">Last Contest:</span>
               <a href="/">Gubernatorial Election 2020</a>
             </p>
@@ -84,7 +84,7 @@ const Candidate = () => {
                 Associated Candidate PAC:
               </span>
               Cooper for North Carolina
-            </p>
+            </p> */}
           </Grid>
           <Grid col>
             <p className="summary-stat">
@@ -125,6 +125,27 @@ const Candidate = () => {
               <NumberFormat
                 className="summary-num"
                 value={summary.max}
+                displayType="text"
+                decimalScale={2}
+                fixedDecimalScale={true}
+                thousandSeparator={true}
+                prefix="$"
+              />
+            </p>
+            <p className="summary-stat">
+              Total Number of Aggregated Contributions:
+              <NumberFormat
+                className="summary-num"
+                value={summary.aggregated_contributions_count}
+                displayType="text"
+                thousandSeparator={true}
+              />
+            </p>
+            <p className="summary-stat">
+              Sum of Aggregated Contributions:
+              <NumberFormat
+                className="summary-num"
+                value={summary.aggregated_contributions_sum}
                 displayType="text"
                 decimalScale={2}
                 fixedDecimalScale={true}
