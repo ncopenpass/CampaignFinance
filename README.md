@@ -30,7 +30,7 @@ When this project is completed, the dashboard will provide both a comprehensive 
 
 While this data is currently available through the N.C. State Board of Elections [website](https://www.ncsbe.gov/Campaign-Finance), it is difficult to get answers to basic questions people might have about campaign finance here, such as: Who are this candidate’s biggest contributors? What industries give the most to North Carolina politicians? During the last election cycle, how much did a candidate spend on certain expenses, such as advertising?
 
-See this [presentation](https://drive.google.com/open?id=1fS92lf3sPVvYgB7vY862ywsACwfvLoxP) for a more detailed walk-through of the current SBE site and improvements this campaign finance Dashboard envisions.
+See this [presentation](https://docs.google.com/presentation/d/1rEvPFsFKe-BWegkdJ1EDlSEqZF57H5UcaxarfxKDTS4/edit?usp=sharing) for a more detailed walk-through of the current SBE site and improvements this campaign finance Dashboard envisions.
 
 There are three models that we can look to as instructive about the kind of dashboard we want to build. They are [Illinois Sunshine](https://illinoissunshine.org/), the Virginia Public Access Project ([VPAP.org](https://www.vpap.org/)) and the National Institute on Money in Politics ([FollowtheMoney.org](https://www.followthemoney.org/)).
 
