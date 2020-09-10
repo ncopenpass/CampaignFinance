@@ -15,13 +15,27 @@
  * @returns {Promise<CandidateSummary>}
  */
 const getCandidateSummary = async (ncsbeID, client) => {
+  // Post MVP we should probably find a way to speed this up.
+  // console.time("getCandidateSummary")
   const summary = await client.query(
-    `select sum(amount), avg(amount), max(amount), count(*)::int
+    `select sum(amount),
+       avg(amount),
+       max(amount),
+       count(*)::int,
+       (select count(*)
         from contributions
-        where committee_sboe_id = $1;`,
+        where contributor_id IS NULl
+          and committee_sboe_id = $1) as aggregated_contributions_count,
+       (select sum(amount)
+        from contributions
+        where contributor_id IS NULL
+          and committee_sboe_id = $1) as aggregated_contributions_sum
+      from contributions
+      where committee_sboe_id = $1;
+`,
     [ncsbeID]
   )
-
+  // console.timeEnd("getCandidateSummary")
   return summary.rows.length > 0 ? summary.rows[0] : {}
 }
 

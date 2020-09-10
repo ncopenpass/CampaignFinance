@@ -185,7 +185,14 @@ describe('GET /api/candidate/:ncsbeID/contributions', function () {
       `/api/candidate/${id}/contributions`
     )
 
-    const expectedSummaryKeys = ['sum', 'avg', 'max', 'count']
+    const expectedSummaryKeys = [
+      'sum',
+      'avg',
+      'max',
+      'count',
+      'aggregated_contributions_count',
+      'aggregated_contributions_sum',
+    ]
     response.status.should.equal(200)
     response.body.should.be
       .an('object')
