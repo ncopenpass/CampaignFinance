@@ -43,7 +43,7 @@ etl:
 	cd server && node bin/etl.js
 
 migrate-up:
-	sleep 10 && cd server && npm run migrate up
+	cd server && npm run migrate up
 
 migrate-up-windows:
 	cd server && npm run migrate-no-dot-env up
