@@ -10,7 +10,8 @@
   padding-bottom: 100px;
 }
 
-html, body {
+html,
+body {
   background-color: #eff3fe;
   height: 100%;
   position: relative;
@@ -25,14 +26,13 @@ p {
 }
 
 a {
-  color: #3C64B1;
+  color: #3c64b1;
   text-decoration: none;
 }
 
 a:hover {
-  color: #9C9C9C;
+  color: #9c9c9c;
 }
-
 
 /* HEADER */
 .usa-header {
@@ -90,13 +90,7 @@ a:hover {
 
 /* REPORT ERROR MODAL + BTN */
 .report-btn {
-  background-color: #8F110E;
-  float: right;
-  margin: 5px;
-}
-
-.report-btn:hover {
-  background-color: #6E110E;
+  background-color: #8f110e;
 }
 
 /* FOOTER */
@@ -104,7 +98,6 @@ a:hover {
   position: absolute;
   bottom: 0;
   width: 100%;
-  
 }
 
 .footer-nav {
