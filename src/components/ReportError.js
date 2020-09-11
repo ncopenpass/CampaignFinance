@@ -3,7 +3,11 @@ import { Button } from '@trussworks/react-uswds'
 
 const ReportError = () => {
   return (
-    <a href="https://forms.gle/iapwtS46F2Dys8Gs6" target="_blank">
+    <a
+      href="https://forms.gle/iapwtS46F2Dys8Gs6"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
       <Button type="button" className="report-btn">
         Report Error
       </Button>

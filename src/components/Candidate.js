@@ -8,6 +8,7 @@ import { API_BATCH_SIZE } from '../constants'
 import '../css/candidate.scss'
 
 import SearchResultTable from './SearchResultTable'
+import ReportError from './ReportError'
 
 const Candidate = () => {
   let { candidateId } = useParams()
@@ -167,6 +168,12 @@ const Candidate = () => {
             >
               Download Results
             </Button>
+          </Grid>
+        </Grid>
+        <Grid row>
+          <Grid col></Grid>
+          <Grid col>
+            <ReportError />
           </Grid>
         </Grid>
         <Grid row>
