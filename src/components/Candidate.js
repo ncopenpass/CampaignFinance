@@ -64,9 +64,7 @@ const Candidate = () => {
         </Grid>
         <Grid row>
           <Grid col>
-            <h1 className="candidate-name">
-              {candidate.candidate_first_last_name}
-            </h1>
+            <h1 className="candidate-name">{candidate.candidate_full_name}</h1>
             <p className="candidate-party">{candidate.party}</p>
             <p className="candidate-prop">
               <span className="candidate-prop-label">Contest:</span>
