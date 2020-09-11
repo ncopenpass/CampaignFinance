@@ -69,7 +69,7 @@ const Candidate = () => {
             </h1>
             <p className="candidate-party">{candidate.party}</p>
             <p className="candidate-prop">
-              <span className="candidate-prop-label">Current Office:</span>
+              <span className="candidate-prop-label">Contest:</span>
               {candidate.office}
             </p>
             {/* 
