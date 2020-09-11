@@ -20,7 +20,6 @@ const Candidate = () => {
     contributionOffset,
     fetchInitialSearchData,
     fetchContributions,
-    fetchContributionsCsv,
   } = useCandidate()
 
   useEffect(() => {
@@ -160,13 +159,16 @@ const Candidate = () => {
             <p className="table-label">Donors</p>
           </Grid>
           <Grid col>
-            <Button
-              className="csv-download-button"
-              type="button"
-              onClick={() => fetchContributionsCsv({ candidateId })}
+            <a
+              className="usa-button csv-download-button"
+              href={`${
+                process.env.NODE_ENV === 'production'
+                  ? ''
+                  : 'http://localhost:3001'
+              }/api/candidate/${candidateId}/contributions?toCSV=true`}
             >
               Download Results
-            </Button>
+            </a>
           </Grid>
         </Grid>
         <Grid row>
