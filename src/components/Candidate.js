@@ -157,7 +157,7 @@ const Candidate = () => {
         </Grid>
         <Grid row>
           <Grid col>
-            <p className="table-label">Donors</p>
+            <p className="table-label">Contributors</p>
           </Grid>
           <Grid col>
             <Button
