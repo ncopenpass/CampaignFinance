@@ -155,9 +155,6 @@ const Candidate = () => {
         </Grid>
         <Grid row>
           <Grid col>
-            <p className="table-label">Contributors</p>
-          </Grid>
-          <Grid col>
             <a
               className="usa-button csv-download-button"
               href={`${
@@ -171,7 +168,9 @@ const Candidate = () => {
           </Grid>
         </Grid>
         <Grid row>
-          <Grid col></Grid>
+          <Grid col>
+            <p className="table-label">Contributors</p>
+          </Grid>
           <Grid col>
             <ReportError />
           </Grid>
