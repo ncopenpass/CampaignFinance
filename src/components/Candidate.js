@@ -166,7 +166,6 @@ const Candidate = () => {
                   ? ''
                   : 'http://localhost:3001'
               }/api/candidate/${candidateId}/contributions?toCSV=true`}
-              target="_blank"
             >
               Download Results
             </a>
