@@ -153,8 +153,12 @@ const Candidate = () => {
             </p>
           </Grid>
         </Grid>
+        <Grid row></Grid>
         <Grid row>
-          <Grid col>
+          <Grid col={6} mobile={4}>
+            <p className="table-label">Contributors</p>
+          </Grid>
+          <Grid col={3} mobile={4}>
             <a
               className="usa-button csv-download-button"
               href={`${
@@ -166,12 +170,7 @@ const Candidate = () => {
               Download Results
             </a>
           </Grid>
-        </Grid>
-        <Grid row>
-          <Grid col>
-            <p className="table-label">Contributors</p>
-          </Grid>
-          <Grid col>
+          <Grid col={3} mobile={4}>
             <ReportError />
           </Grid>
         </Grid>

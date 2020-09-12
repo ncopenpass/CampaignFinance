@@ -92,7 +92,9 @@ a:hover {
 .report-btn {
   background-color: #8f110e;
   float: right;
-  margin: 5px;
+  margin-top: 15px;
+  grid-column: 2;
+  // margin: 5px;
 }
 
 .report-btn:hover {
