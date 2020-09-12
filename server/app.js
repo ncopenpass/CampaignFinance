@@ -16,6 +16,7 @@ const enforceSSL = (req, res, next) => {
   console.log('req.headers[host]', req.headers['host'])
   console.log('req.hostname', req.hostname)
   console.log('req.url', req.url)
+  console.log('req', req)
   if (req.protocol === 'http') {
     const host = req.headers['host'] ? req.headers['host'] : req.hostname
     return res.redirect('https://' + host + req.url)
