@@ -104,9 +104,6 @@ export default function Table({ columns, data }) {
                 }
               >
                 {column.render('Header')}
-                <div className="column-filter">
-                  {column.canFilter ? column.render('Filter') : null}
-                </div>
               </th>
             ))}
           </tr>
