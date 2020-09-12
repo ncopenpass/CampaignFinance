@@ -13,7 +13,7 @@ const enforceSSL = (req, res, next) => {
   const proto = req.headers['x-forwarded-proto']
   if (proto === 'http') {
     const host = req.headers['host'] ? req.headers['host'] : req.hostname
-    return res.redirect('https://' + host + req.url)
+    return res.redirect(301, 'https://' + host + req.url)
   }
   next()
 }
