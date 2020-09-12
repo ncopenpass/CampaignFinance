@@ -29,21 +29,41 @@ const Candidate = () => {
     }
   }, [candidateId, fetchInitialSearchData])
 
+  // Fetches the same page of contributions when user changes limit size
+  const fetchSameContributions = useCallback(
+    (limit = API_BATCH_SIZE) => {
+      fetchContributions({
+        candidateId,
+        limit: limit,
+        offset: contributionOffset,
+      })
+    },
+    [contributionOffset, fetchContributions, candidateId]
+  )
+
   // Fetch next batch of contributions for pagination
-  const fetchNextContributions = useCallback(() => {
-    fetchContributions({
-      candidateId,
-      offset: contributionOffset + API_BATCH_SIZE,
-    })
-  }, [contributionOffset, fetchContributions, candidateId])
+  const fetchNextContributions = useCallback(
+    (limit = API_BATCH_SIZE) => {
+      fetchContributions({
+        candidateId,
+        limit: limit,
+        offset: contributionOffset + limit,
+      })
+    },
+    [contributionOffset, fetchContributions, candidateId]
+  )
 
   // Fetch previous batch of contributions for pagination
-  const fetchPreviousContributions = useCallback(() => {
-    fetchContributions({
-      candidateId,
-      offset: contributionOffset - API_BATCH_SIZE,
-    })
-  }, [contributionOffset, candidateId, fetchContributions])
+  const fetchPreviousContributions = useCallback(
+    (limit = API_BATCH_SIZE) => {
+      fetchContributions({
+        candidateId,
+        limit: limit,
+        offset: contributionOffset - limit,
+      })
+    },
+    [contributionOffset, candidateId, fetchContributions]
+  )
 
   const { candidateContributionColumns } = useTableColumns()
 
@@ -179,6 +199,7 @@ const Candidate = () => {
               data={contributions}
               count={contributionCount}
               offset={contributionOffset}
+              fetchSame={fetchSameContributions}
               fetchNext={fetchNextContributions}
               fetchPrevious={fetchPreviousContributions}
               searchTerm={candidateId}

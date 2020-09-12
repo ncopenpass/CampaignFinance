@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from '@emotion/styled'
-import { Button } from '@trussworks/react-uswds'
+import { Button, Dropdown } from '@trussworks/react-uswds'
 
-import { API_BATCH_SIZE } from '../constants'
+import { useTablePagination } from '../hooks'
 
 import Table from './Table'
 
@@ -16,24 +16,46 @@ const SearchResultTable = ({
   data,
   count,
   offset,
+  fetchSame,
   fetchNext,
   fetchPrevious,
   searchTerm,
   searchType,
 }) => {
+  const { tableLimits } = useTablePagination()
+
+  const [apiLimit, setApiLimit] = useState(10)
+
+  useEffect(() => {
+    async function updateLimit() {
+      await fetchSame(apiLimit)
+    }
+    updateLimit()
+  }, [apiLimit, fetchSame])
+
   return (
     <>
       {count ? (
         <>
+          <Dropdown
+            value={apiLimit}
+            onChange={(e) => setApiLimit(e.currentTarget.value)}
+          >
+            {tableLimits.map(({ label, value }) => (
+              <option key={value} value={value}>
+                {label}
+              </option>
+            ))}
+          </Dropdown>
           <Table columns={columns} data={data} />
           <ResultsTableFooter>
             {`${offset + 1} - ${Math.min(
-              offset + API_BATCH_SIZE,
+              offset + apiLimit,
               count
             )} ${searchType} shown`}
             <div>
               <Button
-                onClick={fetchPrevious}
+                onClick={() => fetchPrevious(apiLimit)}
                 size="small"
                 outline
                 disabled={offset === 0}
@@ -41,11 +63,11 @@ const SearchResultTable = ({
                 Previous
               </Button>
               <Button
-                onClick={fetchNext}
+                onClick={() => fetchNext(apiLimit)}
                 style={{ marginRight: '0px' }}
                 size="small"
                 outline
-                disabled={offset + API_BATCH_SIZE >= count}
+                disabled={offset + apiLimit >= count}
               >
                 Next
               </Button>
