@@ -10,10 +10,9 @@ const bodyParser = require('body-parser')
  * @param {import('express').NextFunction} next
  */
 const enforceSSL = (req, res, next) => {
-  console.log(req)
-  if (req.protocol === 'http') {
-    res.redirect(301, 'https://' + req.hostname + req.url)
-    return
+  if (!req.secure) {
+    const host = req.headers['host'] ? req.headers['host'] : req.hostname
+    return res.redirect(301, 'https://' + host + req.url)
   }
   next()
 }
