@@ -91,6 +91,14 @@ a:hover {
 /* REPORT ERROR MODAL + BTN */
 .report-btn {
   background-color: #8f110e;
+  float: right;
+  margin-top: 15px;
+  grid-column: 2;
+  // margin: 5px;
+}
+
+.report-btn:hover {
+  background-color: #6E110E;
 }
 
 /* FOOTER */

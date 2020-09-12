@@ -77,7 +77,7 @@ export const useTableColumns = () => {
         accessor: 'date_occurred',
       },
       {
-        Header: 'Description',
+        Header: 'Purpose',
         accessor: 'purpose',
       },
     ],

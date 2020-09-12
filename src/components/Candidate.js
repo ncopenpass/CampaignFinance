@@ -8,6 +8,7 @@ import { API_BATCH_SIZE } from '../constants'
 import '../css/candidate.scss'
 
 import SearchResultTable from './SearchResultTable'
+import ReportError from './ReportError'
 
 const Candidate = () => {
   let { candidateId } = useParams()
@@ -62,12 +63,10 @@ const Candidate = () => {
         </Grid>
         <Grid row>
           <Grid col>
-            <h1 className="candidate-name">
-              {candidate.candidate_first_last_name}
-            </h1>
+            <h1 className="candidate-name">{candidate.candidate_full_name}</h1>
             <p className="candidate-party">{candidate.party}</p>
             <p className="candidate-prop">
-              <span className="candidate-prop-label">Current Office:</span>
+              <span className="candidate-prop-label">Contest:</span>
               {candidate.office}
             </p>
             {/* 
@@ -154,11 +153,13 @@ const Candidate = () => {
             </p>
           </Grid>
         </Grid>
-        <Grid row>
-          <Grid col>
-            <p className="table-label">Donors</p>
+        <Grid row></Grid>
+        <Grid row gap="sm">
+          <Grid col={7} mobile={{ col: 6 }}>
+            <p className="table-label">Contributors</p>
           </Grid>
-          <Grid col>
+          <Grid col={5} mobile={{ col: 6 }}>
+            <ReportError />
             <a
               className="usa-button csv-download-button"
               href={`${
