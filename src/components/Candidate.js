@@ -155,10 +155,10 @@ const Candidate = () => {
         </Grid>
         <Grid row></Grid>
         <Grid row gap="sm">
-          <Grid col={7} mobile={{ col: 2 }}>
+          <Grid col={7}>
             <p className="table-label">Contributors</p>
           </Grid>
-          <Grid col={3} mobile={{ col: 5 }}>
+          <Grid col="fill">
             <a
               className="usa-button csv-download-button"
               href={`${
@@ -170,7 +170,7 @@ const Candidate = () => {
               Download Results
             </a>
           </Grid>
-          <Grid col={2} mobile={{ col: 5 }}>
+          <Grid col="fill">
             <ReportError />
           </Grid>
         </Grid>
