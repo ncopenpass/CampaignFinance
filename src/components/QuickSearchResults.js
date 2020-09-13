@@ -53,19 +53,38 @@ const QuickSearchResults = React.memo(() => {
     }
   }, [searchTerm])
 
-  const fetchNextResults = useCallback(() => {
-    fetchQuickSearchData({
-      searchTerm,
-      offset: resultsOffset + API_BATCH_SIZE,
-    })
-  }, [resultsOffset, fetchQuickSearchData, searchTerm])
+  const fetchSameResults = useCallback(
+    (limit = API_BATCH_SIZE) => {
+      fetchQuickSearchData({
+        searchTerm,
+        limit: limit,
+        offset: resultsOffset,
+      })
+    },
+    [resultsOffset, fetchQuickSearchData, searchTerm]
+  )
 
-  const fetchPreviousResults = useCallback(() => {
-    fetchQuickSearchData({
-      searchTerm,
-      offset: resultsOffset - API_BATCH_SIZE,
-    })
-  }, [resultsOffset, searchTerm, fetchQuickSearchData])
+  const fetchNextResults = useCallback(
+    (limit = API_BATCH_SIZE) => {
+      fetchQuickSearchData({
+        searchTerm,
+        limit: limit,
+        offset: resultsOffset + limit,
+      })
+    },
+    [resultsOffset, fetchQuickSearchData, searchTerm]
+  )
+
+  const fetchPreviousResults = useCallback(
+    (limit = API_BATCH_SIZE) => {
+      fetchQuickSearchData({
+        searchTerm,
+        limit: limit,
+        offset: resultsOffset - limit,
+      })
+    },
+    [resultsOffset, searchTerm, fetchQuickSearchData]
+  )
 
   return (
     <GridContainer>
@@ -84,6 +103,7 @@ const QuickSearchResults = React.memo(() => {
             data={results}
             count={resultsCount}
             offset={resultsOffset}
+            fetchSame={fetchSameResults}
             fetchNext={fetchNextResults}
             fetchPrevious={fetchPreviousResults}
             searchTerm={ELECTION_YEAR}
