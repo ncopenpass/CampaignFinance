@@ -50,6 +50,7 @@ const searchContributors = async (
  * @param {string|number} offset
  * @param {string|number} limit
  * @param {string|number} trigramLimit
+ * @param {string} sort
  * @returns {Promise<SearchResult>}
  * @throws an error if the pg query or connection fails
  */
@@ -60,11 +61,18 @@ const searchCommittees = async (
   trigramLimit = 0.6,
   sort = 'first_last_sml'
 ) => {
+  console.log('sort', sort)
   let client = null
-  let order = ['first_last_sml', '-first_last_sml'].includes(sort)
+  let order = [
+    'candidate_full_name',
+    '-candidate_full_name',
+    'first_last_sml',
+    '-first_last_sml',
+  ].includes(sort)
     ? sort
     : 'first_last_sml'
   order = order.startsWith('-') ? `${sort} DESC` : sort
+  console.log('order', order)
   try {
     client = await getClient()
     await client.query('select set_limit($1)', [trigramLimit])
@@ -77,10 +85,11 @@ const searchCommittees = async (
       from committees
         where
           candidate_full_name % $1 OR candidate_last_name % $1
-        order by $4
-        limit $2 offset $3`,
-      [name, limit, offset, order]
+        order by $2
+        limit $3 offset $4`,
+      [name, order, limit, offset]
     )
+    console.log(results.rows.slice(0, 5).map((row) => row.candidate_full_name))
 
     return {
       data: results.rows,
