@@ -96,6 +96,17 @@ const searchCommittees = async (
           OR candidate_last_name % $1
           OR candidate_full_name ilike $4)
           ${partyFilter ? `AND party ilike \'%${partyFilter}%\'` : ''}
+          ${
+            nameFilter
+              ? `AND candidate_full_name ilike \'%${nameFilter}%\'`
+              : ''
+          }
+          ${
+            contestFilter
+              ? `AND (juris ilike \'%${contestFilter}%\'
+              OR office ilike \'%${contestFilter}%\')`
+              : ''
+          }
         order by ${order}
         limit $2 offset $3`,
       [name, limit, offset, nameILike]
