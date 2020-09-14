@@ -70,16 +70,18 @@ const searchCommittees = async (
   offset = 0,
   limit = 50,
   trigramLimit = 0.6,
-  sort = 'first_last_sml'
+  sort = 'first_last_sml',
+  nameFilter,
+  partyFilter,
+  contestFilter
 ) => {
-  console.log('sort', sort)
   let client = null
   let order = SUPPORTED_SORT_FIELDS.includes(sort) ? sort : 'first_last_sml'
   order = order.startsWith('-')
     ? `${order.replace('-', '')} DESC`
     : `${order} ASC`
+  const nameILike = `%${name}%`
   try {
-    const nameILike = `%${name}%`
     client = await getClient()
     await client.query('select set_limit($1)', [trigramLimit])
     const results = await client.query(
@@ -90,9 +92,10 @@ const searchCommittees = async (
         count(*) over() as full_count
       from committees
         where
-          candidate_full_name % $1
+          (candidate_full_name % $1
           OR candidate_last_name % $1
-          OR candidate_full_name ilike $4
+          OR candidate_full_name ilike $4)
+          ${partyFilter ? `AND party ilike \'%${partyFilter}%\'` : ''}
         order by ${order}
         limit $2 offset $3`,
       [name, limit, offset, nameILike]
