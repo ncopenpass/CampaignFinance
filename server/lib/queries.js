@@ -45,7 +45,6 @@ const getCandidateSummary = async (ncsbeID, client) => {
  * @param {string} args.ncsbeID
  * @param {Number|string} args.limit
  * @param {Number|string} args.offset
- * @param {boolean} args.asCSV
  * @param {import('pg').PoolClient} args.client
  * @returns {Promise<import('pg').QueryResult>}
  */
@@ -86,6 +85,44 @@ const getCandidateContributions = ({
 }
 
 /**
+ * Gets all contributors and contributions
+ * null contributor_id's are Aggregated Individual Contributions
+ * @param {Object} args
+ * @param {string} args.ncsbeID
+ * @param {import('pg').PoolClient} args.client
+ * @returns {Promise<import('pg').QueryResult>}
+ */
+const getCandidateContributionsForDownload = ({ ncsbeID, client }) => {
+  return client.query(
+    `select count(*) over () as full_count,
+       source_contribution_id,
+       contributor_id,
+       transaction_type,
+       committee_sboe_id,
+       report_name,
+       date_occurred,
+       account_code,
+       amount,
+       form_of_payment,
+       purpose,
+       candidate_or_referendum_name,
+       declaration,
+       id,
+       coalesce(name, 'Aggregated Individual Contribution') as name,
+       city,
+       state,
+       zip_code,
+       profession,
+       employer_name
+       from contributions
+              left outer join contributors c on contributions.contributor_id = c.id
+      where lower(contributions.committee_sboe_id) = lower($1)
+      `,
+    [ncsbeID]
+  )
+}
+
+/**
  *
  * @param {string} ncsbeID
  * @param {import('pg').PoolClient} client
@@ -104,4 +141,5 @@ module.exports = {
   getCandidateSummary,
   getCandidateContributions,
   getCandidate,
+  getCandidateContributionsForDownload,
 }
