@@ -7,7 +7,7 @@ import {
   Logo,
 } from '@trussworks/react-uswds'
 
-import { PRIVACY_POLICY_ROUTE } from '../constants'
+// import { PRIVACY_POLICY_ROUTE } from '../constants'
 
 const Footer = () => {
   return (
@@ -18,18 +18,17 @@ const Footer = () => {
             <div className="footer-nav">
               <FooterNav
                 links={[
-                  <a className="usa-footer__primary-link" href="/">
-                    Terms of Use
-                  </a>,
-                  <a className="usa-footer__primary-link" href="/">
-                    Sitemap
-                  </a>,
-                  <a
-                    className="usa-footer__primary-link"
-                    href={PRIVACY_POLICY_ROUTE}
-                  >
-                    Privacy Policy
-                  </a>,
+                  // HIDING TERMS OF USE AND PRIVACY POLICY UNTIL WE CONFIRM WE DON'T NEED THEM
+
+                  // <a className="usa-footer__primary-link" href="/">
+                  //   Terms of Use
+                  // </a>,
+                  // <a
+                  //   className="usa-footer__primary-link"
+                  //   href={PRIVACY_POLICY_ROUTE}
+                  // >
+                  //   Privacy Policy
+                  // </a>,
                   <a
                     className="usa-footer__primary-link"
                     href="https://forms.gle/5c4dmuTPVCznSB1s8"
