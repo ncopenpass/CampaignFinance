@@ -1,6 +1,13 @@
 //@ts-check
 const { getClient } = require('../db')
 
+const SUPPORTED_SORT_FIELDS = [
+  'candidate_full_name',
+  '-candidate_full_name',
+  'first_last_sml',
+  '-first_last_sml',
+]
+
 /**
  * @typedef {Object} SearchResult
  * @property {Array<any>} data
@@ -67,16 +74,10 @@ const searchCommittees = async (
 ) => {
   console.log('sort', sort)
   let client = null
-  let order = [
-    'candidate_full_name',
-    '-candidate_full_name',
-    'first_last_sml',
-    '-first_last_sml',
-  ].includes(sort)
-    ? sort
-    : 'first_last_sml'
-  order = order.startsWith('-') ? `${sort} DESC` : sort
-  console.log('order', order)
+  let order = SUPPORTED_SORT_FIELDS.includes(sort) ? sort : 'first_last_sml'
+  order = order.startsWith('-')
+    ? `${order.replace('-', '')} DESC`
+    : `${order} ASC`
   try {
     const nameILike = `%${name}%`
     client = await getClient()
@@ -92,11 +93,10 @@ const searchCommittees = async (
           candidate_full_name % $1
           OR candidate_last_name % $1
           OR candidate_full_name ilike $4
-        order by $5
+        order by ${order}
         limit $2 offset $3`,
-      [name, limit, offset, nameILike, order]
+      [name, limit, offset, nameILike]
     )
-    console.log(results.rows.slice(0, 5).map((row) => row.candidate_full_name))
 
     return {
       data: results.rows,
