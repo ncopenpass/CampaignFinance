@@ -106,7 +106,7 @@ api.get('/search/contributors/:name', async (req, res) => {
     const {
       offset = 0,
       limit = 50,
-      sortBy,
+      sortBy = 'sml',
       name: nameFilter,
       profession,
       cityState,

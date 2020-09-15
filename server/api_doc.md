@@ -10,7 +10,7 @@ Query Params (optional):
 
 - `offset` default value `0`
 - `limit` default value `50`
-- `sortBy`
+- `sortBy` default value `sml`
 - `name`
 - `profession`
 - `cityState`
