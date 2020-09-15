@@ -46,15 +46,13 @@ const searchContributors = async (
       `select *, count(*) over() as full_count, similarity(name, $1) as sml
       from contributors where name % $1
         or name ilike $4
-        ${nameFilter ? `AND name ilike \'%${nameFilter}%\'` : ''}
+        ${nameFilter ? `AND name ilike '%${nameFilter}%'` : ''}
         ${
-          professionFilter
-            ? `AND profession ilike \'%${professionFilter}%\'`
-            : ''
+          professionFilter ? `AND profession ilike '%${professionFilter}%'` : ''
         }
         ${
           cityStateFilter
-            ? `AND (city ilike \'%${cityStateFilter}%\' or state ilike \'%${cityStateFilter}%\')`
+            ? `AND (city ilike '%${cityStateFilter}%' or state ilike '%${cityStateFilter}%')`
             : ''
         }
       order by ${order}
