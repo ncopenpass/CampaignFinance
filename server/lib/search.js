@@ -62,6 +62,9 @@ const searchContributors = async (
  * @param {string|number} limit
  * @param {string|number} trigramLimit
  * @param {string} sort
+ * @param {string} nameFilter
+ * @param {string} partyFilter
+ * @param {string} contestFilter
  * @returns {Promise<SearchResult>}
  * @throws an error if the pg query or connection fails
  */
@@ -95,16 +98,12 @@ const searchCommittees = async (
           (candidate_full_name % $1
           OR candidate_last_name % $1
           OR candidate_full_name ilike $4)
-          ${partyFilter ? `AND party ilike \'%${partyFilter}%\'` : ''}
-          ${
-            nameFilter
-              ? `AND candidate_full_name ilike \'%${nameFilter}%\'`
-              : ''
-          }
+          ${partyFilter ? `AND party ilike '%${partyFilter}%'` : ''}
+          ${nameFilter ? `AND candidate_full_name ilike '%${nameFilter}%'` : ''}
           ${
             contestFilter
-              ? `AND (juris ilike \'%${contestFilter}%\'
-              OR office ilike \'%${contestFilter}%\')`
+              ? `AND (juris ilike '%${contestFilter}%'
+              OR office ilike '%${contestFilter}%')`
               : ''
           }
         order by ${order}
