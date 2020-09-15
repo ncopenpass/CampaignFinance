@@ -108,7 +108,6 @@ api.get('/search/contributors/:name', async (req, res) => {
       limit = 50,
       sortBy,
       name: nameFilter,
-      type,
       profession,
       cityState,
     } = req.query
@@ -121,7 +120,6 @@ api.get('/search/contributors/:name', async (req, res) => {
       TRIGRAM_LIMIT,
       sortBy,
       nameFilter,
-      type,
       profession,
       cityState
     )

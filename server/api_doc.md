@@ -10,6 +10,10 @@ Query Params (optional):
 
 - `offset` default value `0`
 - `limit` default value `50`
+- `sortBy`
+- `name`
+- `profession`
+- `cityState`
 
 Example: `/api/search/contributors/john%20smith?limit=2&offset=0`
 response:
