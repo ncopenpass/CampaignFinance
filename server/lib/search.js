@@ -1,6 +1,8 @@
 //@ts-check
 const { getClient } = require('../db')
 
+const SUPPORTED_CONTRIBUTOR_SORT_FIELDS = ['sml', '-sml']
+
 /**
  * @typedef {Object} SearchResult
  * @property {Array<any>} data
@@ -12,6 +14,11 @@ const { getClient } = require('../db')
  * @param {string|number} offset
  * @param {string|number} limit
  * @param {string|number} trigramLimit
+ * @param {string} sort
+ * @param {string} nameFilter
+ * @param {string} typeFilter
+ * @param {string} professionFilter
+ * @param {string} cityStateFilter
  * @returns {Promise<SearchResult>}
  * @throws an error if the pg query or connection fails
  */
@@ -19,9 +26,18 @@ const searchContributors = async (
   name,
   offset = 0,
   limit = 50,
-  trigramLimit = 0.6
+  trigramLimit = 0.6,
+  sort = 'sml',
+  nameFilter,
+  typeFilter,
+  professionFilter,
+  cityStateFilter
 ) => {
   let client = null
+  let order = SUPPORTED_CONTRIBUTOR_SORT_FIELDS.includes(sort) ? sort : 'sml'
+  order = order.startsWith('-')
+    ? `${order.replace('-', '')} DESC`
+    : `${order} ASC`
   try {
     const nameILike = `%${name}%`
     client = await getClient()
@@ -32,7 +48,7 @@ const searchContributors = async (
       `select *, count(*) over() as full_count, similarity(name, $1) as sml
       from contributors where name % $1
         or name ilike $4
-      order by sml desc
+      order by ${order}
       limit $2 offset $3`,
       [name, limit, offset, nameILike]
     )
