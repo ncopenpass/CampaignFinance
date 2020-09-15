@@ -16,7 +16,7 @@ const path = require('path')
     // ignore the headers line
     const headers = file
       .shift()
-      .split(',')
+      .split('\t')
       .map((value) =>
         value
           // do appropriate camel casing
@@ -32,7 +32,7 @@ const path = require('path')
       .filter((row) => Boolean(row))
       .forEach((row) => {
         const entry = {}
-        const values = row.split(',')
+        const values = row.split('\t')
         headers.forEach((header, index) => {
           entry[header] = values[index]
         })
