@@ -1,19 +1,24 @@
 const fs = require('fs')
 const path = require('path')
 
+const inPath = 'Data Dictionary NC Campaign Contributions UTF8.txt'
+const outPath = path.join(
+  __dirname,
+  '..',
+  'src',
+  'static',
+  'dataDictionary.json'
+)
+
 ;(async () => {
   try {
-    const [, , fileArg] = process.argv
-    if (!fileArg) {
-      throw Error('Please provide a filepath')
-    }
-    const filepath = path.join(__dirname, '..', fileArg)
+    const filepath = path.join(__dirname, '..', inPath)
     if (!fs.existsSync(filepath)) {
       throw Error(`Provided file doesn\'t exist ${filepath}`)
     }
     let file = fs.readFileSync(filepath, { encoding: 'utf-8' })
     file = file.split('\n')
-    // ignore the headers line
+
     const headers = file
       .shift()
       .split('\t')
@@ -39,13 +44,6 @@ const path = require('path')
         dictionary.push(entry)
       })
 
-    const outPath = path.join(
-      __dirname,
-      '..',
-      'src',
-      'static',
-      'dataDictionary.json'
-    )
     fs.writeFileSync(outPath, JSON.stringify(dictionary, null, 2), 'utf8')
   } catch (e) {
     console.log('Error creating data dictionary:\n', e)
