@@ -93,21 +93,7 @@ export default function Table({ columns, data }) {
         {headerGroups.map((headerGroup) => (
           <tr {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map((column) => (
-              <th
-                {...column.getHeaderProps(column.getSortByToggleProps())}
-                className={
-                  column.isSorted
-                    ? column.isSortedDesc
-                      ? 'sort-desc'
-                      : 'sort-asc'
-                    : ''
-                }
-              >
-                {column.render('Header')}
-                <div className="column-filter">
-                  {column.canFilter ? column.render('Filter') : null}
-                </div>
-              </th>
+              <th {...column.getHeaderProps()}>{column.render('Header')}</th>
             ))}
           </tr>
         ))}
