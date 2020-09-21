@@ -1,7 +1,7 @@
 //@ts-check
 const { getClient } = require('../db')
 
-const SUPPORTED_CONTRIBUTOR_SORT_FIELDS = ['sml', '-sml']
+const SUPPORTED_CONTRIBUTOR_SORT_FIELDS = ['sml', '-sml', 'name', '-name']
 
 /**
  * @typedef {Object} SearchResult
@@ -44,8 +44,9 @@ const searchContributors = async (
     // because of data integrity, we can't guarantee the first split string is the first name
     const results = await client.query(
       `select *, count(*) over() as full_count, similarity(name, $1) as sml
-      from contributors where name % $1
-        or name ilike $4
+      from contributors where 
+        (name % $1
+        or name ilike $4)
         ${nameFilter ? `AND name ilike '%${nameFilter}%'` : ''}
         ${
           professionFilter ? `AND profession ilike '%${professionFilter}%'` : ''
