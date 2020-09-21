@@ -1,6 +1,6 @@
 import React, { useEffect, useCallback } from 'react'
-import { useParams } from 'react-router-dom'
-import { Grid, GridContainer, Button } from '@trussworks/react-uswds'
+import { useParams, useLocation, Link } from 'react-router-dom'
+import { Grid, GridContainer } from '@trussworks/react-uswds'
 import NumberFormat from 'react-number-format'
 
 import { useCandidate, useTableColumns } from '../hooks'
@@ -12,6 +12,7 @@ import ReportError from './ReportError'
 
 const Candidate = () => {
   let { candidateId } = useParams()
+  const location = useLocation()
 
   const {
     candidate,
@@ -72,8 +73,9 @@ const Candidate = () => {
       <GridContainer>
         <Grid row>
           <Grid col>
-            {/* Placeholder value for href */}
-            <a href="/">Back to search results</a>
+            {location?.fromPathname ? (
+              <Link to={location.fromPathname}>Back to search results</Link>
+            ) : null}
           </Grid>
         </Grid>
         <Grid row>
