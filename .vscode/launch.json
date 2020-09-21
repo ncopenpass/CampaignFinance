@@ -5,16 +5,16 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Attach Server",
       "type": "node",
       "request": "attach",
-      "port": 3001,
+      "name": "Attach",
+      "port": 9229,
       "skipFiles": ["<node_internals>/**"]
     },
     {
-      "type": "firefox",
+      "type": "chrome",
       "request": "launch",
-      "name": "Launch FF against localhost",
+      "name": "Launch Chrome against localhost",
       "url": "http://localhost:3000",
       "webRoot": "${workspaceFolder}"
     }
