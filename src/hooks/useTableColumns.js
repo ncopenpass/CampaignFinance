@@ -26,6 +26,10 @@ export const useTableColumns = () => {
         Header: 'Total Contributions',
         accessor: 'total',
       },
+      {
+        Header: 'Employer',
+        accessor: 'employer_name',
+      },
     ],
     []
   )
@@ -61,7 +65,7 @@ export const useTableColumns = () => {
         accessor: 'name',
       },
       {
-        Header: 'Contributor Type',
+        Header: 'Transaction Type',
         accessor: 'transaction_type',
       },
       {
@@ -69,7 +73,7 @@ export const useTableColumns = () => {
         accessor: 'amount',
       },
       {
-        Header: 'Contribution Type',
+        Header: 'Form of Payment',
         accessor: 'form_of_payment',
       },
       {
@@ -77,7 +81,7 @@ export const useTableColumns = () => {
         accessor: 'date_occurred',
       },
       {
-        Header: 'Purpose',
+        Header: 'Comment',
         accessor: 'purpose',
       },
     ],
