@@ -73,8 +73,16 @@ export const useTableColumns = () => {
         accessor: 'form_of_payment',
       },
       {
+        id: 'date_occurred',
         Header: 'Contribution Date',
-        accessor: 'date_occurred',
+        accessor: (r) => {
+          const d = new Date(r.date_occurred)
+          return d.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: '2-digit',
+          })
+        },
       },
       {
         Header: 'Purpose',
