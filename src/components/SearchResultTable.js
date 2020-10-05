@@ -12,6 +12,7 @@ const ResultsTableFooter = styled.div`
 `
 
 const SearchResultTable = ({
+  isLoading,
   columns,
   data,
   count,
@@ -74,6 +75,8 @@ const SearchResultTable = ({
             </div>
           </ResultsTableFooter>
         </>
+      ) : isLoading ? (
+        <div className="spin"></div>
       ) : (
         <p>{`No ${searchType} found for "${searchTerm}"`}</p>
       )}

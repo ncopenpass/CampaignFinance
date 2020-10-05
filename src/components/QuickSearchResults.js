@@ -17,6 +17,7 @@ const QuickSearchResults = React.memo(() => {
 
   const {
     hasError,
+    isLoading,
     results,
     resultsCount,
     resultsOffset,
@@ -99,6 +100,7 @@ const QuickSearchResults = React.memo(() => {
           </h1>
           <h4>{`${resultsCount} Results`}</h4>
           <SearchResultTable
+            isLoading={isLoading}
             columns={columns}
             data={results}
             count={resultsCount}

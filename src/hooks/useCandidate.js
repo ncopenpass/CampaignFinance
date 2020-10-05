@@ -15,6 +15,7 @@ const constructContributionsUrl = ({ url, candidateId, limit, offset }) => {
 
 export const useCandidate = () => {
   const [hasError, setHasError] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const [candidate, setCandidate] = useState([])
   const [contributions, setContributions] = useState([])
   const [summary, setSummary] = useState([])
@@ -25,12 +26,15 @@ export const useCandidate = () => {
     async (url) => {
       setHasError(false)
       try {
+        setIsLoading(true)
         const response = await fetch(url)
         const { data, count, summary } = await response.json()
         return { data, count, summary }
       } catch (e) {
         console.log(e)
         setHasError(true)
+      } finally {
+        setIsLoading(false)
       }
     },
     [setHasError]
@@ -85,6 +89,7 @@ export const useCandidate = () => {
   )
 
   return {
+    isLoading,
     hasError,
     candidate,
     contributions,

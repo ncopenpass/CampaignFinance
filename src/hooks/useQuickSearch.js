@@ -10,6 +10,7 @@ const constructQuickSearchUrl = ({ url, searchTerm, limit, offset }) =>
 export const useQuickSearch = () => {
   const { getDataAndCount } = useApi()
   const [hasError, setHasError] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const [results, setResults] = useState([])
   const [resultsCount, setResultsCount] = useState(0)
   const [resultsOffset, setResultsOffset] = useState(0)
@@ -23,6 +24,7 @@ export const useQuickSearch = () => {
       })
       setHasError(false)
       try {
+        setIsLoading(true)
         const { data, count } = await getDataAndCount(url)
         setResults(data)
         setResultsCount(count)
@@ -30,6 +32,8 @@ export const useQuickSearch = () => {
       } catch (e) {
         console.log(e)
         setHasError(true)
+      } finally {
+        setIsLoading(false)
       }
     },
     [getDataAndCount]
@@ -44,6 +48,7 @@ export const useQuickSearch = () => {
 
   return {
     hasError,
+    isLoading,
     results,
     resultsCount,
     resultsOffset,

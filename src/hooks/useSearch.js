@@ -13,6 +13,7 @@ const constructSearchUrl = ({ url, searchTerm, limit, offset }) =>
 export const useSearch = () => {
   const { getDataAndCount } = useApi()
   const [hasError, setHasError] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const [candidates, setCandidates] = useState([])
   const [candidateCount, setCandidateCount] = useState(0)
   const [candidateOffset, setCandidateOffset] = useState(0)
@@ -30,6 +31,7 @@ export const useSearch = () => {
       })
       setHasError(false)
       try {
+        setIsLoading(true)
         const { data, count } = await getDataAndCount(url)
         setCandidates(data)
         setCandidateCount(count)
@@ -37,6 +39,8 @@ export const useSearch = () => {
       } catch (e) {
         console.log(e)
         setHasError(true)
+      } finally {
+        setIsLoading(false)
       }
     },
     [getDataAndCount]
@@ -52,6 +56,7 @@ export const useSearch = () => {
       })
       setHasError(false)
       try {
+        setIsLoading(true)
         const { data, count } = await getDataAndCount(url)
         setContributors(data)
         setContributorCount(count)
@@ -59,6 +64,8 @@ export const useSearch = () => {
       } catch (e) {
         console.log(e)
         setHasError(true)
+      } finally {
+        setIsLoading(false)
       }
     },
     [getDataAndCount]
@@ -73,6 +80,7 @@ export const useSearch = () => {
   )
 
   return {
+    isLoading,
     hasError,
     candidates,
     candidateCount,
