@@ -1,7 +1,7 @@
 const fs = require('fs')
 const path = require('path')
 
-const inPath = 'Data Dictionary NC Campaign Contributions UTF8.txt'
+const fileName = 'Data Dictionary NC Campaign Contributions UTF8.txt'
 const outPath = path.join(
   __dirname,
   '..',
@@ -12,11 +12,17 @@ const outPath = path.join(
 
 ;(async () => {
   try {
-    const filepath = path.join(__dirname, '..', inPath)
-    if (!fs.existsSync(filepath)) {
-      throw Error(`Provided file doesn\'t exist ${filepath}`)
+    const [, , fileArg] = process.argv
+    let filePath
+    if (fileArg) {
+      filePath = path.join(__dirname, '..', fileArg)
+    } else {
+      filePath = path.join(__dirname, '..', fileName)
     }
-    let file = fs.readFileSync(filepath, { encoding: 'utf-8' })
+    if (!fs.existsSync(filePath)) {
+      throw Error(`Provided file doesn\'t exist ${filePath}`)
+    }
+    let file = fs.readFileSync(filePath, { encoding: 'utf-8' })
     file = file.split('\n')
 
     const headers = file
