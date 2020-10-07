@@ -65,8 +65,15 @@ export const useTableColumns = () => {
         accessor: 'transaction_type',
       },
       {
+        id: 'amount',
         Header: 'Amount',
-        accessor: 'amount',
+        accessor: (r) => {
+          const formatter = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+          })
+          return formatter.format(r.amount)
+        },
       },
       {
         Header: 'Contribution Type',
