@@ -39,7 +39,12 @@ export const useTableColumns = () => {
       {
         Header: 'Name',
         accessor: ({ candidate_full_name, committee_sboe_id }) => (
-          <Link to={CANDIDATE_URL + committee_sboe_id}>
+          <Link
+            to={(location) => ({
+              pathname: CANDIDATE_URL + committee_sboe_id,
+              fromPathname: location.pathname,
+            })}
+          >
             {' '}
             {candidate_full_name}
           </Link>
