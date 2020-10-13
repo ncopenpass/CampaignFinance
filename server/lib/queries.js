@@ -68,6 +68,7 @@ const getCandidateContributions = ({
   let order = SUPPORTED_CANDIDATE_CONTRIBUTION_SORT_FIELDS.includes(sortBy)
     ? sortBy
     : ''
+  order = order.replace('date_occurred', 'CAST(date_occurred as DATE)')
   order = order.startsWith('-')
     ? `${order.replace('-', '')} DESC`
     : `${order} ASC`
