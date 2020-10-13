@@ -1,5 +1,14 @@
 // @ts-check
 
+const SUPPORTED_CANDIDATE_CONTRIBUTION_SORT_FIELDS = [
+  'name',
+  '-name',
+  'amount',
+  '-amount',
+  'date_occurred',
+  '-date_occurred',
+]
+
 /**
  * @typedef {Object} CandidateSummary
  * @property {Number} sum - The sum of all donations given to a candidate
@@ -46,14 +55,23 @@ const getCandidateSummary = async (ncsbeID, client) => {
  * @param {Number|string} args.limit
  * @param {Number|string} args.offset
  * @param {import('pg').PoolClient} args.client
+ * @param {string} args.sortBy
  * @returns {Promise<import('pg').QueryResult>}
  */
 const getCandidateContributions = ({
   ncsbeID,
-  limit = null,
-  offset = null,
+  limit = 50,
+  offset = 0,
   client,
+  sortBy = null,
 }) => {
+  let order = SUPPORTED_CANDIDATE_CONTRIBUTION_SORT_FIELDS.includes(sortBy)
+    ? sortBy
+    : ''
+  order = order.startsWith('-')
+    ? `${order.replace('-', '')} DESC`
+    : `${order} ASC`
+
   return client.query(
     `select count(*) over () as full_count,
        source_contribution_id,
@@ -78,6 +96,7 @@ const getCandidateContributions = ({
        from contributions
               join contributors c on contributions.contributor_id = c.id
       where lower(contributions.committee_sboe_id) = lower($1)
+      ${sortBy ? `order by ${order}` : ''}
       limit $2
       offset $3`,
     [ncsbeID, limit, offset]
