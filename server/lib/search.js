@@ -1,5 +1,6 @@
 //@ts-check
 const { getClient } = require('../db')
+const format = require('pg-format')
 
 const SUPPORTED_SORT_FIELDS = [
   'candidate_full_name',
@@ -84,6 +85,16 @@ const searchCommittees = async (
     ? `${order.replace('-', '')} DESC`
     : `${order} ASC`
   const nameILike = `%${name}%`
+  const safePartyFilter = format('AND party ilike %s', `'%${partyFilter}%'`)
+  const safeNameFilter = format(
+    'AND candidate_full_name ilike %s',
+    `'%${nameFilter}%'`
+  )
+  const safeContestFilter = format(
+    'AND (juris ilike %s or office ilike %s)',
+    `'%${contestFilter}%'`,
+    `'%${contestFilter}%'`
+  )
   try {
     client = await getClient()
     await client.query('select set_limit($1)', [trigramLimit])
@@ -98,14 +109,9 @@ const searchCommittees = async (
           (candidate_full_name % $1
           OR candidate_last_name % $1
           OR candidate_full_name ilike $4)
-          ${partyFilter ? `AND party ilike '%${partyFilter}%'` : ''}
-          ${nameFilter ? `AND candidate_full_name ilike '%${nameFilter}%'` : ''}
-          ${
-            contestFilter
-              ? `AND (juris ilike '%${contestFilter}%'
-              OR office ilike '%${contestFilter}%')`
-              : ''
-          }
+          ${partyFilter ? safePartyFilter : ''}
+          ${nameFilter ? safeNameFilter : ''}
+          ${contestFilter ? safeContestFilter : ''}
         order by ${order}
         limit $2 offset $3`,
       [name, limit, offset, nameILike]
