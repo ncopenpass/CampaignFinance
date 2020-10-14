@@ -56,6 +56,12 @@ const getCandidateSummary = async (ncsbeID, client) => {
  * @param {Number|string} args.offset
  * @param {import('pg').PoolClient} args.client
  * @param {string} args.sortBy
+ * @param {string} args.name
+ * @param {string} args.transaction_type
+ * @param {string} args.amount
+ * @param {string} args.form_of_payment
+ * @param {string} args.date_occurred_gte
+ * @param {string} args.date_occurred_lte
  * @returns {Promise<import('pg').QueryResult>}
  */
 const getCandidateContributions = ({
@@ -64,6 +70,12 @@ const getCandidateContributions = ({
   offset = 0,
   client,
   sortBy = null,
+  name = null,
+  transaction_type = null,
+  amount = null,
+  form_of_payment = null,
+  date_occurred_gte = null,
+  date_occurred_lte = null,
 }) => {
   let order = SUPPORTED_CANDIDATE_CONTRIBUTION_SORT_FIELDS.includes(sortBy)
     ? sortBy
@@ -72,6 +84,7 @@ const getCandidateContributions = ({
   order = order.startsWith('-')
     ? `${order.replace('-', '')} DESC`
     : `${order} ASC`
+  console.log('date_occurred_gte', date_occurred_gte)
 
   return client.query(
     `select count(*) over () as full_count,
@@ -96,7 +109,31 @@ const getCandidateContributions = ({
        employer_name
        from contributions
               join contributors c on contributions.contributor_id = c.id
-      where lower(contributions.committee_sboe_id) = lower($1)
+      where (
+        lower(contributions.committee_sboe_id) = lower($1)
+        ${name ? `AND upper(name) ilike '%${name.toUpperCase()}%'` : ''}
+        ${
+          transaction_type
+            ? `AND upper(transaction_type) ='${transaction_type.toUpperCase()}'`
+            : ''
+        }
+        ${amount ? `AND amount ='${amount}'` : ''}
+        ${
+          form_of_payment
+            ? `AND upper(form_of_payment) ='${form_of_payment.toUpperCase()}'`
+            : ''
+        }
+        ${
+          date_occurred_gte
+            ? `AND CAST(date_occurred as DATE) >= CAST('${date_occurred_gte}' as DATE)`
+            : ''
+        }
+        ${
+          date_occurred_lte
+            ? `AND CAST(date_occurred as DATE) <= CAST('${date_occurred_lte}' as DATE)`
+            : ''
+        }
+      )
       ${sortBy ? `order by ${order}` : ''}
       limit $2
       offset $3`,

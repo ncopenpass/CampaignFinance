@@ -177,7 +177,18 @@ api.get('/candidate/:ncsbeID/contributions', async (req, res) => {
   let client = null
   try {
     let { ncsbeID = '' } = req.params
-    const { limit = 50, offset = 0, toCSV = false, sortBy } = req.query
+    const {
+      limit = 50,
+      offset = 0,
+      toCSV = false,
+      sortBy,
+      name,
+      transaction_type,
+      amount,
+      form_of_payment,
+      date_occurred_gte,
+      date_occurred_lte,
+    } = req.query
     ncsbeID = decodeURIComponent(ncsbeID)
     if (!ncsbeID) {
       res.status(500)
@@ -194,6 +205,12 @@ api.get('/candidate/:ncsbeID/contributions', async (req, res) => {
         offset,
         client,
         sortBy,
+        name,
+        transaction_type,
+        amount,
+        form_of_payment,
+        date_occurred_gte,
+        date_occurred_lte,
       })
 
       const summaryPromise = getCandidateSummary(ncsbeID, client)
