@@ -34,54 +34,52 @@ const SearchResultTable = ({
     updateLimit()
   }, [apiLimit, fetchSame])
 
-  return (
-    <>
-      {count ? (
-        <>
-          <Dropdown
-            value={apiLimit}
-            onChange={(e) => setApiLimit(e.currentTarget.value)}
-          >
-            {tableLimits.map(({ label, value }) => (
-              <option key={value} value={value}>
-                {label}
-              </option>
-            ))}
-          </Dropdown>
-          <Table columns={columns} data={data} />
-          <ResultsTableFooter>
-            {`${offset + 1} - ${Math.min(
-              offset + apiLimit,
-              count
-            )} ${searchType} shown`}
-            <div>
-              <Button
-                onClick={() => fetchPrevious(apiLimit)}
-                size="small"
-                outline
-                disabled={offset === 0}
-              >
-                Previous
-              </Button>
-              <Button
-                onClick={() => fetchNext(apiLimit)}
-                style={{ marginRight: '0px' }}
-                size="small"
-                outline
-                disabled={offset + apiLimit >= count}
-              >
-                Next
-              </Button>
-            </div>
-          </ResultsTableFooter>
-        </>
-      ) : isLoading ? (
-        <div className="spin"></div>
-      ) : (
-        <p>{`No ${searchType} found for "${searchTerm}"`}</p>
-      )}
-    </>
-  )
+  if (isLoading) {
+    return <div className="spin"></div>
+  } else if (count) {
+    return (
+      <>
+        <Dropdown
+          value={apiLimit}
+          onChange={(e) => setApiLimit(e.currentTarget.value)}
+        >
+          {tableLimits.map(({ label, value }) => (
+            <option key={value} value={value}>
+              {label}
+            </option>
+          ))}
+        </Dropdown>
+        <Table columns={columns} data={data} />
+        <ResultsTableFooter>
+          {`${offset + 1} - ${Math.min(
+            offset + apiLimit,
+            count
+          )} ${searchType} shown`}
+          <div>
+            <Button
+              onClick={() => fetchPrevious(apiLimit)}
+              size="small"
+              outline
+              disabled={offset === 0}
+            >
+              Previous
+            </Button>
+            <Button
+              onClick={() => fetchNext(apiLimit)}
+              style={{ marginRight: '0px' }}
+              size="small"
+              outline
+              disabled={offset + apiLimit >= count}
+            >
+              Next
+            </Button>
+          </div>
+        </ResultsTableFooter>
+      </>
+    )
+  } else {
+    return <p>{`No ${searchType} found for "${searchTerm}"`}</p>
+  }
 }
 
 export default SearchResultTable
