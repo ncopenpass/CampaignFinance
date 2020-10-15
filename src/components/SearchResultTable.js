@@ -5,6 +5,7 @@ import { Button, Dropdown } from '@trussworks/react-uswds'
 import { useTablePagination } from '../hooks'
 
 import Table from './Table'
+import { STATUSES } from '../constants'
 
 const ResultsTableFooter = styled.div`
   display: flex;
@@ -12,7 +13,7 @@ const ResultsTableFooter = styled.div`
 `
 
 const SearchResultTable = ({
-  isLoading,
+  apiStatus,
   columns,
   data,
   count,
@@ -34,9 +35,9 @@ const SearchResultTable = ({
     updateLimit()
   }, [apiLimit, fetchSame])
 
-  if (isLoading) {
-    return <div className="spin"></div>
-  } else if (count) {
+  if (apiStatus === STATUSES.Pending) {
+    return <div className="spin margin-x-auto"></div>
+  } else if (apiStatus === STATUSES.Success && count) {
     return (
       <>
         <Dropdown

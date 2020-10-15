@@ -16,7 +16,7 @@ const SearchResults = React.memo(() => {
   const { searchTerm } = useParams()
 
   const {
-    isLoading,
+    apiStatus,
     hasError,
     contributors,
     candidates,
@@ -111,7 +111,7 @@ const SearchResults = React.memo(() => {
         title: `Candidates (${candidateCount}) matching "${searchTerm}"`,
         content: (
           <SearchResultTable
-            isLoading={isLoading}
+            apiStatus={apiStatus}
             columns={candidateColumns}
             data={candidates}
             count={candidateCount}
@@ -130,7 +130,7 @@ const SearchResults = React.memo(() => {
         title: `Contributors (${contributorCount}) matching "${searchTerm}"`,
         content: (
           <SearchResultTable
-            isLoading={isLoading}
+            apiStatus={apiStatus}
             columns={contributorColumns}
             data={contributors}
             count={contributorCount}
@@ -147,7 +147,7 @@ const SearchResults = React.memo(() => {
       },
     ],
     [
-      isLoading,
+      apiStatus,
       candidateColumns,
       candidates,
       candidateCount,

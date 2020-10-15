@@ -14,7 +14,7 @@ const Candidate = () => {
   let { candidateId } = useParams()
 
   const {
-    isLoading,
+    apiStatus,
     candidate,
     contributions,
     summary,
@@ -196,7 +196,7 @@ const Candidate = () => {
         <Grid row>
           <Grid col>
             <SearchResultTable
-              isLoading={isLoading}
+              apiStatus={apiStatus}
               columns={candidateContributionColumns}
               data={contributions}
               count={contributionCount}
