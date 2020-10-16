@@ -50,6 +50,10 @@ Query Params (optional):
 
 - `offset` default value `0`
 - `limit` default value `50`
+- `sortBy` default value `first_last_sml`
+- `name`
+- `party`
+- `contest`
 
 Example: `/api/search/candidates/roy%20cooper?limit=1&offset=0`
 response:

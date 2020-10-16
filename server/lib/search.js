@@ -1,5 +1,13 @@
 //@ts-check
 const { getClient } = require('../db')
+const format = require('pg-format')
+
+const SUPPORTED_SORT_FIELDS = [
+  'candidate_full_name',
+  '-candidate_full_name',
+  'first_last_sml',
+  '-first_last_sml',
+]
 
 /**
  * @typedef {Object} SearchResult
@@ -54,6 +62,10 @@ const searchContributors = async (
  * @param {string|number} offset
  * @param {string|number} limit
  * @param {string|number} trigramLimit
+ * @param {string} sort
+ * @param {string} nameFilter
+ * @param {string} partyFilter
+ * @param {string} contestFilter
  * @returns {Promise<SearchResult>}
  * @throws an error if the pg query or connection fails
  */
@@ -61,11 +73,29 @@ const searchCommittees = async (
   name,
   offset = 0,
   limit = 50,
-  trigramLimit = 0.6
+  trigramLimit = 0.6,
+  sort = 'first_last_sml',
+  nameFilter,
+  partyFilter,
+  contestFilter
 ) => {
   let client = null
+  let order = SUPPORTED_SORT_FIELDS.includes(sort) ? sort : 'first_last_sml'
+  order = order.startsWith('-')
+    ? `${order.replace('-', '')} DESC`
+    : `${order} ASC`
+  const nameILike = `%${name}%`
+  const safePartyFilter = format('AND party ilike %s', `'%${partyFilter}%'`)
+  const safeNameFilter = format(
+    'AND candidate_full_name ilike %s',
+    `'%${nameFilter}%'`
+  )
+  const safeContestFilter = format(
+    'AND (juris ilike %s or office ilike %s)',
+    `'%${contestFilter}%'`,
+    `'%${contestFilter}%'`
+  )
   try {
-    const nameILike = `%${name}%`
     client = await getClient()
     await client.query('select set_limit($1)', [trigramLimit])
     const results = await client.query(
@@ -76,10 +106,13 @@ const searchCommittees = async (
         count(*) over() as full_count
       from committees
         where
-          candidate_full_name % $1
+          (candidate_full_name % $1
           OR candidate_last_name % $1
-          OR candidate_full_name ilike $4
-        order by first_last_sml desc
+          OR candidate_full_name ilike $4)
+          ${partyFilter ? safePartyFilter : ''}
+          ${nameFilter ? safeNameFilter : ''}
+          ${contestFilter ? safeContestFilter : ''}
+        order by ${order}
         limit $2 offset $3`,
       [name, limit, offset, nameILike]
     )
