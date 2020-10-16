@@ -1,4 +1,5 @@
 // @ts-check
+const format = require('pg-format')
 
 const SUPPORTED_CANDIDATE_CONTRIBUTION_SORT_FIELDS = [
   'name',
@@ -70,12 +71,12 @@ const getCandidateContributions = ({
   offset = 0,
   client,
   sortBy = null,
-  name = null,
-  transaction_type = null,
-  amount = null,
-  form_of_payment = null,
-  date_occurred_gte = null,
-  date_occurred_lte = null,
+  name: nameFilter = null,
+  transaction_type: transaction_typeFilter = null,
+  amount: amountFilter = null,
+  form_of_payment: form_of_paymentFilter = null,
+  date_occurred_gte: date_occurred_gteFilter = null,
+  date_occurred_lte: date_occurred_lteFilter = null,
 }) => {
   let order = SUPPORTED_CANDIDATE_CONTRIBUTION_SORT_FIELDS.includes(sortBy)
     ? sortBy
@@ -84,7 +85,37 @@ const getCandidateContributions = ({
   order = order.startsWith('-')
     ? `${order.replace('-', '')} DESC`
     : `${order} ASC`
-  console.log('date_occurred_gte', date_occurred_gte)
+
+  const safeNameFilter = nameFilter
+    ? format('AND upper(name) ilike %s', `'%${nameFilter.toUpperCase()}%'`)
+    : ''
+  const safeTransactionTypeFilter = transaction_typeFilter
+    ? format(
+        'AND upper(transaction_type) = %L',
+        transaction_typeFilter.toUpperCase()
+      )
+    : ''
+  const safeAmountFilter = amountFilter
+    ? format('AND amount = %L', amountFilter)
+    : ''
+  const safeFormOfPaymentFilter = form_of_paymentFilter
+    ? format(
+        'AND upper(form_of_payment) = %L',
+        form_of_paymentFilter.toUpperCase()
+      )
+    : ''
+  const safeDateOccurredGteFilter = date_occurred_gteFilter
+    ? format(
+        'AND CAST(date_occurred as DATE) >= CAST(%L as DATE)',
+        date_occurred_gteFilter
+      )
+    : ''
+  const safeDateOccurredLteFilter = date_occurred_lteFilter
+    ? format(
+        'AND CAST(date_occurred as DATE) <= CAST(%L as DATE)',
+        date_occurred_lteFilter
+      )
+    : ''
 
   return client.query(
     `select count(*) over () as full_count,
@@ -111,28 +142,12 @@ const getCandidateContributions = ({
               join contributors c on contributions.contributor_id = c.id
       where (
         lower(contributions.committee_sboe_id) = lower($1)
-        ${name ? `AND upper(name) ilike '%${name.toUpperCase()}%'` : ''}
-        ${
-          transaction_type
-            ? `AND upper(transaction_type) ='${transaction_type.toUpperCase()}'`
-            : ''
-        }
-        ${amount ? `AND amount ='${amount}'` : ''}
-        ${
-          form_of_payment
-            ? `AND upper(form_of_payment) ='${form_of_payment.toUpperCase()}'`
-            : ''
-        }
-        ${
-          date_occurred_gte
-            ? `AND CAST(date_occurred as DATE) >= CAST('${date_occurred_gte}' as DATE)`
-            : ''
-        }
-        ${
-          date_occurred_lte
-            ? `AND CAST(date_occurred as DATE) <= CAST('${date_occurred_lte}' as DATE)`
-            : ''
-        }
+        ${safeNameFilter}
+        ${safeTransactionTypeFilter}
+        ${safeAmountFilter}
+        ${safeFormOfPaymentFilter}
+        ${safeDateOccurredGteFilter}
+        ${safeDateOccurredLteFilter}
       )
       ${sortBy ? `order by ${order}` : ''}
       limit $2
