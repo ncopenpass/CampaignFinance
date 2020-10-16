@@ -36,7 +36,7 @@ const SearchResultTable = ({
   }, [apiLimit, fetchSame])
 
   if (apiStatus === STATUSES.Pending) {
-    return <div className="spin margin-x-auto"></div>
+    return <div className="spin margin-x-auto margin-top-10"></div>
   } else if (apiStatus === STATUSES.Success && count) {
     return (
       <>
