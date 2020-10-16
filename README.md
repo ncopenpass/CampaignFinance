@@ -8,6 +8,7 @@
 
 [Join the Google Group](https://groups.google.com/forum/#!forum/raleigh-brigade-cfd) to join the discussion.
 [Join us on Slack](http://code-for-nc-slack-invitations.herokuapp.com/)
+Questions? Email nccampaignfinance@gmail.com. 
 
 - After registering join the `#campaign-finance-dash-dev`, `#campaign-finance-dash-ux`, and `#campaign-finance-dash-data` channels
 
