@@ -1,6 +1,6 @@
 import React, { useEffect, useCallback } from 'react'
-import { useParams } from 'react-router-dom'
-import { Grid, GridContainer, Button } from '@trussworks/react-uswds'
+import { useParams, useLocation, Link } from 'react-router-dom'
+import { Grid, GridContainer } from '@trussworks/react-uswds'
 import NumberFormat from 'react-number-format'
 
 import { useCandidate, useTableColumns } from '../hooks'
@@ -12,6 +12,7 @@ import ReportError from './ReportError'
 
 const Candidate = () => {
   let { candidateId } = useParams()
+  const location = useLocation()
 
   const {
     candidate,
@@ -29,21 +30,41 @@ const Candidate = () => {
     }
   }, [candidateId, fetchInitialSearchData])
 
+  // Fetches the same page of contributions when user changes limit size
+  const fetchSameContributions = useCallback(
+    (limit = API_BATCH_SIZE) => {
+      fetchContributions({
+        candidateId,
+        limit: limit,
+        offset: contributionOffset,
+      })
+    },
+    [contributionOffset, fetchContributions, candidateId]
+  )
+
   // Fetch next batch of contributions for pagination
-  const fetchNextContributions = useCallback(() => {
-    fetchContributions({
-      candidateId,
-      offset: contributionOffset + API_BATCH_SIZE,
-    })
-  }, [contributionOffset, fetchContributions, candidateId])
+  const fetchNextContributions = useCallback(
+    (limit = API_BATCH_SIZE) => {
+      fetchContributions({
+        candidateId,
+        limit: limit,
+        offset: contributionOffset + limit,
+      })
+    },
+    [contributionOffset, fetchContributions, candidateId]
+  )
 
   // Fetch previous batch of contributions for pagination
-  const fetchPreviousContributions = useCallback(() => {
-    fetchContributions({
-      candidateId,
-      offset: contributionOffset - API_BATCH_SIZE,
-    })
-  }, [contributionOffset, candidateId, fetchContributions])
+  const fetchPreviousContributions = useCallback(
+    (limit = API_BATCH_SIZE) => {
+      fetchContributions({
+        candidateId,
+        limit: limit,
+        offset: contributionOffset - limit,
+      })
+    },
+    [contributionOffset, candidateId, fetchContributions]
+  )
 
   const { candidateContributionColumns } = useTableColumns()
 
@@ -52,8 +73,9 @@ const Candidate = () => {
       <GridContainer>
         <Grid row>
           <Grid col>
-            {/* Placeholder value for href */}
-            <a href="/">Back to search results</a>
+            {location?.fromPathname ? (
+              <Link to={location.fromPathname}>Back to search results</Link>
+            ) : null}
           </Grid>
         </Grid>
         <Grid row>
@@ -179,6 +201,7 @@ const Candidate = () => {
               data={contributions}
               count={contributionCount}
               offset={contributionOffset}
+              fetchSame={fetchSameContributions}
               fetchNext={fetchNextContributions}
               fetchPrevious={fetchPreviousContributions}
               searchTerm={candidateId}

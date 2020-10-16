@@ -135,14 +135,25 @@ api.get('/search/contributors/:name', async (req, res) => {
 api.get('/search/candidates/:name', async (req, res) => {
   try {
     const { name } = req.params
-    const { offset = 0, limit = 50 } = req.query
+    const {
+      offset = 0,
+      limit = 50,
+      sortBy = 'first_last_sml',
+      name: nameFilter,
+      party,
+      contest,
+    } = req.query
     const decodedName = decodeURIComponent(name)
 
     const committees = await searchCommittees(
       decodedName,
       offset,
       limit,
-      TRIGRAM_LIMIT
+      TRIGRAM_LIMIT,
+      sortBy,
+      nameFilter,
+      party,
+      contest
     )
     return res.send({
       data: committees.data.map(apiReprCandidate),

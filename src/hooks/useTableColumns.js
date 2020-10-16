@@ -26,6 +26,10 @@ export const useTableColumns = () => {
         Header: 'Total Contributions',
         accessor: 'total',
       },
+      {
+        Header: 'Employer',
+        accessor: 'employer_name',
+      },
     ],
     []
   )
@@ -35,7 +39,12 @@ export const useTableColumns = () => {
       {
         Header: 'Name',
         accessor: ({ candidate_full_name, committee_sboe_id }) => (
-          <Link to={CANDIDATE_URL + committee_sboe_id}>
+          <Link
+            to={(location) => ({
+              pathname: CANDIDATE_URL + committee_sboe_id,
+              fromPathname: location.pathname,
+            })}
+          >
             {' '}
             {candidate_full_name}
           </Link>
@@ -61,23 +70,38 @@ export const useTableColumns = () => {
         accessor: 'name',
       },
       {
-        Header: 'Contributor Type',
+        Header: 'Transaction Type',
         accessor: 'transaction_type',
       },
       {
+        id: 'amount',
         Header: 'Amount',
-        accessor: 'amount',
+        accessor: (r) => {
+          const formatter = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+          })
+          return formatter.format(r.amount)
+        },
       },
       {
-        Header: 'Contribution Type',
+        Header: 'Form of Payment',
         accessor: 'form_of_payment',
       },
       {
+        id: 'date_occurred',
         Header: 'Contribution Date',
-        accessor: 'date_occurred',
+        accessor: (r) => {
+          const d = new Date(r.date_occurred)
+          return d.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: '2-digit',
+          })
+        },
       },
       {
-        Header: 'Purpose',
+        Header: 'Comment',
         accessor: 'purpose',
       },
     ],

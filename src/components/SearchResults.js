@@ -36,33 +36,73 @@ const SearchResults = React.memo(() => {
     }
   }, [searchTerm, fetchInitialSearchData])
 
-  const fetchNextCandidates = useCallback(() => {
-    fetchCandidates({
-      searchTerm,
-      offset: candidateOffset + API_BATCH_SIZE,
-    })
-  }, [candidateOffset, fetchCandidates, searchTerm])
+  // Table limit and pagination functions for Candidates
+  const fetchSameCandidates = useCallback(
+    (limit = API_BATCH_SIZE) => {
+      fetchCandidates({
+        searchTerm,
+        limit: limit,
+        offset: candidateOffset,
+      })
+    },
+    [candidateOffset, fetchCandidates, searchTerm]
+  )
 
-  const fetchPreviousCandidates = useCallback(() => {
-    fetchCandidates({
-      searchTerm,
-      offset: candidateOffset - API_BATCH_SIZE,
-    })
-  }, [candidateOffset, searchTerm, fetchCandidates])
+  const fetchNextCandidates = useCallback(
+    (limit = API_BATCH_SIZE) => {
+      fetchCandidates({
+        searchTerm,
+        limit: limit,
+        offset: candidateOffset + limit,
+      })
+    },
+    [candidateOffset, fetchCandidates, searchTerm]
+  )
 
-  const fetchNextContributors = useCallback(() => {
-    fetchContributors({
-      searchTerm,
-      offset: contributorOffset + API_BATCH_SIZE,
-    })
-  }, [contributorOffset, fetchContributors, searchTerm])
+  const fetchPreviousCandidates = useCallback(
+    (limit = API_BATCH_SIZE) => {
+      fetchCandidates({
+        searchTerm,
+        limit: limit,
+        offset: candidateOffset - limit,
+      })
+    },
+    [candidateOffset, searchTerm, fetchCandidates]
+  )
 
-  const fetchPreviousContributors = useCallback(() => {
-    fetchContributors({
-      searchTerm,
-      offset: contributorOffset - API_BATCH_SIZE,
-    })
-  }, [contributorOffset, searchTerm, fetchContributors])
+  // Table limit and pagination functions for Contributors
+  const fetchSameContributors = useCallback(
+    (limit = API_BATCH_SIZE) => {
+      fetchContributors({
+        searchTerm,
+        limit: limit,
+        offset: contributorOffset,
+      })
+    },
+    [contributorOffset, fetchContributors, searchTerm]
+  )
+
+  const fetchNextContributors = useCallback(
+    (limit = API_BATCH_SIZE) => {
+      fetchContributors({
+        searchTerm,
+        limit: limit,
+        offset: contributorOffset + limit,
+      })
+    },
+    [contributorOffset, fetchContributors, searchTerm]
+  )
+
+  const fetchPreviousContributors = useCallback(
+    (limit = API_BATCH_SIZE) => {
+      fetchContributors({
+        searchTerm,
+        limit: limit,
+        offset: contributorOffset - limit,
+      })
+    },
+    [contributorOffset, searchTerm, fetchContributors]
+  )
 
   const resultsTables = useMemo(
     () => [
@@ -74,6 +114,7 @@ const SearchResults = React.memo(() => {
             data={candidates}
             count={candidateCount}
             offset={candidateOffset}
+            fetchSame={fetchSameCandidates}
             fetchNext={fetchNextCandidates}
             fetchPrevious={fetchPreviousCandidates}
             searchTerm={searchTerm}
@@ -91,6 +132,7 @@ const SearchResults = React.memo(() => {
             data={contributors}
             count={contributorCount}
             offset={contributorOffset}
+            fetchSame={fetchSameContributors}
             fetchNext={fetchNextContributors}
             fetchPrevious={fetchPreviousContributors}
             searchTerm={searchTerm}
@@ -111,8 +153,10 @@ const SearchResults = React.memo(() => {
       contributorCount,
       contributorOffset,
       searchTerm,
+      fetchSameCandidates,
       fetchNextCandidates,
       fetchPreviousCandidates,
+      fetchSameContributors,
       fetchNextContributors,
       fetchPreviousContributors,
     ]
