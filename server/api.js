@@ -103,14 +103,25 @@ api.use(bodyParser.json())
 api.get('/search/contributors/:name', async (req, res) => {
   try {
     const { name } = req.params
-    const { offset = 0, limit = 50 } = req.query
+    const {
+      offset = 0,
+      limit = 50,
+      sortBy = 'sml',
+      name: nameFilter,
+      profession,
+      cityState,
+    } = req.query
     const decodedName = decodeURIComponent(name)
 
     const contributors = await searchContributors(
       decodedName,
       offset,
       limit,
-      TRIGRAM_LIMIT
+      TRIGRAM_LIMIT,
+      sortBy,
+      nameFilter,
+      profession,
+      cityState
     )
     return res.send({
       data: contributors.data.map(apiReprContributor),

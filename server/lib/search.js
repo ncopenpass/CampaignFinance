@@ -2,12 +2,13 @@
 const { getClient } = require('../db')
 const format = require('pg-format')
 
-const SUPPORTED_SORT_FIELDS = [
+const SUPPORTED_CANDIDATE_SORT_FIELDS = [
   'candidate_full_name',
   '-candidate_full_name',
   'first_last_sml',
   '-first_last_sml',
 ]
+const SUPPORTED_CONTRIBUTOR_SORT_FIELDS = ['sml', '-sml', 'name', '-name']
 
 /**
  * @typedef {Object} SearchResult
@@ -20,6 +21,10 @@ const SUPPORTED_SORT_FIELDS = [
  * @param {string|number} offset
  * @param {string|number} limit
  * @param {string|number} trigramLimit
+ * @param {string} sort
+ * @param {string} nameFilter
+ * @param {string} professionFilter
+ * @param {string} cityStateFilter
  * @returns {Promise<SearchResult>}
  * @throws an error if the pg query or connection fails
  */
@@ -27,9 +32,27 @@ const searchContributors = async (
   name,
   offset = 0,
   limit = 50,
-  trigramLimit = 0.6
+  trigramLimit = 0.6,
+  sort = 'sml',
+  nameFilter,
+  professionFilter,
+  cityStateFilter
 ) => {
   let client = null
+  let order = SUPPORTED_CONTRIBUTOR_SORT_FIELDS.includes(sort) ? sort : 'sml'
+  order = order.startsWith('-')
+    ? `${order.replace('-', '')} DESC`
+    : `${order} ASC`
+  const safeNameFilter = format('AND name ilike %s', `'%${nameFilter}%'`)
+  const safeProfessionFilter = format(
+    'AND profession ilike %s',
+    `'%${professionFilter}%'`
+  )
+  const safeCityStateFilter = format(
+    'AND (city ilike %s or state ilike %s)',
+    `'%${cityStateFilter}%'`,
+    `'%${cityStateFilter}%'`
+  )
   try {
     const nameILike = `%${name}%`
     client = await getClient()
@@ -38,9 +61,13 @@ const searchContributors = async (
     // because of data integrity, we can't guarantee the first split string is the first name
     const results = await client.query(
       `select *, count(*) over() as full_count, similarity(name, $1) as sml
-      from contributors where name % $1
-        or name ilike $4
-      order by sml desc
+      from contributors where 
+        (name % $1
+        or name ilike $4)
+        ${nameFilter ? safeNameFilter : ''}
+        ${professionFilter ? safeProfessionFilter : ''}
+        ${cityStateFilter ? safeCityStateFilter : ''}
+      order by ${order}
       limit $2 offset $3`,
       [name, limit, offset, nameILike]
     )
@@ -80,7 +107,9 @@ const searchCommittees = async (
   contestFilter
 ) => {
   let client = null
-  let order = SUPPORTED_SORT_FIELDS.includes(sort) ? sort : 'first_last_sml'
+  let order = SUPPORTED_CANDIDATE_SORT_FIELDS.includes(sort)
+    ? sort
+    : 'first_last_sml'
   order = order.startsWith('-')
     ? `${order.replace('-', '')} DESC`
     : `${order} ASC`
@@ -95,6 +124,7 @@ const searchCommittees = async (
     `'%${contestFilter}%'`,
     `'%${contestFilter}%'`
   )
+
   try {
     client = await getClient()
     await client.query('select set_limit($1)', [trigramLimit])

@@ -10,6 +10,10 @@ Query Params (optional):
 
 - `offset` default value `0`
 - `limit` default value `50`
+- `sortBy` default value `sml`(similarity). Sort by `sml` or `name`. Prefix with `-` for `DESC` order
+- `name` fuzzy match results on contributor name
+- `profession` fuzzy match results on profession
+- `cityState` fuzzy match results on city or state
 
 Example: `/api/search/contributors/john%20smith?limit=2&offset=0`
 response:
@@ -50,10 +54,10 @@ Query Params (optional):
 
 - `offset` default value `0`
 - `limit` default value `50`
-- `sortBy` default value `first_last_sml`
-- `name`
-- `party`
-- `contest`
+- `sortBy` default value `first_last_sml`(similarity). Sort by `first_last_sml` or `candidate_full_name`. Prefix with `-` for `DESC` order
+- `name` fuzzy match results on candidate name
+- `party` fuzzy match results on pary name
+- `contest` fuzzy match on juris or office name
 
 Example: `/api/search/candidates/roy%20cooper?limit=1&offset=0`
 response:
