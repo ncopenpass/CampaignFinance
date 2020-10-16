@@ -50,3 +50,6 @@ migrate-up-windows:
 
 migrate-down:
 	cd server && npm run migrate down
+
+build-dictionary:
+	cd scripts && node createDataDictionary
