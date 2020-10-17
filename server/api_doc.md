@@ -121,6 +121,13 @@ Query Params (optional):
 - `offset` default value `0`
 - `limit` default value `50`
 - `toCSV` default value `false`
+- `sortBy` sort by `name`, `amount` or `date_occurred`. Prefix with `-` for `DESC` order
+- `name` fuzzy match results on contributor name
+- `transaction_type` exact match
+- `amount` exact match
+- `form_of_payment` exact match
+- `date_occurred_gte` match results with `date_occurred` greater than and equal to the provided date (`1/1/2020`)
+- `date_occurred_lte` match results with `date_occurred` greater than and equal to the provided date (`1/1/2020`)
 
 Example: `/api/candidate/STA-C0498N-C-002/contributions?limit=2`
 response:

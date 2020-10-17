@@ -1,4 +1,14 @@
 // @ts-check
+const format = require('pg-format')
+
+const SUPPORTED_CANDIDATE_CONTRIBUTION_SORT_FIELDS = [
+  'name',
+  '-name',
+  'amount',
+  '-amount',
+  'date_occurred',
+  '-date_occurred',
+]
 
 /**
  * @typedef {Object} CandidateSummary
@@ -46,14 +56,67 @@ const getCandidateSummary = async (ncsbeID, client) => {
  * @param {Number|string} args.limit
  * @param {Number|string} args.offset
  * @param {import('pg').PoolClient} args.client
+ * @param {string} args.sortBy
+ * @param {string} args.name
+ * @param {string} args.transaction_type
+ * @param {string} args.amount
+ * @param {string} args.form_of_payment
+ * @param {string} args.date_occurred_gte
+ * @param {string} args.date_occurred_lte
  * @returns {Promise<import('pg').QueryResult>}
  */
 const getCandidateContributions = ({
   ncsbeID,
-  limit = null,
-  offset = null,
+  limit = 50,
+  offset = 0,
   client,
+  sortBy = null,
+  name: nameFilter = null,
+  transaction_type: transaction_typeFilter = null,
+  amount: amountFilter = null,
+  form_of_payment: form_of_paymentFilter = null,
+  date_occurred_gte: date_occurred_gteFilter = null,
+  date_occurred_lte: date_occurred_lteFilter = null,
 }) => {
+  let order = SUPPORTED_CANDIDATE_CONTRIBUTION_SORT_FIELDS.includes(sortBy)
+    ? sortBy
+    : ''
+  order = order.replace('date_occurred', 'CAST(date_occurred as DATE)')
+  order = order.startsWith('-')
+    ? `${order.replace('-', '')} DESC`
+    : `${order} ASC`
+
+  const safeNameFilter = nameFilter
+    ? format('AND upper(name) ilike %s', `'%${nameFilter.toUpperCase()}%'`)
+    : ''
+  const safeTransactionTypeFilter = transaction_typeFilter
+    ? format(
+        'AND upper(transaction_type) = %L',
+        transaction_typeFilter.toUpperCase()
+      )
+    : ''
+  const safeAmountFilter = amountFilter
+    ? format('AND amount = %L', amountFilter)
+    : ''
+  const safeFormOfPaymentFilter = form_of_paymentFilter
+    ? format(
+        'AND upper(form_of_payment) = %L',
+        form_of_paymentFilter.toUpperCase()
+      )
+    : ''
+  const safeDateOccurredGteFilter = date_occurred_gteFilter
+    ? format(
+        'AND CAST(date_occurred as DATE) >= CAST(%L as DATE)',
+        date_occurred_gteFilter
+      )
+    : ''
+  const safeDateOccurredLteFilter = date_occurred_lteFilter
+    ? format(
+        'AND CAST(date_occurred as DATE) <= CAST(%L as DATE)',
+        date_occurred_lteFilter
+      )
+    : ''
+
   return client.query(
     `select count(*) over () as full_count,
        source_contribution_id,
@@ -77,7 +140,16 @@ const getCandidateContributions = ({
        employer_name
        from contributions
               join contributors c on contributions.contributor_id = c.id
-      where lower(contributions.committee_sboe_id) = lower($1)
+      where (
+        lower(contributions.committee_sboe_id) = lower($1)
+        ${safeNameFilter}
+        ${safeTransactionTypeFilter}
+        ${safeAmountFilter}
+        ${safeFormOfPaymentFilter}
+        ${safeDateOccurredGteFilter}
+        ${safeDateOccurredLteFilter}
+      )
+      ${sortBy ? `order by ${order}` : ''}
       limit $2
       offset $3`,
     [ncsbeID, limit, offset]
