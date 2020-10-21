@@ -2,6 +2,7 @@ import React, { useMemo } from 'react'
 import { Link } from 'react-router-dom'
 
 const CANDIDATE_URL = '/candidate/'
+const CONTRIBUTOR_URL = '/contributors/'
 
 export const useTableColumns = () => {
   const contributorColumns = useMemo(
@@ -67,7 +68,17 @@ export const useTableColumns = () => {
     () => [
       {
         Header: 'Contributor Name',
-        accessor: 'name',
+        accessor: ({ contributor_id, name }) => (
+          <Link
+            to={(location) => ({
+              pathname: CONTRIBUTOR_URL + contributor_id,
+              fromPathname: location.pathname,
+            })}
+          >
+            {' '}
+            {name}
+          </Link>
+        ),
       },
       {
         Header: 'Transaction Type',
