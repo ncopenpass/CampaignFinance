@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useCallback } from 'react'
 import styled from '@emotion/styled'
 import { Button, Dropdown } from '@trussworks/react-uswds'
 
@@ -21,17 +21,19 @@ const SearchResultTable = ({
   fetchPrevious,
   searchTerm,
   searchType,
+  onChangeSort,
 }) => {
   const { tableLimits } = useTablePagination()
 
   const [apiLimit, setApiLimit] = useState(10)
 
-  useEffect(() => {
-    async function updateLimit() {
-      await fetchSame(apiLimit)
-    }
-    updateLimit()
-  }, [apiLimit, fetchSame])
+  const onChangeLimit = useCallback(
+    (value) => {
+      setApiLimit(value)
+      fetchSame(value)
+    },
+    [fetchSame]
+  )
 
   return (
     <>
@@ -39,7 +41,7 @@ const SearchResultTable = ({
         <>
           <Dropdown
             value={apiLimit}
-            onChange={(e) => setApiLimit(e.currentTarget.value)}
+            onChange={(e) => onChangeLimit(e.currentTarget.value)}
           >
             {tableLimits.map(({ label, value }) => (
               <option key={value} value={value}>
@@ -47,7 +49,7 @@ const SearchResultTable = ({
               </option>
             ))}
           </Dropdown>
-          <Table columns={columns} data={data} />
+          <Table columns={columns} data={data} onChangeSort={onChangeSort} />
           <ResultsTableFooter>
             {`${offset + 1} - ${Math.min(
               offset + apiLimit,

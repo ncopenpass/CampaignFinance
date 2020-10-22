@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useTable, useSortBy, useFilters, useGlobalFilter } from 'react-table'
 import matchSorter from 'match-sorter'
 import Select from 'react-select'
 import { Table as USTable } from '@trussworks/react-uswds'
 import '../css/table.scss'
+import SortAscending from '../static/sortAscending.png'
+import SortDescending from '../static/sortDescending.png'
 
 // This is a custom filter UI for selecting
 // a unique option from a list
@@ -39,7 +41,7 @@ function fuzzyTextFilterFn(rows, id, filterValue) {
 // Let the table remove the filter if the string is empty
 fuzzyTextFilterFn.autoRemove = (val) => !val
 
-export default function Table({ columns, data }) {
+export default function Table({ columns, data, onChangeSort, initialSortBy }) {
   const filterTypes = React.useMemo(
     () => ({
       // Add a new fuzzyTextFilterFn filter type.
@@ -75,17 +77,27 @@ export default function Table({ columns, data }) {
     headerGroups, // headerGroups, if your table has groupings
     rows, // rows for the table based on the data passed
     prepareRow, // Prepare the row (this function needs to be called for each row before getting the row props)
+    state: { sortBy }, // track the current sort state so we can call appropriate callbacks
   } = useTable(
     {
       columns,
       data,
       defaultColumn,
       filterTypes,
+      initialState: initialSortBy ? { sortBy: initialSortBy } : undefined,
+      disableMultiSort: true,
+      manualSortBy: true,
     },
     useFilters,
     useGlobalFilter,
     useSortBy
   )
+
+  useEffect(() => {
+    if (onChangeSort) {
+      onChangeSort(sortBy)
+    }
+  }, [onChangeSort, sortBy])
 
   return (
     <USTable bordered={true} fullWidth={true} {...getTableProps()}>
@@ -93,7 +105,29 @@ export default function Table({ columns, data }) {
         {headerGroups.map((headerGroup) => (
           <tr {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map((column) => (
-              <th {...column.getHeaderProps()}>{column.render('Header')}</th>
+              <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                <div>
+                  {column.render('Header')}
+                  {column.isSortedDesc && (
+                    <img
+                      src={SortDescending}
+                      alt="Descending"
+                      style={{ verticalAlign: 'middle', marginLeft: '10px' }}
+                      height="20px"
+                      width="20px"
+                    />
+                  )}
+                  {column.isSorted && !column.isSortedDesc && (
+                    <img
+                      src={SortAscending}
+                      alt="Ascending"
+                      style={{ verticalAlign: 'middle', marginLeft: '10px' }}
+                      height="20px"
+                      width="20px"
+                    />
+                  )}
+                </div>
+              </th>
             ))}
           </tr>
         ))}

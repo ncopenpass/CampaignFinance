@@ -72,6 +72,7 @@ export const useTableColumns = () => {
       {
         Header: 'Transaction Type',
         accessor: 'transaction_type',
+        disableSortBy: true,
       },
       {
         id: 'amount',
@@ -87,6 +88,7 @@ export const useTableColumns = () => {
       {
         Header: 'Form of Payment',
         accessor: 'form_of_payment',
+        disableSortBy: true,
       },
       {
         id: 'date_occurred',
@@ -103,6 +105,7 @@ export const useTableColumns = () => {
       {
         Header: 'Comment',
         accessor: 'purpose',
+        disableSortBy: true,
       },
     ],
     []

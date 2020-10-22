@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react'
+import React, { useEffect, useCallback, useState } from 'react'
 import { useParams, useLocation, Link } from 'react-router-dom'
 import { Grid, GridContainer } from '@trussworks/react-uswds'
 import NumberFormat from 'react-number-format'
@@ -13,6 +13,7 @@ import ReportError from './ReportError'
 const Candidate = () => {
   let { candidateId } = useParams()
   const location = useLocation()
+  const [lastQuery, setLastQuery] = useState({})
 
   const {
     candidate,
@@ -26,44 +27,59 @@ const Candidate = () => {
 
   useEffect(() => {
     if (fetchInitialSearchData) {
-      fetchInitialSearchData({ candidateId })
+      const query = { candidateId, limit: API_BATCH_SIZE, offset: 0 }
+      setLastQuery(query)
+      fetchInitialSearchData(query)
     }
   }, [candidateId, fetchInitialSearchData])
+
+  const handleSortChange = useCallback(
+    (sortBy) => {
+      // we don't support multisort, so get the first element in the sortBy array if it exists
+      let sort
+      if (!sortBy.length) {
+        sort = undefined
+      } else {
+        const [newSort] = sortBy
+        sort = newSort.desc ? `-${newSort.id}` : newSort.id
+      }
+      if (sort !== lastQuery.sort) {
+        const query = { ...lastQuery, sort }
+        setLastQuery(query)
+        fetchContributions(query)
+      }
+    },
+    [lastQuery, fetchContributions]
+  )
 
   // Fetches the same page of contributions when user changes limit size
   const fetchSameContributions = useCallback(
     (limit = API_BATCH_SIZE) => {
-      fetchContributions({
-        candidateId,
-        limit: limit,
-        offset: contributionOffset,
-      })
+      const query = { ...lastQuery, limit }
+      setLastQuery(query)
+      fetchContributions(query)
     },
-    [contributionOffset, fetchContributions, candidateId]
+    [fetchContributions, lastQuery]
   )
 
   // Fetch next batch of contributions for pagination
   const fetchNextContributions = useCallback(
     (limit = API_BATCH_SIZE) => {
-      fetchContributions({
-        candidateId,
-        limit: limit,
-        offset: contributionOffset + limit,
-      })
+      const query = { ...lastQuery, limit, offset: lastQuery.offset + limit }
+      setLastQuery(query)
+      fetchContributions(query)
     },
-    [contributionOffset, fetchContributions, candidateId]
+    [fetchContributions, lastQuery]
   )
 
   // Fetch previous batch of contributions for pagination
   const fetchPreviousContributions = useCallback(
     (limit = API_BATCH_SIZE) => {
-      fetchContributions({
-        candidateId,
-        limit: limit,
-        offset: contributionOffset - limit,
-      })
+      const query = { ...lastQuery, limit, offset: lastQuery.offset - limit }
+      setLastQuery(query)
+      fetchContributions(query)
     },
-    [contributionOffset, candidateId, fetchContributions]
+    [fetchContributions, lastQuery]
   )
 
   const { candidateContributionColumns } = useTableColumns()
@@ -206,6 +222,7 @@ const Candidate = () => {
               fetchPrevious={fetchPreviousContributions}
               searchTerm={candidateId}
               searchType="contributions"
+              onChangeSort={handleSortChange}
             />
           </Grid>
         </Grid>
