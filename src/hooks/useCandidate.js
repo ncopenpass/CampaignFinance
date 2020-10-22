@@ -86,9 +86,9 @@ export const useCandidate = () => {
   )
 
   const fetchInitialSearchData = useCallback(
-    async ({ candidateId, limit, offset }) => {
+    async ({ candidateId, limit, offset, sort }) => {
       await fetchCandidate({ candidateId })
-      await fetchContributions({ candidateId })
+      await fetchContributions({ candidateId, limit, offset, sort })
     },
     [fetchCandidate, fetchContributions]
   )

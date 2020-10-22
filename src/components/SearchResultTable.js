@@ -22,6 +22,7 @@ const SearchResultTable = ({
   searchTerm,
   searchType,
   onChangeSort,
+  initialSortBy,
 }) => {
   const { tableLimits } = useTablePagination()
 
@@ -49,7 +50,12 @@ const SearchResultTable = ({
               </option>
             ))}
           </Dropdown>
-          <Table columns={columns} data={data} onChangeSort={onChangeSort} />
+          <Table
+            columns={columns}
+            data={data}
+            onChangeSort={onChangeSort}
+            initialSortBy={initialSortBy}
+          />
           <ResultsTableFooter>
             {`${offset + 1} - ${Math.min(
               offset + apiLimit,

@@ -27,7 +27,12 @@ const Candidate = () => {
 
   useEffect(() => {
     if (fetchInitialSearchData) {
-      const query = { candidateId, limit: API_BATCH_SIZE, offset: 0 }
+      const query = {
+        candidateId,
+        limit: API_BATCH_SIZE,
+        offset: 0,
+        sort: '-date_occurred',
+      }
       setLastQuery(query)
       fetchInitialSearchData(query)
     }
@@ -223,6 +228,7 @@ const Candidate = () => {
               searchTerm={candidateId}
               searchType="contributions"
               onChangeSort={handleSortChange}
+              initialSortBy={[{ id: 'date_occurred', desc: true }]}
             />
           </Grid>
         </Grid>
