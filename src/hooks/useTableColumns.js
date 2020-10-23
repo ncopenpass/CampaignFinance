@@ -13,22 +13,27 @@ export const useTableColumns = () => {
       {
         Header: 'City/State',
         accessor: ({ city, state }) => city + ', ' + state,
+        disableSortBy: true,
       },
       {
         Header: 'Type',
         accessor: 'type',
+        disableSortBy: true,
       },
       {
         Header: 'Profession',
         accessor: 'profession',
+        disableSortBy: true,
       },
       {
         Header: 'Total Contributions',
         accessor: 'total',
+        disableSortBy: true,
       },
       {
         Header: 'Employer',
         accessor: 'employer_name',
+        disableSortBy: true,
       },
     ],
     []
@@ -53,11 +58,13 @@ export const useTableColumns = () => {
       {
         Header: 'Party',
         accessor: 'party',
+        disableSortBy: true,
       },
       {
         Header: 'Contest',
         accessor: ({ office, juris }) =>
           juris ? `${office} ${juris}` : office,
+        disableSortBy: true,
       },
     ],
     []

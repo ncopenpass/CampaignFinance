@@ -15,10 +15,8 @@ export const useSearch = () => {
   const [hasError, setHasError] = useState(false)
   const [candidates, setCandidates] = useState([])
   const [candidateCount, setCandidateCount] = useState(0)
-  const [candidateOffset, setCandidateOffset] = useState(0)
   const [contributors, setContributors] = useState([])
   const [contributorCount, setContributorCount] = useState(0)
-  const [contributorOffset, setContributorOffset] = useState(0)
 
   const fetchCandidates = useCallback(
     async ({ searchTerm, limit = API_BATCH_SIZE, offset = 0 } = {}) => {
@@ -33,7 +31,6 @@ export const useSearch = () => {
         const { data, count } = await getDataAndCount(url)
         setCandidates(data)
         setCandidateCount(count)
-        setCandidateOffset(offset)
       } catch (e) {
         console.log(e)
         setHasError(true)
@@ -55,7 +52,6 @@ export const useSearch = () => {
         const { data, count } = await getDataAndCount(url)
         setContributors(data)
         setContributorCount(count)
-        setContributorOffset(offset)
       } catch (e) {
         console.log(e)
         setHasError(true)
@@ -66,8 +62,8 @@ export const useSearch = () => {
 
   const fetchInitialSearchData = useCallback(
     async ({ searchTerm, limit, offset }) => {
-      await fetchCandidates({ searchTerm })
-      await fetchContributors({ searchTerm })
+      await fetchCandidates({ searchTerm, limit, offset })
+      await fetchContributors({ searchTerm, limit, offset })
     },
     [fetchCandidates, fetchContributors]
   )
@@ -76,10 +72,8 @@ export const useSearch = () => {
     hasError,
     candidates,
     candidateCount,
-    candidateOffset,
     contributors,
     contributorCount,
-    contributorOffset,
     fetchInitialSearchData,
     fetchCandidates,
     fetchContributors,

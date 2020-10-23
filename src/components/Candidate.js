@@ -6,6 +6,7 @@ import NumberFormat from 'react-number-format'
 import { useCandidate, useTableColumns } from '../hooks'
 import { API_BATCH_SIZE } from '../constants'
 import '../css/candidate.scss'
+import { formatSortBy } from '../utils'
 
 import SearchResultTable from './SearchResultTable'
 import ReportError from './ReportError'
@@ -41,13 +42,7 @@ const Candidate = () => {
   const handleSortChange = useCallback(
     (sortBy) => {
       // we don't support multisort, so get the first element in the sortBy array if it exists
-      let sort
-      if (!sortBy.length) {
-        sort = undefined
-      } else {
-        const [newSort] = sortBy
-        sort = newSort.desc ? `-${newSort.id}` : newSort.id
-      }
+      const sort = formatSortBy(sortBy)
       if (sort !== lastQuery.sort) {
         const query = { ...lastQuery, sort }
         setLastQuery(query)

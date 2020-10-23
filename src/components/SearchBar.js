@@ -6,7 +6,6 @@ import {
   SEARCH_FRAGMENT_ROUTE,
   QUICK_SEARCH_FRAGMENT_ROUTE,
   CANDIDATES,
-  CONTRIBUTORS,
   ELECTION_YEAR,
 } from '../constants'
 
@@ -28,14 +27,6 @@ const SearchBar = ({ hideQuickLinks }) => {
     (e) => {
       e.preventDefault()
       history.push(`${QUICK_SEARCH_FRAGMENT_ROUTE}${CANDIDATES}`)
-    },
-    [history]
-  )
-
-  const handleQuickDonorLink = useCallback(
-    (e) => {
-      e.preventDefault()
-      history.push(`${QUICK_SEARCH_FRAGMENT_ROUTE}${CONTRIBUTORS}`)
     },
     [history]
   )
