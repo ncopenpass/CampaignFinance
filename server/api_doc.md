@@ -236,6 +236,42 @@ response:
 }
 ```
 
+## GET `/api/contributor/:contributorId`
+
+Get an individual contributor by ID
+
+Example: `/api/contributor/8ce7bc9f-2c13-45ac-8395-3e46b4191490`
+
+response:
+
+status code: 200
+
+```json
+{
+  "data": {
+    "contributor_id": "8ce7bc9f-2c13-45ac-8395-3e46b4191490",
+    "name": "John D. Smith II",
+    "city": "Eden",
+    "state": "NC",
+    "zip_code": "27289-0590",
+    "profession": "Property Management",
+    "employer_name": "Self"
+  }
+}
+```
+
+If the contributor id is not found, the `data` field will be `null` and the response code will be `404`
+
+Example: `/api/contributor/00000000-0000-0000-0000-000000000000`
+
+status code: 404
+
+```json
+{
+  "data": null
+}
+```
+
 ## GET `/api/contributors/:year
 
 Retrieve all contributors for a given year.
