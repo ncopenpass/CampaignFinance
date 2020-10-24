@@ -215,7 +215,9 @@ response:
       "purpose": null,
       "report_name": "2019 Year End Semi-Annual",
       "source_contribution_id": "1223e0c7-05d3-411f-932f-d1ac90fde0b7",
-      "transaction_type": "Individual"
+      "transaction_type": "Individual",
+      "candidate_full_name": "WILLIAM WALTER TOOLE",
+      "committee_name": "TOOLE FOR NC "
     },
     {
       "account_code": "Not Available",
@@ -229,7 +231,9 @@ response:
       "purpose": null,
       "report_name": "2020 First Quarter",
       "source_contribution_id": "306a9814-876c-405b-9f53-9b0301d37bdb",
-      "transaction_type": "Individual"
+      "transaction_type": "Individual",
+      "candidate_full_name": "WILLIAM WALTER TOOLE",
+      "committee_name": "TOOLE FOR NC "
     }
   ],
   "count": "5"

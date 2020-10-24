@@ -58,6 +58,20 @@ const apiReprContribution = (row) => {
   }
 }
 
+const apiReprCommittee = (row) => {
+  return {
+    candidate_full_name: row.candidate_full_name,
+    committee_name: row.committee_name,
+  }
+}
+
+const apiReprContributionCommittee = (row) => {
+  return {
+    ...apiReprContribution(row),
+    ...apiReprCommittee(row),
+  }
+}
+
 // the combined view for contributor + contributions
 const apiReprContributorContributions = (row) => {
   return {
@@ -297,6 +311,7 @@ api.get('/contributors/:contributorId/contributions', async (req, res) => {
     client = await getClient()
     const contributions = await client.query(
       `select *, count(*) over () as full_count from contributions
+      join committees on committees.sboe_id = contributions.committee_sboe_id
       where contributor_id = $1
       order by contributions.date_occurred asc
       limit $2
@@ -305,7 +320,7 @@ api.get('/contributors/:contributorId/contributions', async (req, res) => {
       [contributorId, limit, offset]
     )
     return res.send({
-      data: contributions.rows.map(apiReprContribution),
+      data: contributions.rows.map(apiReprContributionCommittee),
       count:
         contributions.rows.length > 0 ? contributions.rows[0].full_count : 0,
     })
