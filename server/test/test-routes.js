@@ -266,6 +266,36 @@ describe('GET /api/contributors/:contributorId/contributions', function () {
   })
 })
 
+describe('GET /api/contributor/:contributorId', function () {
+  it('it should have status 200 and correct schema', async function () {
+    const client = await getClient()
+    const { rows } = await client.query(
+      'select id FROM contributors limit 1',
+      []
+    )
+    client.release()
+    const id = encodeURIComponent(rows[0].id)
+    const response = await supertest(app).get(`/api/contributor/${id}`)
+    response.status.should.equal(200)
+    response.body.should.be.an('object').that.has.all.keys(['data'])
+    response.body.data.should.be
+      .an('object')
+      .that.has.all.keys(expectedContributorKeys)
+    Object.keys(response.body.data).length.should.equal(
+      expectedContributorKeys.length
+    )
+  })
+  it('it should have status 404 and data=null when contributor id is not found', async function () {
+    const client = await getClient()
+    client.release()
+    const id = encodeURIComponent('00000000-0000-0000-0000-000000000000')
+    const response = await supertest(app).get(`/api/contributor/${id}`)
+    response.status.should.equal(404)
+    response.body.should.be.an('object').that.has.all.keys(['data'])
+    chai.should().equal(response.body.data, null)
+  })
+})
+
 describe('GET /api/candidates/:year', function () {
   it('it should have status 200 and correct schema', async function () {
     const client = await getClient()

@@ -318,6 +318,32 @@ api.get('/contributors/:contributorId/contributions', async (req, res) => {
   }
 })
 
+api.get('/contributor/:contributorId', async (req, res) => {
+  let client = null
+  try {
+    const { contributorId } = req.params
+    client = await getClient()
+    const result = await client.query(
+      `select * from contributors where id = $1`,
+      [contributorId]
+    )
+    const contributor =
+      result.rows.length > 0 ? apiReprContributor(result.rows[0]) : null
+
+    // Return 404 and data = null if the contributor was not found
+    res.status(contributor === null ? 404 : 200)
+    return res.send({
+      data: contributor,
+    })
+  } catch (error) {
+    handleError(error, res)
+  } finally {
+    if (client !== null) {
+      client.release()
+    }
+  }
+})
+
 api.get('/candidates/:year', async (req, res) => {
   let client = null
   try {
