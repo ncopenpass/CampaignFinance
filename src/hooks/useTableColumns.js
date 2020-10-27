@@ -39,7 +39,7 @@ export const useTableColumns = () => {
     () => [
       {
         Header: 'Recipient Name',
-        accessor: 'candidate_or_referendum_name',
+        accessor: 'candidate_full_name',
       },
       {
         Header: 'Amount',
