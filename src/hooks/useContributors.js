@@ -98,5 +98,6 @@ export const useContributors = () => {
     contributionOffset,
     fetchInitialSearchData,
     fetchContributor,
+    fetchContributorContributions,
   }
 }

@@ -22,6 +22,7 @@ const Contributor = () => {
     contributionOffset,
     fetchInitialSearchData,
     fetchContributor,
+    fetchContributorContributions,
   } = useContributors()
 
   useEffect(() => {
@@ -43,24 +44,24 @@ const Contributor = () => {
 
   const fetchNextContributions = useCallback(
     (limit = API_BATCH_SIZE) => {
-      fetchContributor({
+      fetchContributorContributions({
         contributorId,
         limit: limit,
         offset: contributionOffset + limit,
       })
     },
-    [contributionOffset, fetchContributor, contributorId]
+    [contributionOffset, fetchContributorContributions, contributorId]
   )
 
   const fetchPreviousContributions = useCallback(
     (limit = API_BATCH_SIZE) => {
-      fetchContributor({
+      fetchContributorContributions({
         contributorId,
         limit: limit,
         offset: contributionOffset - limit,
       })
     },
-    [contributionOffset, contributorId, fetchContributor]
+    [contributionOffset, contributorId, fetchContributorContributions]
   )
 
   const { individualContributionsColumns } = useTableColumns()
