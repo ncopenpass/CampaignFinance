@@ -80,7 +80,7 @@ const expectedContributorKeys = [
 const expectedContributionKeys = [
   'account_code',
   'amount',
-  'committee_name',
+  'candidate_or_referendum_name',
   'committee_sboe_id',
   'contributor_id',
   'date_occurred',
