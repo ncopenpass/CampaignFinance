@@ -92,6 +92,23 @@ const expectedContributionKeys = [
   'transaction_type',
 ]
 
+const expectedContributionCommitteeKeys = [
+  'account_code',
+  'amount',
+  'candidate_or_referendum_name',
+  'committee_sboe_id',
+  'committee_name',
+  'candidate_full_name',
+  'contributor_id',
+  'date_occurred',
+  'declaration',
+  'form_of_payment',
+  'purpose',
+  'report_name',
+  'source_contribution_id',
+  'transaction_type',
+]
+
 // Combine contributor and contribution fields and remove duplicates
 const expectedContributorContributionsKeys = [
   ...new Set([...expectedContributionKeys, ...expectedContributorKeys]),
@@ -259,9 +276,9 @@ describe('GET /api/contributors/:contributorId/contributions', function () {
     response.body.should.be.an('object').that.has.all.keys(['data', 'count'])
     response.body.data[0].should.be
       .an('object')
-      .that.has.all.keys(expectedContributionKeys)
+      .that.has.all.keys(expectedContributionCommitteeKeys)
     Object.keys(response.body.data[0]).length.should.equal(
-      expectedContributionKeys.length
+      expectedContributionCommitteeKeys.length
     )
   })
 })
