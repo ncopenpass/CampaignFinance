@@ -35,6 +35,42 @@ export const useTableColumns = () => {
     []
   )
 
+  const individualContributionsColumns = useMemo(
+    () => [
+      {
+        Header: 'Recipient Name',
+        accessor: 'candidate_or_referendum_name',
+      },
+      {
+        Header: 'Amount',
+        accessor: (r) => {
+          const formatter = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+          })
+          return formatter.format(r.amount)
+        },
+      },
+      {
+        Header: 'Donation Type',
+        accessor: 'transaction_type',
+      },
+      {
+        Header: 'Donation Date',
+        accessor: 'date_occurred',
+      },
+      {
+        Header: 'Description',
+        accessor: 'purpose',
+      },
+      {
+        Header: 'Total Contributed',
+        accessor: '',
+      },
+    ],
+    []
+  )
+
   const candidateColumns = useMemo(
     () => [
       {
@@ -123,5 +159,6 @@ export const useTableColumns = () => {
     contributorColumns,
     candidateColumns,
     candidateContributionColumns,
+    individualContributionsColumns,
   }
 }

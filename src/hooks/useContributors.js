@@ -1,9 +1,20 @@
 import { useCallback, useState } from 'react'
 import { API_BATCH_SIZE } from '../constants'
 
-const CONTRIBUTOR_URL = '/api/contributors/'
+const CONTRIBUTOR_URL = '/api/contributor/'
+const CONTRIBUTIONS_URL = '/api/contributors/'
 
 const constructContributorUrl = ({ url, contributorId, limit, offset }) => {
+  contributorId = encodeURIComponent(contributorId)
+  return `${url}${contributorId}?limit=${limit}&offset=${offset}`
+}
+
+const constructContributorContributionsUrl = ({
+  url,
+  contributorId,
+  limit,
+  offset,
+}) => {
   contributorId = encodeURIComponent(contributorId)
   return `${url}${contributorId}/contributions?limit=${limit}&offset=${offset}`
 }
@@ -49,11 +60,33 @@ export const useContributors = () => {
     [getDataCountSummary]
   )
 
+  const fetchContributorContributions = useCallback(
+    async ({ contributorId, limit = API_BATCH_SIZE, offset = 0 } = {}) => {
+      const url = constructContributorContributionsUrl({
+        url: CONTRIBUTIONS_URL,
+        contributorId,
+        limit,
+        offset,
+      })
+      try {
+        const { data, count, summary } = await getDataCountSummary(url)
+        setContributions(data)
+        setContributionCount(count)
+        setSummary(summary)
+        setContributionOffset(offset)
+      } catch (e) {
+        console.log(e)
+      }
+    },
+    [getDataCountSummary]
+  )
+
   const fetchInitialSearchData = useCallback(
     async ({ contributorId, limit, offset }) => {
       await fetchContributor({ contributorId })
+      await fetchContributorContributions({ contributorId })
     },
-    [fetchContributor]
+    [fetchContributor, fetchContributorContributions]
   )
 
   return {
