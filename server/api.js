@@ -45,7 +45,7 @@ const apiReprContribution = (row) => {
   return {
     account_code: row.account_code,
     amount: row.amount,
-    candidate_or_referendum_name: row.candidate_or_referendum_name,
+    candidate_or_referendum_name: row.committee_name,
     committee_sboe_id: row.committee_sboe_id,
     contributor_id: row.contributor_id,
     date_occurred: row.date_occurred,
