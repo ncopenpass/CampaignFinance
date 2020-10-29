@@ -69,6 +69,7 @@ const apiReprContributionCommittee = (row) => {
   return {
     ...apiReprContribution(row),
     ...apiReprCommittee(row),
+    total_contributions_to_committee: row.total_contributions_to_committee,
   }
 }
 
@@ -310,7 +311,10 @@ api.get('/contributors/:contributorId/contributions', async (req, res) => {
     const { limit = 50, offset = 0 } = req.query
     client = await getClient()
     const contributions = await client.query(
-      `select *, count(*) over () as full_count from contributions
+      `select *, count(*) over () as full_count,
+      (select sum(amount) from contributions c where contributor_id = $1
+        and c.committee_sboe_id = contributions.committee_sboe_id) as total_contributions_to_committee
+      from contributions
       join committees on committees.sboe_id = contributions.committee_sboe_id
       where contributor_id = $1
       order by contributions.date_occurred asc

@@ -217,7 +217,8 @@ response:
       "source_contribution_id": "1223e0c7-05d3-411f-932f-d1ac90fde0b7",
       "transaction_type": "Individual",
       "candidate_full_name": "WILLIAM WALTER TOOLE",
-      "committee_name": "TOOLE FOR NC "
+      "committee_name": "TOOLE FOR NC ",
+      "total_contributions_to_committee": 1232.23
     },
     {
       "account_code": "Not Available",
@@ -233,7 +234,8 @@ response:
       "source_contribution_id": "306a9814-876c-405b-9f53-9b0301d37bdb",
       "transaction_type": "Individual",
       "candidate_full_name": "WILLIAM WALTER TOOLE",
-      "committee_name": "TOOLE FOR NC "
+      "committee_name": "TOOLE FOR NC ",
+      "total_contributions_to_committee": 1232.23
     }
   ],
   "count": "5"
