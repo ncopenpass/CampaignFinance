@@ -107,6 +107,7 @@ const expectedContributionCommitteeKeys = [
   'report_name',
   'source_contribution_id',
   'transaction_type',
+  'total_contributions_to_committee',
 ]
 
 // Combine contributor and contribution fields and remove duplicates
