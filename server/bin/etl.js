@@ -42,6 +42,10 @@ const { copyFromCSV } = require('../db/copyFromCSV')
     await client.query(
       `update committees set candidate_first_last_name = CONCAT_WS(' ', candidate_first_name, candidate_last_name)`
     )
+    await client.query(
+      `create index if not exists candidate_name_trgm_idx on committees using gin (candidate_last_name gin_trgm_ops, candidate_first_last_name gin_trgm_ops, candidate_full_name gin_trgm_ops)`
+    )
+    await client.query(`reindex index candidate_name_trgm_idx`)
   } catch (error) {
     console.error(error)
   } finally {
