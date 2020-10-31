@@ -338,7 +338,7 @@ api.get('/contributors/:contributorId/contributions', async (req, res) => {
       const contributorName =
         contributor.rows.length > 0 ? contributor.rows[0].name : contributorId
       sendCSV(
-        contributions.rows.map(apiReprContributorContributions),
+        contributions.rows.map(apiReprContributionCommittee),
         contributorName.replace(/ /g, '_'),
         res
       )

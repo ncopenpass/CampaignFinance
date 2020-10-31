@@ -261,6 +261,29 @@ describe('GET /api/candidate/:ncsbeID/contributions CSV download', function () {
   })
 })
 
+describe('GET /api/contributors/:contributorId/contributions CSV download', function () {
+  it('it should have status 200 and right headers', async function () {
+    const client = await getClient()
+    const { rows } = await client.query(
+      `select id from contributors limit 1`,
+      []
+    )
+    client.release()
+    const id = encodeURIComponent(rows[0].id)
+    const response = await supertest(app)
+      .get(`/api/contributors/${id}/contributions`)
+      .query({ toCSV: 'true' })
+      .set('Accept', 'text/csv')
+      .set('Content-Type', 'text/csv')
+    response.status.should.equal(200)
+    response.text
+      .split('\n')[0]
+      .split(',')
+      .map((item) => item.replace(/"/g, ''))
+      .should.deep.equalInAnyOrder(expectedContributionCommitteeKeys)
+  })
+})
+
 describe('GET /api/contributors/:contributorId/contributions', function () {
   it('it should have status 200 and correct schema', async function () {
     const client = await getClient()
