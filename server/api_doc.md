@@ -196,6 +196,7 @@ Query Params (optional):
 
 - `offset` default value `0`
 - `limit` default value `50`
+- `toCSV` default value `false`
 
 Example: `/api/contributors/2423d2db-2dd1-493e-8bf6-d85a44c2a58d/contributions?limit=2&offset=0`
 response:
@@ -240,6 +241,18 @@ response:
   ],
   "count": "5"
 }
+```
+
+Example: `/api/contributors/2423d2db-2dd1-493e-8bf6-d85a44c2a58d/contributions?toCSV=true`  
+response:
+
+```CSV
+"account_code","amount","candidate_or_referendum_name","committee_sboe_id","contributor_id","date_occurred","declaration","form_of_payment","purpose","report_name","source_contribution_id","transaction_type","candidate_full_name","committee_name","total_contributions_to_committee"
+"Not Available",250,,"STA-D34P1G-C-001","2423d2db-2dd1-493e-8bf6-d85a44c2a58d","11/20/19",,"Credit Card",,"2019 Year End Semi-Annual","1223e0c7-05d3-411f-932f-d1ac90fde0b7","Individual","WILLIAM WALTER TOOLE","TOOLE FOR NC ",750
+"Not Available",500,,"STA-D34P1G-C-001","2423d2db-2dd1-493e-8bf6-d85a44c2a58d","1/27/20",,"Credit Card",,"2020 First Quarter","306a9814-876c-405b-9f53-9b0301d37bdb","Individual","WILLIAM WALTER TOOLE","TOOLE FOR NC ",750
+"Not Available",200,,"STA-C0498N-C-002","2423d2db-2dd1-493e-8bf6-d85a44c2a58d","5/20/19",,"Credit Card",,"2019 Mid Year Semi-Annual","fe5b3577-567f-4813-991f-8fc63e60cd2c","Individual","ROY A COOPER","COOPER FOR NORTH CAROLINA",200
+"Not Available",500,,"STA-196F43-C-002","2423d2db-2dd1-493e-8bf6-d85a44c2a58d","6/27/19",,"Credit Card",,"2019 Mid Year Semi-Annual (Amendment)","d418ce8e-b2b4-4cf0-b1f9-ad72a4cceb7d","Individual","MARK A DAVIS","JUSTICE MARK DAVIS COMMITTEE",500
+"Not Available",500,,"STA-WP1LKA-C-001","2423d2db-2dd1-493e-8bf6-d85a44c2a58d","8/1/19",,"Credit Card",,"2019 Year End Semi-Annual","e7f83a5e-c948-4d4f-a151-fd91d18143c7","Individual","JOSHUA H STEIN","JOSH STEIN FOR ATTORNEY GENERAL",500
 ```
 
 ## GET `/api/contributor/:contributorId`
