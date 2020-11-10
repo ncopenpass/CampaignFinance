@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react'
 
-import { API_BATCH_SIZE, ELECTION_YEAR } from '../constants'
+import { API_BATCH_SIZE, ELECTION_YEAR, STATUSES } from '../constants'
 
 import { useApi } from './useApi'
 
@@ -10,6 +10,7 @@ const constructQuickSearchUrl = ({ url, searchTerm, limit, offset }) =>
 export const useQuickSearch = () => {
   const { getDataAndCount } = useApi()
   const [hasError, setHasError] = useState(false)
+  const [apiStatus, setApiStatus] = useState(STATUSES.Unsent)
   const [results, setResults] = useState([])
   const [resultsCount, setResultsCount] = useState(0)
   const [resultsOffset, setResultsOffset] = useState(0)
@@ -23,13 +24,16 @@ export const useQuickSearch = () => {
       })
       setHasError(false)
       try {
+        setApiStatus(STATUSES.Pending)
         const { data, count } = await getDataAndCount(url)
+        setApiStatus(STATUSES.Success)
         setResults(data)
         setResultsCount(count)
         setResultsOffset(offset)
       } catch (e) {
         console.log(e)
         setHasError(true)
+        setApiStatus(STATUSES.Fail)
       }
     },
     [getDataAndCount]
@@ -44,6 +48,7 @@ export const useQuickSearch = () => {
 
   return {
     hasError,
+    apiStatus,
     results,
     resultsCount,
     resultsOffset,

@@ -16,6 +16,7 @@ const QuickSearchResults = React.memo(() => {
   const { searchTerm } = useParams()
 
   const {
+    apiStatus,
     hasError,
     results,
     resultsCount,
@@ -99,6 +100,7 @@ const QuickSearchResults = React.memo(() => {
           </h1>
           <h4>{`${resultsCount} Results`}</h4>
           <SearchResultTable
+            apiStatus={apiStatus}
             columns={columns}
             data={results}
             count={resultsCount}
