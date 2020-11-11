@@ -17,12 +17,14 @@ const constructSearchUrl = ({ url, searchTerm, limit, offset, sort }) => {
 
 export const useSearch = () => {
   const { getDataAndCount } = useApi()
-  const [hasError, setHasError] = useState(false)
-  const [apiStatus, setApiStatus] = useState(STATUSES.Unsent)
   const [candidates, setCandidates] = useState([])
   const [candidateCount, setCandidateCount] = useState(0)
+  const [candidateApiStatus, setCandidateApiStatus] = useState(STATUSES.Unsent)
   const [contributors, setContributors] = useState([])
   const [contributorCount, setContributorCount] = useState(0)
+  const [contributorApiStatus, setContributorApiStatus] = useState(
+    STATUSES.Unsent
+  )
 
   const fetchCandidates = useCallback(
     async ({ searchTerm, limit = API_BATCH_SIZE, offset = 0, sort } = {}) => {
@@ -33,17 +35,15 @@ export const useSearch = () => {
         offset,
         sort,
       })
-      setHasError(false)
       try {
-        setApiStatus(STATUSES.Pending)
+        setCandidateApiStatus(STATUSES.Pending)
         const { data, count } = await getDataAndCount(url)
-        setApiStatus(STATUSES.Success)
+        setCandidateApiStatus(STATUSES.Success)
         setCandidates(data)
         setCandidateCount(count)
       } catch (e) {
         console.log(e)
-        setApiStatus(STATUSES.Fail)
-        setHasError(true)
+        setCandidateApiStatus(STATUSES.Fail)
       }
     },
     [getDataAndCount]
@@ -58,17 +58,15 @@ export const useSearch = () => {
         offset,
         sort,
       })
-      setHasError(false)
       try {
-        setApiStatus(STATUSES.Pending)
+        setContributorApiStatus(STATUSES.Pending)
         const { data, count } = await getDataAndCount(url)
-        setApiStatus(STATUSES.Success)
+        setContributorApiStatus(STATUSES.Success)
         setContributors(data)
         setContributorCount(count)
       } catch (e) {
         console.log(e)
-        setApiStatus(STATUSES.Fail)
-        setHasError(true)
+        setContributorApiStatus(STATUSES.Fail)
       }
     },
     [getDataAndCount]
@@ -83,10 +81,10 @@ export const useSearch = () => {
   )
 
   return {
-    apiStatus,
-    hasError,
+    candidateApiStatus,
     candidates,
     candidateCount,
+    contributorApiStatus,
     contributors,
     contributorCount,
     fetchInitialSearchData,

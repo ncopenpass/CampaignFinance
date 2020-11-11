@@ -3,9 +3,12 @@ import { useTable, useSortBy, useFilters, useGlobalFilter } from 'react-table'
 import matchSorter from 'match-sorter'
 import Select from 'react-select'
 import { Table as USTable } from '@trussworks/react-uswds'
+
 import '../css/table.scss'
 import SortAscending from '../static/sortAscending.png'
 import SortDescending from '../static/sortDescending.png'
+
+import Spinner from './Spinner'
 
 // This is a custom filter UI for selecting
 // a unique option from a list
@@ -41,7 +44,13 @@ function fuzzyTextFilterFn(rows, id, filterValue) {
 // Let the table remove the filter if the string is empty
 fuzzyTextFilterFn.autoRemove = (val) => !val
 
-export default function Table({ columns, data, onChangeSort, initialSortBy }) {
+export default function Table({
+  columns,
+  data,
+  onChangeSort,
+  initialSortBy,
+  isLoading = false,
+}) {
   const filterTypes = React.useMemo(
     () => ({
       // Add a new fuzzyTextFilterFn filter type.
@@ -133,16 +142,26 @@ export default function Table({ columns, data, onChangeSort, initialSortBy }) {
         ))}
       </thead>
       <tbody {...getTableBodyProps()}>
-        {rows.map((row, i) => {
-          prepareRow(row)
-          return (
-            <tr {...row.getRowProps()}>
-              {row.cells.map((cell) => {
-                return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
-              })}
-            </tr>
-          )
-        })}
+        {isLoading ? (
+          <td colspan={columns.length}>
+            <Spinner />
+          </td>
+        ) : (
+          <>
+            {rows.map((row, i) => {
+              prepareRow(row)
+              return (
+                <tr {...row.getRowProps()}>
+                  {row.cells.map((cell) => {
+                    return (
+                      <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                    )
+                  })}
+                </tr>
+              )
+            })}
+          </>
+        )}
       </tbody>
     </USTable>
   )

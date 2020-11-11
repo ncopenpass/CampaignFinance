@@ -1,17 +1,17 @@
 import React, { useState, useCallback } from 'react'
 import styled from '@emotion/styled'
-import { Button, Dropdown } from '@trussworks/react-uswds'
+import { Button, Alert, Dropdown } from '@trussworks/react-uswds'
 
 import { useTablePagination } from '../hooks'
+import { STATUSES } from '../constants'
 
 import Table from './Table'
-import { STATUSES } from '../constants'
+import Spinner from './Spinner'
 
 const ResultsTableFooter = styled.div`
   display: flex;
   justify-content: space-between;
 `
-
 const SearchResultTable = ({
   apiStatus,
   columns,
@@ -38,9 +38,17 @@ const SearchResultTable = ({
     [fetchSame]
   )
 
-  if (apiStatus === STATUSES.Pending) {
-    return <div className="spin margin-x-auto margin-top-10"></div>
-  } else if (apiStatus === STATUSES.Success && count) {
+  if (apiStatus === STATUSES.Unsent) {
+    return <Spinner />
+  } else if (apiStatus === STATUSES.Fail) {
+    return (
+      <Alert slim type="error">
+        Error fetching search data
+      </Alert>
+    )
+  } else if (apiStatus === STATUSES.Success && count === 0) {
+    return <p>{`No ${searchType} found for "${searchTerm}"`}</p>
+  } else {
     return (
       <>
         <Dropdown
@@ -58,6 +66,7 @@ const SearchResultTable = ({
           data={data}
           onChangeSort={onChangeSort}
           initialSortBy={initialSortBy}
+          isLoading={apiStatus === STATUSES.Pending}
         />
         <ResultsTableFooter>
           {`${offset + 1} - ${Math.min(
@@ -86,8 +95,6 @@ const SearchResultTable = ({
         </ResultsTableFooter>
       </>
     )
-  } else {
-    return <p>{`No ${searchType} found for "${searchTerm}"`}</p>
   }
 }
 

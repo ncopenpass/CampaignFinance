@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useCallback, useState } from 'react'
 import { useParams } from 'react-router'
-import { GridContainer, Alert, Accordion } from '@trussworks/react-uswds'
+import { GridContainer, Accordion } from '@trussworks/react-uswds'
 import styled from '@emotion/styled'
 
 import { useSearch, useTableColumns } from '../hooks'
@@ -19,8 +19,8 @@ const SearchResults = React.memo(() => {
   const [lastContributorsQuery, setLastContributorsQuery] = useState({})
 
   const {
-    apiStatus,
-    hasError,
+    candidateApiStatus,
+    contributorApiStatus,
     contributors,
     candidates,
     contributorCount,
@@ -147,7 +147,7 @@ const SearchResults = React.memo(() => {
         title: `Candidates (${candidateCount}) matching "${searchTerm}"`,
         content: (
           <SearchResultTable
-            apiStatus={apiStatus}
+            apiStatus={candidateApiStatus}
             columns={candidateColumns}
             data={candidates}
             count={candidateCount}
@@ -167,7 +167,7 @@ const SearchResults = React.memo(() => {
         title: `Contributors (${contributorCount}) matching "${searchTerm}"`,
         content: (
           <SearchResultTable
-            apiStatus={apiStatus}
+            apiStatus={contributorApiStatus}
             columns={contributorColumns}
             data={contributors}
             count={contributorCount}
@@ -185,10 +185,11 @@ const SearchResults = React.memo(() => {
       },
     ],
     [
-      apiStatus,
+      candidateApiStatus,
       candidateColumns,
       candidates,
       candidateCount,
+      contributorApiStatus,
       contributorColumns,
       contributors,
       contributorCount,
@@ -208,18 +209,10 @@ const SearchResults = React.memo(() => {
 
   return (
     <GridContainer>
-      {hasError ? (
-        <Alert slim type="error">
-          Error fetching search data
-        </Alert>
-      ) : (
-        <>
-          <SearchBarContainer>
-            <SearchBar hideQuickLinks />
-          </SearchBarContainer>
-          <Accordion items={resultsTables} />
-        </>
-      )}
+      <SearchBarContainer>
+        <SearchBar hideQuickLinks />
+      </SearchBarContainer>
+      <Accordion items={resultsTables} />
     </GridContainer>
   )
 })
