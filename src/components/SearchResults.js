@@ -19,6 +19,7 @@ const SearchResults = React.memo(() => {
   const [lastContributorsQuery, setLastContributorsQuery] = useState({})
 
   const {
+    apiStatus,
     hasError,
     contributors,
     candidates,
@@ -146,6 +147,7 @@ const SearchResults = React.memo(() => {
         title: `Candidates (${candidateCount}) matching "${searchTerm}"`,
         content: (
           <SearchResultTable
+            apiStatus={apiStatus}
             columns={candidateColumns}
             data={candidates}
             count={candidateCount}
@@ -165,6 +167,7 @@ const SearchResults = React.memo(() => {
         title: `Contributors (${contributorCount}) matching "${searchTerm}"`,
         content: (
           <SearchResultTable
+            apiStatus={apiStatus}
             columns={contributorColumns}
             data={contributors}
             count={contributorCount}
@@ -182,6 +185,7 @@ const SearchResults = React.memo(() => {
       },
     ],
     [
+      apiStatus,
       candidateColumns,
       candidates,
       candidateCount,

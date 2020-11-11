@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react'
 
-import { API_BATCH_SIZE } from '../constants'
+import { API_BATCH_SIZE, STATUSES } from '../constants'
 
 import { useApi } from './useApi'
 
@@ -18,6 +18,7 @@ const constructSearchUrl = ({ url, searchTerm, limit, offset, sort }) => {
 export const useSearch = () => {
   const { getDataAndCount } = useApi()
   const [hasError, setHasError] = useState(false)
+  const [apiStatus, setApiStatus] = useState(STATUSES.Unsent)
   const [candidates, setCandidates] = useState([])
   const [candidateCount, setCandidateCount] = useState(0)
   const [contributors, setContributors] = useState([])
@@ -34,11 +35,14 @@ export const useSearch = () => {
       })
       setHasError(false)
       try {
+        setApiStatus(STATUSES.Pending)
         const { data, count } = await getDataAndCount(url)
+        setApiStatus(STATUSES.Success)
         setCandidates(data)
         setCandidateCount(count)
       } catch (e) {
         console.log(e)
+        setApiStatus(STATUSES.Fail)
         setHasError(true)
       }
     },
@@ -56,11 +60,14 @@ export const useSearch = () => {
       })
       setHasError(false)
       try {
+        setApiStatus(STATUSES.Pending)
         const { data, count } = await getDataAndCount(url)
+        setApiStatus(STATUSES.Success)
         setContributors(data)
         setContributorCount(count)
       } catch (e) {
         console.log(e)
+        setApiStatus(STATUSES.Fail)
         setHasError(true)
       }
     },
@@ -76,6 +83,7 @@ export const useSearch = () => {
   )
 
   return {
+    apiStatus,
     hasError,
     candidates,
     candidateCount,

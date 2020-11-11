@@ -52,15 +52,14 @@ const SearchBar = ({ hideQuickLinks }) => {
           >
             {`${ELECTION_YEAR} Candidates`}
           </Button>
-          {/* Hiding until we're ready to deploy individual contributor pages */}
-          {/* <Button
+          <Button
             outline
             type="button"
             className="search-btn"
             onClick={handleQuickDonorLink}
           >
             {`${ELECTION_YEAR} Contributors`}
-          </Button> */}
+          </Button>
         </div>
       )}
     </div>
