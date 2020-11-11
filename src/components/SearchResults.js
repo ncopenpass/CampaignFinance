@@ -59,13 +59,13 @@ const SearchResults = React.memo(() => {
   const handleContributorsSort = useCallback(
     (sortBy) => {
       const sort = formatSortBy(sortBy)
-      if (sort !== lastCandidatesQuery.sort) {
-        const query = { ...lastCandidatesQuery, sort }
-        setLastCandidatesQuery(query)
-        fetchCandidates(query)
+      if (sort !== lastContributorsQuery.sort) {
+        const query = { ...lastContributorsQuery, sort }
+        setLastContributorsQuery(query)
+        fetchContributors(query)
       }
     },
-    [fetchCandidates, lastCandidatesQuery]
+    [fetchContributors, lastContributorsQuery]
   )
 
   // Table limit and pagination functions for Candidates

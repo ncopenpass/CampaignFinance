@@ -7,8 +7,13 @@ import { useApi } from './useApi'
 const CONTRIBUTORS_URL = '/api/search/contributors/'
 const CANDIDATES_URL = '/api/search/candidates/'
 
-const constructSearchUrl = ({ url, searchTerm, limit, offset }) =>
-  `${url}${searchTerm}?limit=${limit}&offset=${offset}`
+const constructSearchUrl = ({ url, searchTerm, limit, offset, sort }) => {
+  let searchUrl = `${url}${searchTerm}?limit=${limit}&offset=${offset}`
+  if (sort) {
+    searchUrl = `${searchUrl}&sortBy=${sort}`
+  }
+  return searchUrl
+}
 
 export const useSearch = () => {
   const { getDataAndCount } = useApi()
@@ -19,12 +24,13 @@ export const useSearch = () => {
   const [contributorCount, setContributorCount] = useState(0)
 
   const fetchCandidates = useCallback(
-    async ({ searchTerm, limit = API_BATCH_SIZE, offset = 0 } = {}) => {
+    async ({ searchTerm, limit = API_BATCH_SIZE, offset = 0, sort } = {}) => {
       const url = constructSearchUrl({
         url: CANDIDATES_URL,
         searchTerm,
         limit,
         offset,
+        sort,
       })
       setHasError(false)
       try {
@@ -40,12 +46,13 @@ export const useSearch = () => {
   )
 
   const fetchContributors = useCallback(
-    async ({ searchTerm, limit = API_BATCH_SIZE, offset = 0 } = {}) => {
+    async ({ searchTerm, limit = API_BATCH_SIZE, offset = 0, sort } = {}) => {
       const url = constructSearchUrl({
         url: CONTRIBUTORS_URL,
         searchTerm,
         limit,
         offset,
+        sort,
       })
       setHasError(false)
       try {
@@ -61,9 +68,9 @@ export const useSearch = () => {
   )
 
   const fetchInitialSearchData = useCallback(
-    async ({ searchTerm, limit, offset }) => {
-      await fetchCandidates({ searchTerm, limit, offset })
-      await fetchContributors({ searchTerm, limit, offset })
+    async ({ searchTerm, limit, offset, sort }) => {
+      await fetchCandidates({ searchTerm, limit, offset, sort })
+      await fetchContributors({ searchTerm, limit, offset, sort })
     },
     [fetchCandidates, fetchContributors]
   )
