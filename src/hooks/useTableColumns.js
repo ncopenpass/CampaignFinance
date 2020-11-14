@@ -75,7 +75,13 @@ export const useTableColumns = () => {
       },
       {
         Header: 'Total Contributed',
-        accessor: '',
+        accessor: (r) => {
+          const formatter = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+          })
+          return formatter.format(r.total_contributions_to_committee)
+        },
       },
     ],
     []

@@ -16,6 +16,7 @@ const Contributor = () => {
 
   const {
     contributor,
+    apiStatus,
     contributions,
     summary,
     contributionCount,
@@ -121,6 +122,7 @@ const Contributor = () => {
           <Grid col>
             <SearchResultTable
               columns={individualContributionsColumns}
+              apiStatus={apiStatus}
               data={contributions}
               count={contributionCount}
               fetchSame={fetchSameContributions}

@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react'
-import { API_BATCH_SIZE } from '../constants'
+import { API_BATCH_SIZE, STATUSES } from '../constants'
 
 const CONTRIBUTOR_URL = '/api/contributor/'
 const CONTRIBUTIONS_URL = '/api/contributors/'
@@ -21,6 +21,7 @@ const constructContributorContributionsUrl = ({
 
 export const useContributors = () => {
   const [hasError, setHasError] = useState(false)
+  const [apiStatus, setApiStatus] = useState(STATUSES.Unsent)
   const [contributor, setContributor] = useState([])
   const [contributions, setContributions] = useState([])
   const [summary, setSummary] = useState([])
@@ -31,11 +32,14 @@ export const useContributors = () => {
     async (url) => {
       setHasError(false)
       try {
+        setApiStatus(STATUSES.Pending)
         const response = await fetch(url)
         const { data, count, summary } = await response.json()
+        setApiStatus(STATUSES.Success)
         return { data, count, summary }
       } catch (e) {
         console.log(e)
+        setApiStatus(STATUSES.Fail)
         setHasError(true)
       }
     },
@@ -91,6 +95,7 @@ export const useContributors = () => {
 
   return {
     hasError,
+    apiStatus,
     contributor,
     contributions,
     summary,
