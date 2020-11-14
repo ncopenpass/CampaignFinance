@@ -9,6 +9,8 @@ const {
   getCandidateContributions,
   getCandidate,
   getCandidateContributionsForDownload,
+  getContributorContributions,
+  getContributor,
 } = require('./lib/queries')
 const { getClient } = require('./db')
 
@@ -69,6 +71,7 @@ const apiReprContributionCommittee = (row) => {
   return {
     ...apiReprContribution(row),
     ...apiReprCommittee(row),
+    total_contributions_to_committee: row.total_contributions_to_committee,
   }
 }
 
@@ -307,23 +310,39 @@ api.get('/contributors/:contributorId/contributions', async (req, res) => {
   let client = null
   try {
     const { contributorId } = req.params
-    const { limit = 50, offset = 0 } = req.query
+    const { limit = 50, offset = 0, toCSV = false } = req.query
     client = await getClient()
-    const contributions = await client.query(
-      `select *, count(*) over () as full_count from contributions
-      join committees on committees.sboe_id = contributions.committee_sboe_id
-      where contributor_id = $1
-      order by contributions.date_occurred asc
-      limit $2
-      offset $3
-      `,
-      [contributorId, limit, offset]
-    )
-    return res.send({
-      data: contributions.rows.map(apiReprContributionCommittee),
-      count:
-        contributions.rows.length > 0 ? contributions.rows[0].full_count : 0,
-    })
+    if (!toCSV) {
+      const contributions = await getContributorContributions({
+        client,
+        offset,
+        limit,
+        contributorId,
+      })
+      return res.send({
+        data: contributions.rows.map(apiReprContributionCommittee),
+        count:
+          contributions.rows.length > 0 ? contributions.rows[0].full_count : 0,
+      })
+    } else {
+      const contributionsPromise = getContributorContributions({
+        client,
+        contributorId,
+      })
+      const contributorPromise = getContributor({ contributorId, client })
+      const [contributions, contributor] = await Promise.all([
+        contributionsPromise,
+        contributorPromise,
+      ])
+
+      const contributorName =
+        contributor.rows.length > 0 ? contributor.rows[0].name : contributorId
+      sendCSV(
+        contributions.rows.map(apiReprContributionCommittee),
+        contributorName.replace(/ /g, '_'),
+        res
+      )
+    }
   } catch (error) {
     handleError(error, res)
   } finally {

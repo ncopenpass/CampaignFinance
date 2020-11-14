@@ -15,6 +15,7 @@ const Candidate = () => {
   const location = useLocation()
 
   const {
+    apiStatus,
     candidate,
     contributions,
     summary,
@@ -197,6 +198,7 @@ const Candidate = () => {
         <Grid row>
           <Grid col>
             <SearchResultTable
+              apiStatus={apiStatus}
               columns={candidateContributionColumns}
               data={contributions}
               count={contributionCount}
