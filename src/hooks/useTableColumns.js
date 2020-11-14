@@ -9,7 +9,17 @@ export const useTableColumns = () => {
     () => [
       {
         Header: 'Contributor Name',
-        accessor: 'name',
+        accessor: ({ contributor_id, name }) => (
+          <Link
+            to={(location) => ({
+              pathname: CONTRIBUTOR_URL + contributor_id,
+              fromPathname: location.pathname,
+            })}
+          >
+            {' '}
+            {name}
+          </Link>
+        ),
       },
       {
         Header: 'City/State',
