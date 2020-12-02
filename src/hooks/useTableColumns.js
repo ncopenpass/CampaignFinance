@@ -2,13 +2,24 @@ import React, { useMemo } from 'react'
 import { Link } from 'react-router-dom'
 
 const CANDIDATE_URL = '/candidate/'
+const CONTRIBUTOR_URL = '/contributors/'
 
 export const useTableColumns = () => {
   const contributorColumns = useMemo(
     () => [
       {
         Header: 'Contributor Name',
-        accessor: 'name',
+        accessor: ({ contributor_id, name }) => (
+          <Link
+            to={(location) => ({
+              pathname: CONTRIBUTOR_URL + contributor_id,
+              fromPathname: location.pathname,
+            })}
+          >
+            {' '}
+            {name}
+          </Link>
+        ),
       },
       {
         Header: 'City/State',
@@ -29,6 +40,58 @@ export const useTableColumns = () => {
       {
         Header: 'Employer',
         accessor: 'employer_name',
+      },
+    ],
+    []
+  )
+
+  const individualContributionsColumns = useMemo(
+    () => [
+      {
+        Header: 'Recipient Name',
+        accessor: ({ candidate_full_name, committee_sboe_id }) => (
+          <Link
+            to={(location) => ({
+              pathname: CANDIDATE_URL + committee_sboe_id,
+              fromPathname: location.pathname,
+            })}
+          >
+            {' '}
+            {candidate_full_name}
+          </Link>
+        ),
+      },
+      {
+        Header: 'Amount',
+        accessor: (r) => {
+          const formatter = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+          })
+          return formatter.format(r.amount)
+        },
+      },
+      {
+        Header: 'Donation Type',
+        accessor: 'transaction_type',
+      },
+      {
+        Header: 'Donation Date',
+        accessor: 'date_occurred',
+      },
+      {
+        Header: 'Description',
+        accessor: 'purpose',
+      },
+      {
+        Header: 'Total Contributed',
+        accessor: (r) => {
+          const formatter = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+          })
+          return formatter.format(r.total_contributions_to_committee)
+        },
       },
     ],
     []
@@ -67,7 +130,17 @@ export const useTableColumns = () => {
     () => [
       {
         Header: 'Contributor Name',
-        accessor: 'name',
+        accessor: ({ contributor_id, name }) => (
+          <Link
+            to={(location) => ({
+              pathname: CONTRIBUTOR_URL + contributor_id,
+              fromPathname: location.pathname,
+            })}
+          >
+            {' '}
+            {name}
+          </Link>
+        ),
       },
       {
         Header: 'Transaction Type',
@@ -112,5 +185,6 @@ export const useTableColumns = () => {
     contributorColumns,
     candidateColumns,
     candidateContributionColumns,
+    individualContributionsColumns,
   }
 }
