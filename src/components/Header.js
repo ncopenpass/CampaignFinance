@@ -31,7 +31,12 @@ const Header = () => {
         <div className="usa-nav-container">
           <div className="usa-navbar">
             <a href={DEFAULT_ROUTE}>
-              <Title>Campaign Finance</Title>
+              <img
+                src={process.env.PUBLIC_URL + '/imgs/sun-logo.svg'}
+                className="sun-logo"
+                alt="Outline of the state of North Carolina with the mountains and sun."
+              ></img>
+              <h1 className="logo-text">NC Campaign Finance Tool</h1>
             </a>
             <NavMenuButton label="Menu" onClick={onClick} />
           </div>

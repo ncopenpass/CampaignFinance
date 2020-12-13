@@ -35,6 +35,13 @@ a:hover {
 }
 
 /* HEADER */
+.usa-nav-container {
+  display: inline-block;
+}
+
+@media (min-width: 64rem) {}.usa-nav-container {
+  max-width: 90rem;
+}
 .usa-header {
   background-color: #fff;
 }
@@ -45,6 +52,23 @@ a:hover {
 
 .usa-menu-btn {
   margin-left: auto;
+}
+
+.sun-logo {
+  max-width: 10rem;
+}
+
+.usa-navbar img {
+  float: left;
+  width: 100px;
+  height: 100px;
+}
+
+.usa-navbar h1 {
+  font-size: 20px;
+  position: relative;
+  top: 18px;
+  left: 10px;
 }
 
 /* SEARCH PAGE */
