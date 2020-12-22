@@ -54,17 +54,15 @@ const SearchBar = ({ hideQuickLinks }) => {
         <div className="quick-search-btns">
           <p className="quick-search">Quick Search</p>
           <Button
-            outline
             type="button"
-            className="search-btn"
+            className="quick-search-btn"
             onClick={handleQuickCandidateLink}
           >
             {`${ELECTION_YEAR} Candidates`}
           </Button>
           <Button
-            outline
             type="button"
-            className="search-btn"
+            className="quick-search-btn"
             onClick={handleQuickDonorLink}
           >
             {`${ELECTION_YEAR} Contributors`}
