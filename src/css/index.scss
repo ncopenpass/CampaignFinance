@@ -35,15 +35,13 @@ a:hover {
 }
 
 /* HEADER */
-.usa-nav-container {
-  display: inline-block;
-}
 
 @media (min-width: 64rem) {}.usa-nav-container {
   max-width: 90rem;
 }
 .usa-header {
   background-color: #fff;
+  border-bottom: #000 1px solid;
 }
 
 .usa-nav__primary .usa-nav__primary-item a {
