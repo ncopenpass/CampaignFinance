@@ -5,8 +5,9 @@ import Select from 'react-select'
 import { Table as USTable } from '@trussworks/react-uswds'
 
 import '../css/table.scss'
-import SortAscending from '../static/sortAscending.png'
-import SortDescending from '../static/sortDescending.png'
+import SortAscending from '../static/ascending.jpg'
+import SortDescending from '../static/descending.jpg'
+import SortUnsorted from '../static/unsorted.jpg'
 
 import Spinner from './Spinner'
 
@@ -117,7 +118,7 @@ export default function Table({
               <th {...column.getHeaderProps(column.getSortByToggleProps())}>
                 <div>
                   {column.render('Header')}
-                  {column.isSortedDesc && (
+                  {column.isSortedDesc === true && (
                     <img
                       src={SortDescending}
                       alt="Descending"
@@ -126,10 +127,19 @@ export default function Table({
                       width="20px"
                     />
                   )}
-                  {column.isSorted && !column.isSortedDesc && (
+                  {column.isSortedDesc === false && (
                     <img
                       src={SortAscending}
                       alt="Ascending"
+                      style={{ verticalAlign: 'middle', marginLeft: '10px' }}
+                      height="20px"
+                      width="20px"
+                    />
+                  )}
+                  {column.isSortedDesc === undefined && (
+                    <img
+                      src={SortUnsorted}
+                      alt="Unsorted"
                       style={{ verticalAlign: 'middle', marginLeft: '10px' }}
                       height="20px"
                       width="20px"
