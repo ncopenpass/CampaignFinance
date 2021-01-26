@@ -136,7 +136,7 @@ export default function Table({
                       width="20px"
                     />
                   )}
-                  {column.isSortedDesc === undefined && (
+                  {column.canSort && column.isSortedDesc === undefined && (
                     <img
                       src={SortUnsorted}
                       alt="Unsorted"
