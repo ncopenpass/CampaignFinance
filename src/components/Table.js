@@ -5,9 +5,9 @@ import Select from 'react-select'
 import { Table as USTable } from '@trussworks/react-uswds'
 
 import '../css/table.scss'
-import SortAscending from '../static/ascending.jpg'
-import SortDescending from '../static/descending.jpg'
-import SortUnsorted from '../static/unsorted.jpg'
+import SortAscending from '../static/ascending.png'
+import SortDescending from '../static/descending.png'
+import SortUnsorted from '../static/unsorted.png'
 
 import Spinner from './Spinner'
 
