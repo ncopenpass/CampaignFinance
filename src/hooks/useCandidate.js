@@ -8,9 +8,19 @@ const constructCandidateUrl = ({ url, candidateId, limit, offset }) => {
   return `${url}${candidateId}?limit=${limit}&offset=${offset}`
 }
 
-const constructContributionsUrl = ({ url, candidateId, limit, offset }) => {
+const constructContributionsUrl = ({
+  url,
+  candidateId,
+  limit,
+  offset,
+  sort,
+}) => {
   candidateId = encodeURIComponent(candidateId)
-  return `${url}${candidateId}/contributions?limit=${limit}&offset=${offset}`
+  let contributionsUrl = `${url}${candidateId}/contributions?limit=${limit}&offset=${offset}`
+  if (sort) {
+    contributionsUrl = `${contributionsUrl}&sortBy=${sort}`
+  }
+  return contributionsUrl
 }
 
 export const useCandidate = () => {
@@ -20,7 +30,6 @@ export const useCandidate = () => {
   const [contributions, setContributions] = useState([])
   const [summary, setSummary] = useState([])
   const [contributionCount, setContributionCount] = useState(0)
-  const [contributionOffset, setContributionOffset] = useState(0)
 
   const getDataCountSummary = useCallback(
     async (url) => {
@@ -59,12 +68,13 @@ export const useCandidate = () => {
   )
 
   const fetchContributions = useCallback(
-    async ({ candidateId, limit = API_BATCH_SIZE, offset = 0 } = {}) => {
+    async ({ candidateId, limit = API_BATCH_SIZE, offset = 0, sort } = {}) => {
       const url = constructContributionsUrl({
         url: CANDIDATE_URL,
         candidateId,
         limit,
         offset,
+        sort,
       })
       setHasError(false)
       try {
@@ -72,7 +82,6 @@ export const useCandidate = () => {
         setContributions(data)
         setSummary(summary)
         setContributionCount(count)
-        setContributionOffset(offset)
       } catch (e) {
         console.log(e)
       }
@@ -81,9 +90,9 @@ export const useCandidate = () => {
   )
 
   const fetchInitialSearchData = useCallback(
-    async ({ candidateId, limit, offset }) => {
+    async ({ candidateId, limit, offset, sort }) => {
       await fetchCandidate({ candidateId })
-      await fetchContributions({ candidateId })
+      await fetchContributions({ candidateId, limit, offset, sort })
     },
     [fetchCandidate, fetchContributions]
   )
@@ -95,7 +104,6 @@ export const useCandidate = () => {
     contributions,
     summary,
     contributionCount,
-    contributionOffset,
     fetchInitialSearchData,
     fetchCandidate,
     fetchContributions,

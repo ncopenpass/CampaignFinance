@@ -7,87 +7,86 @@ import { useApi } from './useApi'
 const CONTRIBUTORS_URL = '/api/search/contributors/'
 const CANDIDATES_URL = '/api/search/candidates/'
 
-const constructSearchUrl = ({ url, searchTerm, limit, offset }) =>
-  `${url}${searchTerm}?limit=${limit}&offset=${offset}`
+const constructSearchUrl = ({ url, searchTerm, limit, offset, sort }) => {
+  let searchUrl = `${url}${searchTerm}?limit=${limit}&offset=${offset}`
+  if (sort) {
+    searchUrl = `${searchUrl}&sortBy=${sort}`
+  }
+  return searchUrl
+}
 
 export const useSearch = () => {
   const { getDataAndCount } = useApi()
-  const [hasError, setHasError] = useState(false)
-  const [apiStatus, setApiStatus] = useState(STATUSES.Unsent)
   const [candidates, setCandidates] = useState([])
   const [candidateCount, setCandidateCount] = useState(0)
-  const [candidateOffset, setCandidateOffset] = useState(0)
+  const [candidateApiStatus, setCandidateApiStatus] = useState(STATUSES.Unsent)
   const [contributors, setContributors] = useState([])
   const [contributorCount, setContributorCount] = useState(0)
-  const [contributorOffset, setContributorOffset] = useState(0)
+  const [contributorApiStatus, setContributorApiStatus] = useState(
+    STATUSES.Unsent
+  )
 
   const fetchCandidates = useCallback(
-    async ({ searchTerm, limit = API_BATCH_SIZE, offset = 0 } = {}) => {
+    async ({ searchTerm, limit = API_BATCH_SIZE, offset = 0, sort } = {}) => {
       const url = constructSearchUrl({
         url: CANDIDATES_URL,
         searchTerm,
         limit,
         offset,
+        sort,
       })
-      setHasError(false)
       try {
-        setApiStatus(STATUSES.Pending)
+        setCandidateApiStatus(STATUSES.Pending)
         const { data, count } = await getDataAndCount(url)
-        setApiStatus(STATUSES.Success)
+        setCandidateApiStatus(STATUSES.Success)
         setCandidates(data)
         setCandidateCount(count)
-        setCandidateOffset(offset)
       } catch (e) {
         console.log(e)
-        setApiStatus(STATUSES.Fail)
-        setHasError(true)
+        setCandidateApiStatus(STATUSES.Fail)
       }
     },
     [getDataAndCount]
   )
 
   const fetchContributors = useCallback(
-    async ({ searchTerm, limit = API_BATCH_SIZE, offset = 0 } = {}) => {
+    async ({ searchTerm, limit = API_BATCH_SIZE, offset = 0, sort } = {}) => {
       const url = constructSearchUrl({
         url: CONTRIBUTORS_URL,
         searchTerm,
         limit,
         offset,
+        sort,
       })
-      setHasError(false)
       try {
-        setApiStatus(STATUSES.Pending)
+        setContributorApiStatus(STATUSES.Pending)
         const { data, count } = await getDataAndCount(url)
-        setApiStatus(STATUSES.Success)
+        setContributorApiStatus(STATUSES.Success)
         setContributors(data)
         setContributorCount(count)
-        setContributorOffset(offset)
       } catch (e) {
         console.log(e)
-        setApiStatus(STATUSES.Fail)
-        setHasError(true)
+        setContributorApiStatus(STATUSES.Fail)
       }
     },
     [getDataAndCount]
   )
 
   const fetchInitialSearchData = useCallback(
-    async ({ searchTerm, limit, offset }) => {
-      await fetchCandidates({ searchTerm })
-      await fetchContributors({ searchTerm })
+    async ({ searchTerm, limit, offset, sort }) => {
+      await fetchCandidates({ searchTerm, limit, offset, sort })
+      await fetchContributors({ searchTerm, limit, offset, sort })
     },
     [fetchCandidates, fetchContributors]
   )
 
   return {
-    apiStatus,
-    hasError,
+    candidateApiStatus,
     candidates,
     candidateCount,
-    candidateOffset,
+    contributorApiStatus,
     contributors,
     contributorCount,
-    contributorOffset,
     fetchInitialSearchData,
     fetchCandidates,
     fetchContributors,
