@@ -1,6 +1,6 @@
-import React, { useEffect, useMemo, useCallback } from 'react'
+import React, { useEffect, useMemo, useCallback, useState } from 'react'
 import { useParams } from 'react-router'
-import { GridContainer, Alert, Accordion } from '@trussworks/react-uswds'
+import { GridContainer, Accordion } from '@trussworks/react-uswds'
 import styled from '@emotion/styled'
 
 import { useSearch, useTableColumns } from '../hooks'
@@ -8,22 +8,23 @@ import { API_BATCH_SIZE } from '../constants'
 
 import SearchBar from './SearchBar'
 import SearchResultTable from './SearchResultTable'
+import { formatSortBy } from '../utils'
 
 const SearchBarContainer = styled.div`
   padding: 20px 0px;
 `
 const SearchResults = React.memo(() => {
   const { searchTerm } = useParams()
+  const [lastCandidatesQuery, setLastCandidatesQuery] = useState({})
+  const [lastContributorsQuery, setLastContributorsQuery] = useState({})
 
   const {
-    apiStatus,
-    hasError,
+    candidateApiStatus,
+    contributorApiStatus,
     contributors,
     candidates,
     contributorCount,
     candidateCount,
-    contributorOffset,
-    candidateOffset,
     fetchCandidates,
     fetchContributors,
     fetchInitialSearchData,
@@ -33,76 +34,111 @@ const SearchResults = React.memo(() => {
 
   useEffect(() => {
     if (fetchInitialSearchData) {
+      const query = {
+        searchTerm,
+        offset: 0,
+        limit: API_BATCH_SIZE,
+      }
+      setLastCandidatesQuery(query)
+      setLastContributorsQuery(query)
       fetchInitialSearchData({ searchTerm })
     }
   }, [searchTerm, fetchInitialSearchData])
 
+  const handleCandidateSort = useCallback(
+    (sortBy) => {
+      const sort = formatSortBy(sortBy)
+      if (sort !== lastCandidatesQuery.sort) {
+        const query = { ...lastCandidatesQuery, sort }
+        setLastCandidatesQuery(query)
+        fetchCandidates(query)
+      }
+    },
+    [fetchCandidates, lastCandidatesQuery]
+  )
+
+  const handleContributorsSort = useCallback(
+    (sortBy) => {
+      const sort = formatSortBy(sortBy)
+      if (sort !== lastContributorsQuery.sort) {
+        const query = { ...lastContributorsQuery, sort }
+        setLastContributorsQuery(query)
+        fetchContributors(query)
+      }
+    },
+    [fetchContributors, lastContributorsQuery]
+  )
+
   // Table limit and pagination functions for Candidates
   const fetchSameCandidates = useCallback(
     (limit = API_BATCH_SIZE) => {
-      fetchCandidates({
-        searchTerm,
-        limit: limit,
-        offset: candidateOffset,
-      })
+      const query = { ...lastCandidatesQuery, limit }
+      setLastCandidatesQuery(query)
+      fetchCandidates(query)
     },
-    [candidateOffset, fetchCandidates, searchTerm]
+    [fetchCandidates, lastCandidatesQuery]
   )
 
   const fetchNextCandidates = useCallback(
     (limit = API_BATCH_SIZE) => {
-      fetchCandidates({
-        searchTerm,
-        limit: limit,
-        offset: candidateOffset + limit,
-      })
+      const query = {
+        ...lastCandidatesQuery,
+        limit,
+        offset: lastCandidatesQuery.offset + limit,
+      }
+      setLastCandidatesQuery(query)
+      fetchCandidates(query)
     },
-    [candidateOffset, fetchCandidates, searchTerm]
+    [fetchCandidates, lastCandidatesQuery]
   )
 
   const fetchPreviousCandidates = useCallback(
     (limit = API_BATCH_SIZE) => {
-      fetchCandidates({
-        searchTerm,
-        limit: limit,
-        offset: candidateOffset - limit,
-      })
+      const query = {
+        ...lastCandidatesQuery,
+        limit,
+        offset: lastCandidatesQuery.offset - limit,
+      }
+      setLastCandidatesQuery(query)
+      fetchCandidates(query)
     },
-    [candidateOffset, searchTerm, fetchCandidates]
+    [fetchCandidates, lastCandidatesQuery]
   )
 
   // Table limit and pagination functions for Contributors
   const fetchSameContributors = useCallback(
     (limit = API_BATCH_SIZE) => {
-      fetchContributors({
-        searchTerm,
-        limit: limit,
-        offset: contributorOffset,
-      })
+      const query = { ...lastContributorsQuery, limit }
+      setLastContributorsQuery(query)
+      fetchContributors(query)
     },
-    [contributorOffset, fetchContributors, searchTerm]
+    [fetchContributors, lastContributorsQuery]
   )
 
   const fetchNextContributors = useCallback(
     (limit = API_BATCH_SIZE) => {
-      fetchContributors({
-        searchTerm,
-        limit: limit,
-        offset: contributorOffset + limit,
-      })
+      const query = {
+        ...lastContributorsQuery,
+        limit,
+        offset: lastContributorsQuery.offset + limit,
+      }
+      setLastContributorsQuery(query)
+      fetchContributors(query)
     },
-    [contributorOffset, fetchContributors, searchTerm]
+    [fetchContributors, lastContributorsQuery]
   )
 
   const fetchPreviousContributors = useCallback(
     (limit = API_BATCH_SIZE) => {
-      fetchContributors({
-        searchTerm,
-        limit: limit,
-        offset: contributorOffset - limit,
-      })
+      const query = {
+        ...lastContributorsQuery,
+        limit,
+        offset: lastContributorsQuery.offset + limit,
+      }
+      setLastContributorsQuery(query)
+      fetchContributors(query)
     },
-    [contributorOffset, searchTerm, fetchContributors]
+    [fetchContributors, lastContributorsQuery]
   )
 
   const resultsTables = useMemo(
@@ -111,16 +147,17 @@ const SearchResults = React.memo(() => {
         title: `Candidates (${candidateCount}) matching "${searchTerm}"`,
         content: (
           <SearchResultTable
-            apiStatus={apiStatus}
+            apiStatus={candidateApiStatus}
             columns={candidateColumns}
             data={candidates}
             count={candidateCount}
-            offset={candidateOffset}
+            offset={lastCandidatesQuery.offset}
             fetchSame={fetchSameCandidates}
             fetchNext={fetchNextCandidates}
             fetchPrevious={fetchPreviousCandidates}
             searchTerm={searchTerm}
             searchType="candidates"
+            onChangeSort={handleCandidateSort}
           />
         ),
         expanded: true,
@@ -130,16 +167,17 @@ const SearchResults = React.memo(() => {
         title: `Contributors (${contributorCount}) matching "${searchTerm}"`,
         content: (
           <SearchResultTable
-            apiStatus={apiStatus}
+            apiStatus={contributorApiStatus}
             columns={contributorColumns}
             data={contributors}
             count={contributorCount}
-            offset={contributorOffset}
+            offset={lastContributorsQuery.offset}
             fetchSame={fetchSameContributors}
             fetchNext={fetchNextContributors}
             fetchPrevious={fetchPreviousContributors}
             searchTerm={searchTerm}
             searchType="contributors"
+            onChangeSort={handleContributorsSort}
           />
         ),
         expanded: true,
@@ -147,39 +185,34 @@ const SearchResults = React.memo(() => {
       },
     ],
     [
-      apiStatus,
+      candidateApiStatus,
       candidateColumns,
       candidates,
       candidateCount,
-      candidateOffset,
+      contributorApiStatus,
       contributorColumns,
       contributors,
       contributorCount,
-      contributorOffset,
       searchTerm,
+      lastContributorsQuery,
+      lastCandidatesQuery,
       fetchSameCandidates,
       fetchNextCandidates,
       fetchPreviousCandidates,
       fetchSameContributors,
       fetchNextContributors,
       fetchPreviousContributors,
+      handleContributorsSort,
+      handleCandidateSort,
     ]
   )
 
   return (
     <GridContainer>
-      {hasError ? (
-        <Alert slim type="error">
-          Error fetching search data
-        </Alert>
-      ) : (
-        <>
-          <SearchBarContainer>
-            <SearchBar hideQuickLinks />
-          </SearchBarContainer>
-          <Accordion items={resultsTables} />
-        </>
-      )}
+      <SearchBarContainer>
+        <SearchBar hideQuickLinks />
+      </SearchBarContainer>
+      <Accordion items={resultsTables} />
     </GridContainer>
   )
 })

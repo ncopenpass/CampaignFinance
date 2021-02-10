@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useCallback } from 'react'
 import styled from '@emotion/styled'
-import { Button, Dropdown } from '@trussworks/react-uswds'
+import { Button, Alert, Dropdown } from '@trussworks/react-uswds'
 
 import { useTablePagination } from '../hooks'
+import { STATUSES } from '../constants'
 
 import Table from './Table'
-import { STATUSES } from '../constants'
+import Spinner from './Spinner'
 
 const ResultsTableFooter = styled.div`
   display: flex;
   justify-content: space-between;
 `
-
 const SearchResultTable = ({
   apiStatus,
   columns,
@@ -23,26 +23,37 @@ const SearchResultTable = ({
   fetchPrevious,
   searchTerm,
   searchType,
+  onChangeSort,
+  initialSortBy,
 }) => {
   const { tableLimits } = useTablePagination()
 
   const [apiLimit, setApiLimit] = useState(10)
 
-  useEffect(() => {
-    async function updateLimit() {
-      await fetchSame(apiLimit)
-    }
-    updateLimit()
-  }, [apiLimit, fetchSame])
+  const onChangeLimit = useCallback(
+    (value) => {
+      setApiLimit(value)
+      fetchSame(value)
+    },
+    [fetchSame]
+  )
 
-  if (apiStatus === STATUSES.Pending) {
-    return <div className="spin margin-x-auto margin-top-10"></div>
-  } else if (apiStatus === STATUSES.Success && count) {
+  if (apiStatus === STATUSES.Unsent) {
+    return <Spinner />
+  } else if (apiStatus === STATUSES.Fail) {
+    return (
+      <Alert slim type="error">
+        Error fetching search data
+      </Alert>
+    )
+  } else if (apiStatus === STATUSES.Success && count === 0) {
+    return <p>{`No ${searchType} found for "${searchTerm}"`}</p>
+  } else {
     return (
       <>
         <Dropdown
           value={apiLimit}
-          onChange={(e) => setApiLimit(e.currentTarget.value)}
+          onChange={(e) => onChangeLimit(e.currentTarget.value)}
         >
           {tableLimits.map(({ label, value }) => (
             <option key={value} value={value}>
@@ -50,7 +61,13 @@ const SearchResultTable = ({
             </option>
           ))}
         </Dropdown>
-        <Table columns={columns} data={data} />
+        <Table
+          columns={columns}
+          data={data}
+          onChangeSort={onChangeSort}
+          initialSortBy={initialSortBy}
+          isLoading={apiStatus === STATUSES.Pending}
+        />
         <ResultsTableFooter>
           {`${offset + 1} - ${Math.min(
             offset + apiLimit,
@@ -78,8 +95,6 @@ const SearchResultTable = ({
         </ResultsTableFooter>
       </>
     )
-  } else {
-    return <p>{`No ${searchType} found for "${searchTerm}"`}</p>
   }
 }
 

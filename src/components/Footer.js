@@ -1,11 +1,5 @@
 import React from 'react'
-import {
-  Address,
-  Button,
-  Footer as FooterComponent,
-  FooterNav,
-  Logo,
-} from '@trussworks/react-uswds'
+import { Footer as FooterComponent, FooterNav } from '@trussworks/react-uswds'
 
 // import { PRIVACY_POLICY_ROUTE } from '../constants'
 
