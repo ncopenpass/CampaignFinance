@@ -26,12 +26,24 @@ p {
 }
 
 a {
-  color: #3c64b1;
+  color: #26A677;
   text-decoration: none;
 }
 
 a:hover {
-  color: #9c9c9c;
+  color: #0F7F61;
+}
+
+.usa-button {
+  background-color: #26A677;
+}
+
+.usa-button:hover {
+  background-color: #0F7F61;
+}
+
+ifream:focus, [href]:focus, [contentEditable="true"]:focus {
+  outline: .15rem solid #26A677; 
 }
 
 
@@ -68,6 +80,23 @@ a:hover {
   position: relative;
   top: 18px;
   left: 10px;
+  color: #26A677;
+}
+
+.usa-navbar h1:hover {
+  color: #0F7F61;
+}
+
+.usa-nav__primary-item a {
+  color: #26A677 !important;
+}
+
+.usa-nav__primary-item a:hover {
+  color: #0F7F61 !important;
+}
+
+.usa-header--basic .usa-nav__primary-item > .usa-current::after, .usa-header--basic .usa-nav__link:hover::after {
+  background-color: #0F7F61;
 }
 
 /* SEARCH PAGE */
@@ -93,6 +122,10 @@ a:hover {
 
 .search-bar .usa-button:hover {
   background-color: #0F7F61;
+}
+
+input:not([disabled]):focus {
+  outline: .15rem solid #26A677;
 }
 
 .quick-search-btns {
@@ -131,7 +164,16 @@ a:hover {
   }
 }
 
-/* REPORT ERROR MODAL + BTN */
+/* DOWNLOAD BTN */
+.csv-download-button {
+  background-color: #26A677;
+}
+
+.csv-download-button:hover {
+  background-color: #0F7F61;
+}
+
+/* REPORT ERROR BTN */
 .report-btn {
   background-color: #8f110e;
   float: right;
