@@ -50,6 +50,16 @@ a:hover {
   background-color: #0F7F61;
 }
 
+.usa-button--outline {
+  box-shadow: inset 0 0 0 2px #26A677;
+  color: #fff;
+}
+
+.usa-button--outline:hover {
+  box-shadow: inset 0 0 0 2px #0F7F61;
+  color: #fff;
+}
+
 ifream:focus, [href]:focus, [contentEditable="true"]:focus {
   outline: .15rem solid #26A677; 
 }
