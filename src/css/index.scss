@@ -38,6 +38,14 @@ a:hover {
   background-color: #26A677;
 }
 
+.usa-menu-btn {
+  background-color: #26A677;
+}
+
+.usa-menu-btn:hover {
+  background-color: #0F7F61;
+}
+
 .usa-button:hover {
   background-color: #0F7F61;
 }
@@ -48,37 +56,29 @@ ifream:focus, [href]:focus, [contentEditable="true"]:focus {
 
 
 /* HEADER */
-
-@media (min-width: 64rem) {}.usa-nav-container {
-  max-width: 90rem;
-}
 .usa-header {
   background-color: #fff;
   border-bottom: #000 1px solid;
-}
-
-.usa-nav__primary .usa-nav__primary-item a {
-  font-size: 1em;
 }
 
 .usa-menu-btn {
   margin-left: auto;
 }
 
-.sun-logo {
-  max-width: 10rem;
+.usa-navbar {
+  height: 3rem;
 }
 
 .usa-navbar img {
   float: left;
-  width: 100px;
-  height: 100px;
+  max-width: 8rem;
+  height: 9rem;
 }
 
 .usa-navbar h1 {
-  font-size: 20px;
+  font-size: 1.2rem;
   position: relative;
-  top: 18px;
+  top: 2.5rem;
   left: 10px;
   color: #26A677;
 }
@@ -224,4 +224,14 @@ input:not([disabled]):focus {
   to {
     -webkit-transform: rotate(360deg);
   }
+}
+
+/* MEDIA QUERIES */
+
+@media (min-width: 64rem) {}.usa-nav-container {
+  max-width: 100rem;
+}
+
+@media (min-width: 1rem) {}.usa-navbar img {
+  height: 3rem !important;
 }

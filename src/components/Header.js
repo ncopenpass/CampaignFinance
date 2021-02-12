@@ -27,7 +27,7 @@ const Header = () => {
   return (
     <>
       <div className="usa-overlay " />
-      <HeaderComponent basic>
+      <HeaderComponent basic={true}>
         <div className="usa-nav-container">
           <div className="usa-navbar">
             <a href={DEFAULT_ROUTE}>
@@ -36,7 +36,7 @@ const Header = () => {
                 className="sun-logo"
                 alt="Outline of the state of North Carolina with the mountains and sun."
               ></img>
-              <h1 className="logo-text">NC Campaign Finance Tool</h1>
+              {/* <h1 className="logo-text">NC Campaign Finance Tool</h1> */}
             </a>
             <NavMenuButton label="Menu" onClick={onClick} />
           </div>
