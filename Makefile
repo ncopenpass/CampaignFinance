@@ -6,9 +6,9 @@ first-run-windows: install clean-db-windows
 
 first-run-windows-no-docker: install migrate-up-windows etl
 
+.PHONY: wait-for-postgres
 wait-for-postgres:
-	echo "waiting for postgres"
-	$(shell ./scripts/wait-for-postgres.sh)
+	./scripts/wait-for-postgres-local.sh
 
 install:
 	npm install
