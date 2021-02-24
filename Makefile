@@ -6,6 +6,10 @@ first-run-windows: install clean-db-windows
 
 first-run-windows-no-docker: install migrate-up-windows etl
 
+.PHONY: wait-for-postgres
+wait-for-postgres:
+	./scripts/wait-for-postgres-local.sh
+
 install:
 	npm install
 	cd server && npm install
@@ -35,9 +39,9 @@ refresh-docker:
 	docker-compose -f docker-compose.yml down -v
 	docker-compose -f docker-compose.yml up -d
 
-clean-db: refresh-docker migrate-up etl
+clean-db: refresh-docker wait-for-postgres migrate-up etl
 
-clean-db-windows: refresh-docker migrate-up-windows etl
+clean-db-windows: refresh-docker wait-for-postgres migrate-up-windows etl
 
 etl:
 	cd server && node bin/etl.js

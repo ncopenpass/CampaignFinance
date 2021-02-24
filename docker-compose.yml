@@ -4,7 +4,7 @@ services:
   postgres:
     container_name: campaign-finance-dashboard-db
     image: postgres
-    restart: always
+    restart: on-failure 
     environment:
       POSTGRES_PASSWORD: postgres
       POSTGRES_USER: postgres
@@ -13,6 +13,7 @@ services:
   pgweb:
     container_name: campaign-finance-dashboard-pgweb
     image: sosedoff/pgweb
+    restart: on-failure 
     ports:
       - '8081:8081'
     links:
@@ -25,7 +26,7 @@ services:
   postgres-test:
     container_name: campaign-finance-dashboard-test-db
     image: postgres
-    restart: always
+    restart: on-failure
     environment:
       POSTGRES_DB: campaign-finance-test
       POSTGRES_PASSWORD: postgres
