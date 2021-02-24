@@ -22,7 +22,6 @@ const Candidate = () => {
     contributions,
     summary,
     contributionCount,
-    contributionOffset,
     fetchInitialSearchData,
     fetchContributions,
   } = useCandidate()
@@ -108,20 +107,6 @@ const Candidate = () => {
               <span className="candidate-prop-label">Contest:</span>
               {candidate.office}
             </p>
-            {/* 
-              Placeholder value for Last Contest and Associated Candidate PAC until we have that data 
-              Placeholder value for href
-            */}
-            {/* <p className="candidate-prop">
-              <span className="candidate-prop-label">Last Contest:</span>
-              <a href="/">Gubernatorial Election 2020</a>
-            </p>
-            <p className="candidate-prop">
-              <span className="candidate-prop-label">
-                Associated Candidate PAC:
-              </span>
-              Cooper for North Carolina
-            </p> */}
           </Grid>
           <Grid col>
             <p className="summary-stat">
@@ -218,7 +203,7 @@ const Candidate = () => {
               columns={candidateContributionColumns}
               data={contributions}
               count={contributionCount}
-              offset={contributionOffset}
+              offset={lastQuery.offset}
               fetchSame={fetchSameContributions}
               fetchNext={fetchNextContributions}
               fetchPrevious={fetchPreviousContributions}
