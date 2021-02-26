@@ -17,7 +17,6 @@ const Contributor = () => {
     contributor,
     apiStatus,
     contributions,
-    summary,
     contributionCount,
     contributionOffset,
     fetchInitialSearchData,
