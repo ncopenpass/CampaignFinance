@@ -3,14 +3,13 @@ import {
   Header as HeaderComponent,
   NavMenuButton,
   PrimaryNav,
-  Title,
 } from '@trussworks/react-uswds'
 
 import { DEFAULT_ROUTE, DATA_DICTIONARY_ROUTE, ABOUT_ROUTE } from '../constants'
 
 const Header = () => {
   const [expanded, setExpanded] = useState(false)
-  const onClick = (): void => setExpanded((prvExpanded) => !prvExpanded)
+  const onClick = () => setExpanded((prvExpanded) => !prvExpanded)
 
   const menuItems = [
     <a key="search" className="usa-nav__link" href={DEFAULT_ROUTE}>

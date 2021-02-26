@@ -153,9 +153,11 @@ export default function Table({
       </thead>
       <tbody {...getTableBodyProps()}>
         {isLoading ? (
-          <td colspan={columns.length}>
-            <Spinner />
-          </td>
+          <tr>
+            <td colSpan={columns.length}>
+              <Spinner />
+            </td>
+          </tr>
         ) : (
           <>
             {rows.map((row, i) => {

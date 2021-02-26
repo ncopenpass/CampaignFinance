@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback } from 'react'
-import { useParams, useLocation, Link } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { Grid, GridContainer } from '@trussworks/react-uswds'
 
 import { useContributors } from '../hooks/useContributors'
@@ -12,13 +12,11 @@ import '../css/candidate.scss'
 
 const Contributor = () => {
   let { contributorId } = useParams()
-  const location = useLocation()
 
   const {
     contributor,
     apiStatus,
     contributions,
-    summary,
     contributionCount,
     contributionOffset,
     fetchInitialSearchData,
@@ -70,13 +68,6 @@ const Contributor = () => {
   return (
     <div className="container">
       <GridContainer>
-        <Grid row>
-          <Grid col>
-            {location?.fromPathname ? (
-              <Link to={location.fromPathname}>Back to search results</Link>
-            ) : null}
-          </Grid>
-        </Grid>
         <Grid row>
           <Grid col>
             <p className="contributor-label">CONTRIBUTOR</p>
