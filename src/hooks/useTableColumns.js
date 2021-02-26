@@ -108,13 +108,8 @@ export const useTableColumns = () => {
         Header: 'Name',
         id: 'candidate_full_name',
         accessor: ({ candidate_full_name, committee_sboe_id }) => (
-          <Link
-            to={(location) => ({
-              pathname: CANDIDATE_URL + committee_sboe_id,
-              fromPathname: location.pathname,
-            })}
-          >
-            {' '}
+          <Link to={`${CANDIDATE_URL}${committee_sboe_id}`}>
+            &nbsp;
             {candidate_full_name}
           </Link>
         ),
@@ -140,15 +135,7 @@ export const useTableColumns = () => {
         Header: 'Contributor Name',
         id: 'name',
         accessor: ({ contributor_id, name }) => (
-          <Link
-            to={(location) => ({
-              pathname: CONTRIBUTOR_URL + contributor_id,
-              fromPathname: location.pathname,
-            })}
-          >
-            {' '}
-            {name}
-          </Link>
+          <Link to={`${CONTRIBUTOR_URL}${contributor_id}`}>&nbsp;{name}</Link>
         ),
       },
       {

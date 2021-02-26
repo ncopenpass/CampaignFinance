@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback, useState } from 'react'
-import { useParams, useLocation, Link } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { Grid, GridContainer } from '@trussworks/react-uswds'
 import NumberFormat from 'react-number-format'
 
@@ -13,7 +13,6 @@ import ReportError from './ReportError'
 
 const Candidate = () => {
   let { candidateId } = useParams()
-  const location = useLocation()
   const [lastQuery, setLastQuery] = useState({})
 
   const {
@@ -88,13 +87,6 @@ const Candidate = () => {
   return (
     <div className="container">
       <GridContainer>
-        <Grid row>
-          <Grid col>
-            {location?.fromPathname ? (
-              <Link to={location.fromPathname}>Back to search results</Link>
-            ) : null}
-          </Grid>
-        </Grid>
         <Grid row>
           <Grid col>
             <p className="candidate-label">CANDIDATE</p>
