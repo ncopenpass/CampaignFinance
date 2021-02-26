@@ -138,6 +138,7 @@ export const useTableColumns = () => {
     () => [
       {
         Header: 'Contributor Name',
+        id: 'name',
         accessor: ({ contributor_id, name }) => (
           <Link
             to={(location) => ({
