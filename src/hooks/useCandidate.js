@@ -24,30 +24,24 @@ const constructContributionsUrl = ({
 }
 
 export const useCandidate = () => {
-  const [hasError, setHasError] = useState(false)
   const [apiStatus, setApiStatus] = useState(STATUSES.Unsent)
   const [candidate, setCandidate] = useState([])
   const [contributions, setContributions] = useState([])
   const [summary, setSummary] = useState([])
   const [contributionCount, setContributionCount] = useState(0)
 
-  const getDataCountSummary = useCallback(
-    async (url) => {
-      setHasError(false)
-      try {
-        setApiStatus(STATUSES.Pending)
-        const response = await fetch(url)
-        const { data, count, summary } = await response.json()
-        setApiStatus(STATUSES.Success)
-        return { data, count, summary }
-      } catch (e) {
-        console.log(e)
-        setApiStatus(STATUSES.Fail)
-        setHasError(true)
-      }
-    },
-    [setHasError]
-  )
+  const getDataCountSummary = useCallback(async (url) => {
+    try {
+      setApiStatus(STATUSES.Pending)
+      const response = await fetch(url)
+      const { data, count, summary } = await response.json()
+      setApiStatus(STATUSES.Success)
+      return { data, count, summary }
+    } catch (e) {
+      console.log(e)
+      setApiStatus(STATUSES.Fail)
+    }
+  }, [])
 
   const fetchCandidate = useCallback(
     async ({ candidateId, limit = API_BATCH_SIZE, offset = 0 } = {}) => {
@@ -76,7 +70,6 @@ export const useCandidate = () => {
         offset,
         sort,
       })
-      setHasError(false)
       try {
         const { data, count, summary } = await getDataCountSummary(url)
         setContributions(data)
@@ -99,7 +92,6 @@ export const useCandidate = () => {
 
   return {
     apiStatus,
-    hasError,
     candidate,
     contributions,
     summary,
