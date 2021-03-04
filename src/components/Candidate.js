@@ -38,12 +38,12 @@ const Candidate = () => {
     }
   }, [candidateId, fetchInitialSearchData])
 
-  const handleSortChange = useCallback(
-    (sortBy) => {
+  const handleDataFetch = useCallback(
+    ({ sortBy, filters }) => {
       // we don't support multisort, so get the first element in the sortBy array if it exists
       const sort = formatSortBy(sortBy)
-      if (sort !== lastQuery.sort) {
-        const query = { ...lastQuery, sort }
+      if (sort !== lastQuery.sort || filters !== lastQuery.filters) {
+        const query = { ...lastQuery, sort, filters }
         setLastQuery(query)
         fetchContributions(query)
       }
@@ -201,7 +201,7 @@ const Candidate = () => {
               fetchPrevious={fetchPreviousContributions}
               searchTerm={candidateId}
               searchType="contributions"
-              onChangeSort={handleSortChange}
+              onFetchData={handleDataFetch}
               initialSortBy={[{ id: 'date_occurred', desc: true }]}
             />
           </Grid>

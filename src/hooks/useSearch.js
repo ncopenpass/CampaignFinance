@@ -7,10 +7,26 @@ import { useApi } from './useApi'
 const CONTRIBUTORS_URL = '/api/search/contributors/'
 const CANDIDATES_URL = '/api/search/candidates/'
 
-const constructSearchUrl = ({ url, searchTerm, limit, offset, sort }) => {
+const filterIdMap = {
+  candidate_full_name: 'name',
+}
+
+const constructSearchUrl = ({
+  url,
+  searchTerm,
+  limit,
+  offset,
+  sort,
+  filters,
+}) => {
   let searchUrl = `${url}${searchTerm}?limit=${limit}&offset=${offset}`
   if (sort) {
     searchUrl = `${searchUrl}&sortBy=${sort}`
+  }
+  if (filters.length) {
+    filters.forEach(({ id, value }) => {
+      searchUrl = `${searchUrl}&${filterIdMap[id] || id}=${value}`
+    })
   }
   return searchUrl
 }
@@ -27,13 +43,20 @@ export const useSearch = () => {
   )
 
   const fetchCandidates = useCallback(
-    async ({ searchTerm, limit = API_BATCH_SIZE, offset = 0, sort } = {}) => {
+    async ({
+      searchTerm,
+      limit = API_BATCH_SIZE,
+      offset = 0,
+      sort,
+      filters = [],
+    } = {}) => {
       const url = constructSearchUrl({
         url: CANDIDATES_URL,
         searchTerm,
         limit,
         offset,
         sort,
+        filters,
       })
       try {
         setCandidateApiStatus(STATUSES.Pending)
@@ -50,13 +73,20 @@ export const useSearch = () => {
   )
 
   const fetchContributors = useCallback(
-    async ({ searchTerm, limit = API_BATCH_SIZE, offset = 0, sort } = {}) => {
+    async ({
+      searchTerm,
+      limit = API_BATCH_SIZE,
+      offset = 0,
+      sort,
+      filters = [],
+    } = {}) => {
       const url = constructSearchUrl({
         url: CONTRIBUTORS_URL,
         searchTerm,
         limit,
         offset,
         sort,
+        filters,
       })
       try {
         setContributorApiStatus(STATUSES.Pending)

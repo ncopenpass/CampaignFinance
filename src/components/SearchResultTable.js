@@ -23,7 +23,7 @@ const SearchResultTable = ({
   fetchPrevious,
   searchTerm,
   searchType,
-  onChangeSort,
+  onFetchData,
   initialSortBy,
 }) => {
   const { tableLimits } = useTablePagination()
@@ -64,7 +64,7 @@ const SearchResultTable = ({
         <Table
           columns={columns}
           data={data}
-          onChangeSort={onChangeSort}
+          onFetchData={onFetchData}
           initialSortBy={initialSortBy}
           isLoading={apiStatus === STATUSES.Pending}
         />
