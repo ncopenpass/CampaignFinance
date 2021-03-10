@@ -218,7 +218,7 @@ const SearchResults = React.memo(() => {
   )
 
   return (
-    <GridContainer>
+    <GridContainer className="extra-width">
       <SearchBarContainer>
         <SearchBar hideQuickLinks />
       </SearchBarContainer>

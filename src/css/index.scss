@@ -125,6 +125,10 @@ ifream:focus, [href]:focus, [contentEditable="true"]:focus {
   text-align: center;
 }
 
+.extra-width {
+  max-width: 75rem;
+}
+
 /* SEARCH BAR */
 .search-bar .usa-button {
   background-color: #26A677;
