@@ -166,7 +166,7 @@ const SearchResults = React.memo(() => {
             searchTerm={searchTerm}
             searchType="candidates"
             onFetchData={handleCandidateDataChange}
-            appliedFilters={lastCandidatesQuery.appliedFilters}
+            appliedFilters={lastCandidatesQuery.filters}
           />
         ),
         expanded: true,
@@ -187,7 +187,7 @@ const SearchResults = React.memo(() => {
             searchTerm={searchTerm}
             searchType="contributors"
             onFetchData={handleContributorDataChange}
-            appliedFilters={lastContributorsQuery.appliedFilters}
+            appliedFilters={lastContributorsQuery.filters}
           />
         ),
         expanded: true,
