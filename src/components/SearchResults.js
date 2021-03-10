@@ -38,6 +38,7 @@ const SearchResults = React.memo(() => {
         searchTerm,
         offset: 0,
         limit: API_BATCH_SIZE,
+        filters: [],
       }
       setLastCandidatesQuery(query)
       setLastContributorsQuery(query)
@@ -50,7 +51,7 @@ const SearchResults = React.memo(() => {
       const sort = formatSortBy(sortBy)
       if (
         sort !== lastCandidatesQuery.sort ||
-        filters !== lastCandidatesQuery.filters
+        JSON.stringify(filters) !== JSON.stringify(lastCandidatesQuery.filters)
       ) {
         const query = { ...lastCandidatesQuery, sort, filters }
         setLastCandidatesQuery(query)
@@ -65,7 +66,8 @@ const SearchResults = React.memo(() => {
       const sort = formatSortBy(sortBy)
       if (
         sort !== lastContributorsQuery.sort ||
-        filters !== lastContributorsQuery.filters
+        JSON.stringify(filters) !==
+          JSON.stringify(lastContributorsQuery.filters)
       ) {
         const query = { ...lastContributorsQuery, sort, filters }
         setLastContributorsQuery(query)
@@ -164,6 +166,7 @@ const SearchResults = React.memo(() => {
             searchTerm={searchTerm}
             searchType="candidates"
             onFetchData={handleCandidateDataChange}
+            appliedFilters={lastCandidatesQuery.appliedFilters}
           />
         ),
         expanded: true,
@@ -184,6 +187,7 @@ const SearchResults = React.memo(() => {
             searchTerm={searchTerm}
             searchType="contributors"
             onFetchData={handleContributorDataChange}
+            appliedFilters={lastContributorsQuery.appliedFilters}
           />
         ),
         expanded: true,
