@@ -39,11 +39,11 @@ const Candidate = () => {
   }, [candidateId, fetchInitialSearchData])
 
   const handleDataFetch = useCallback(
-    ({ sortBy, filters }) => {
+    ({ sortBy }) => {
       // we don't support multisort, so get the first element in the sortBy array if it exists
       const sort = formatSortBy(sortBy)
-      if (sort !== lastQuery.sort || filters !== lastQuery.filters) {
-        const query = { ...lastQuery, sort, filters }
+      if (sort !== lastQuery.sort) {
+        const query = { ...lastQuery, sort }
         setLastQuery(query)
         fetchContributions(query)
       }
