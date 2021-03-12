@@ -30,7 +30,7 @@ const SearchResults = React.memo(() => {
     fetchInitialSearchData,
   } = useSearch()
 
-  const { contributorColumns, candidateColumns } = useTableColumns()
+  const { searchContributorColumns, searchCandidateColumns } = useTableColumns()
 
   useEffect(() => {
     if (fetchInitialSearchData) {
@@ -38,6 +38,7 @@ const SearchResults = React.memo(() => {
         searchTerm,
         offset: 0,
         limit: API_BATCH_SIZE,
+        filters: [],
       }
       setLastCandidatesQuery(query)
       setLastContributorsQuery(query)
@@ -45,11 +46,14 @@ const SearchResults = React.memo(() => {
     }
   }, [searchTerm, fetchInitialSearchData])
 
-  const handleCandidateSort = useCallback(
-    (sortBy) => {
+  const handleCandidateDataChange = useCallback(
+    ({ sortBy, filters }) => {
       const sort = formatSortBy(sortBy)
-      if (sort !== lastCandidatesQuery.sort) {
-        const query = { ...lastCandidatesQuery, sort }
+      if (
+        sort !== lastCandidatesQuery.sort ||
+        JSON.stringify(filters) !== JSON.stringify(lastCandidatesQuery.filters)
+      ) {
+        const query = { ...lastCandidatesQuery, sort, filters }
         setLastCandidatesQuery(query)
         fetchCandidates(query)
       }
@@ -57,11 +61,15 @@ const SearchResults = React.memo(() => {
     [fetchCandidates, lastCandidatesQuery]
   )
 
-  const handleContributorsSort = useCallback(
-    (sortBy) => {
+  const handleContributorDataChange = useCallback(
+    ({ sortBy, filters }) => {
       const sort = formatSortBy(sortBy)
-      if (sort !== lastContributorsQuery.sort) {
-        const query = { ...lastContributorsQuery, sort }
+      if (
+        sort !== lastContributorsQuery.sort ||
+        JSON.stringify(filters) !==
+          JSON.stringify(lastContributorsQuery.filters)
+      ) {
+        const query = { ...lastContributorsQuery, sort, filters }
         setLastContributorsQuery(query)
         fetchContributors(query)
       }
@@ -148,7 +156,7 @@ const SearchResults = React.memo(() => {
         content: (
           <SearchResultTable
             apiStatus={candidateApiStatus}
-            columns={candidateColumns}
+            columns={searchCandidateColumns}
             data={candidates}
             count={candidateCount}
             offset={lastCandidatesQuery.offset}
@@ -157,7 +165,8 @@ const SearchResults = React.memo(() => {
             fetchPrevious={fetchPreviousCandidates}
             searchTerm={searchTerm}
             searchType="candidates"
-            onChangeSort={handleCandidateSort}
+            onFetchData={handleCandidateDataChange}
+            appliedFilters={lastCandidatesQuery.filters}
           />
         ),
         expanded: true,
@@ -168,7 +177,7 @@ const SearchResults = React.memo(() => {
         content: (
           <SearchResultTable
             apiStatus={contributorApiStatus}
-            columns={contributorColumns}
+            columns={searchContributorColumns}
             data={contributors}
             count={contributorCount}
             offset={lastContributorsQuery.offset}
@@ -177,7 +186,8 @@ const SearchResults = React.memo(() => {
             fetchPrevious={fetchPreviousContributors}
             searchTerm={searchTerm}
             searchType="contributors"
-            onChangeSort={handleContributorsSort}
+            onFetchData={handleContributorDataChange}
+            appliedFilters={lastContributorsQuery.filters}
           />
         ),
         expanded: true,
@@ -186,11 +196,11 @@ const SearchResults = React.memo(() => {
     ],
     [
       candidateApiStatus,
-      candidateColumns,
+      searchCandidateColumns,
       candidates,
       candidateCount,
       contributorApiStatus,
-      contributorColumns,
+      searchContributorColumns,
       contributors,
       contributorCount,
       searchTerm,
@@ -202,13 +212,13 @@ const SearchResults = React.memo(() => {
       fetchSameContributors,
       fetchNextContributors,
       fetchPreviousContributors,
-      handleContributorsSort,
-      handleCandidateSort,
+      handleCandidateDataChange,
+      handleContributorDataChange,
     ]
   )
 
   return (
-    <GridContainer>
+    <GridContainer className="extra-width">
       <SearchBarContainer>
         <SearchBar hideQuickLinks />
       </SearchBarContainer>

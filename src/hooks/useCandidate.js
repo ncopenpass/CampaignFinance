@@ -14,11 +14,17 @@ const constructContributionsUrl = ({
   limit,
   offset,
   sort,
+  filters,
 }) => {
   candidateId = encodeURIComponent(candidateId)
   let contributionsUrl = `${url}${candidateId}/contributions?limit=${limit}&offset=${offset}`
   if (sort) {
     contributionsUrl = `${contributionsUrl}&sortBy=${sort}`
+  }
+  if (filters.length) {
+    filters.forEach(({ id, value }) => {
+      contributionsUrl = `${contributionsUrl}&${id}=${value}`
+    })
   }
   return contributionsUrl
 }
@@ -62,13 +68,20 @@ export const useCandidate = () => {
   )
 
   const fetchContributions = useCallback(
-    async ({ candidateId, limit = API_BATCH_SIZE, offset = 0, sort } = {}) => {
+    async ({
+      candidateId,
+      limit = API_BATCH_SIZE,
+      offset = 0,
+      sort,
+      filters = [],
+    } = {}) => {
       const url = constructContributionsUrl({
         url: CANDIDATE_URL,
         candidateId,
         limit,
         offset,
         sort,
+        filters,
       })
       try {
         const { data, count, summary } = await getDataCountSummary(url)

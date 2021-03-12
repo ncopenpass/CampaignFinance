@@ -1,14 +1,16 @@
 import React, { useMemo } from 'react'
 import { Link } from 'react-router-dom'
+import InputFilter from '../components/InputFilter'
 
 const CANDIDATE_URL = '/candidate/'
 const CONTRIBUTOR_URL = '/contributors/'
 
 export const useTableColumns = () => {
-  const contributorColumns = useMemo(
+  const searchContributorColumns = useMemo(
     () => [
       {
         Header: 'Contributor Name',
+        id: 'name',
         accessor: ({ contributor_id, name }) => (
           <Link
             to={(location) => ({
@@ -20,31 +22,67 @@ export const useTableColumns = () => {
             {name}
           </Link>
         ),
+        disableSortBy: false,
+        disableFilters: false,
+        Filter: InputFilter,
       },
       {
         Header: 'City/State',
+        id: 'cityState',
         accessor: ({ city, state }) => city + ', ' + state,
-        disableSortBy: true,
+        disableFilters: false,
+        Filter: InputFilter,
       },
       {
         Header: 'Type',
         accessor: 'type',
-        disableSortBy: true,
       },
       {
         Header: 'Profession',
         accessor: 'profession',
-        disableSortBy: true,
+        disableFilters: false,
+        Filter: InputFilter,
       },
       {
         Header: 'Total Contributions',
         accessor: 'total',
-        disableSortBy: true,
       },
       {
         Header: 'Employer',
         accessor: 'employer_name',
-        disableSortBy: true,
+      },
+    ],
+    []
+  )
+
+  const searchCandidateColumns = useMemo(
+    () => [
+      {
+        Header: 'Name',
+        id: 'candidate_full_name',
+        accessor: ({ candidate_full_name, committee_sboe_id }) => (
+          <Link to={`${CANDIDATE_URL}${committee_sboe_id}`}>
+            &nbsp;
+            {candidate_full_name}
+          </Link>
+        ),
+        disableSortBy: false,
+        disableFilters: false,
+        Filter: InputFilter,
+      },
+      {
+        Header: 'Party',
+        accessor: 'party',
+        disableFilters: false,
+        Filter: InputFilter,
+      },
+      {
+        Header: 'Contest',
+        id: 'contest',
+        accessor: ({ office, juris }) =>
+          juris ? `${office} ${juris}` : office,
+        disableFilters: false,
+        Filter: InputFilter,
       },
     ],
     []
@@ -102,33 +140,6 @@ export const useTableColumns = () => {
     []
   )
 
-  const candidateColumns = useMemo(
-    () => [
-      {
-        Header: 'Name',
-        id: 'candidate_full_name',
-        accessor: ({ candidate_full_name, committee_sboe_id }) => (
-          <Link to={`${CANDIDATE_URL}${committee_sboe_id}`}>
-            &nbsp;
-            {candidate_full_name}
-          </Link>
-        ),
-      },
-      {
-        Header: 'Party',
-        accessor: 'party',
-        disableSortBy: true,
-      },
-      {
-        Header: 'Contest',
-        accessor: ({ office, juris }) =>
-          juris ? `${office} ${juris}` : office,
-        disableSortBy: true,
-      },
-    ],
-    []
-  )
-
   const candidateContributionColumns = useMemo(
     () => [
       {
@@ -137,11 +148,11 @@ export const useTableColumns = () => {
         accessor: ({ contributor_id, name }) => (
           <Link to={`${CONTRIBUTOR_URL}${contributor_id}`}>&nbsp;{name}</Link>
         ),
+        disableSortBy: false,
       },
       {
         Header: 'Transaction Type',
         accessor: 'transaction_type',
-        disableSortBy: true,
       },
       {
         id: 'amount',
@@ -153,11 +164,11 @@ export const useTableColumns = () => {
           })
           return formatter.format(r.amount)
         },
+        disableSortBy: false,
       },
       {
         Header: 'Form of Payment',
         accessor: 'form_of_payment',
-        disableSortBy: true,
       },
       {
         id: 'date_occurred',
@@ -170,19 +181,19 @@ export const useTableColumns = () => {
             day: '2-digit',
           })
         },
+        disableSortBy: false,
       },
       {
         Header: 'Comment',
         accessor: 'purpose',
-        disableSortBy: true,
       },
     ],
     []
   )
 
   return {
-    contributorColumns,
-    candidateColumns,
+    searchContributorColumns,
+    searchCandidateColumns,
     candidateContributionColumns,
     individualContributionsColumns,
   }
