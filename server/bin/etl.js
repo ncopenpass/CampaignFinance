@@ -9,12 +9,6 @@ const { copyFromCSV } = require('../db/copyFromCSV')
   let client = null
   try {
     client = await getClient()
-    await client.query(
-      'alter table committees drop column if exists candidate_full_name'
-    )
-    await client.query(
-      'alter table committees drop column if exists candidate_first_last_name'
-    )
     await copyFromCSV(
       `${__dirname}/../tmp/contributors.csv`,
       'contributors',
@@ -30,12 +24,12 @@ const { copyFromCSV } = require('../db/copyFromCSV')
       'committees',
       client
     )
-    await client.query(
-      'alter table committees add column candidate_full_name text'
-    )
-    await client.query(
-      'alter table committees add column candidate_first_last_name text'
-    )
+    // await client.query(
+    //   'alter table committees add column candidate_full_name text'
+    // )
+    // await client.query(
+    //   'alter table committees add column candidate_first_last_name text'
+    // )
     await client.query(
       `update committees set candidate_full_name = CONCAT_WS(' ', candidate_first_name, candidate_middle_name, candidate_last_name)`
     )

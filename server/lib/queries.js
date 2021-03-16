@@ -119,7 +119,6 @@ const getCandidateContributions = ({
 
   return client.query(
     `select count(*) over () as full_count,
-       source_contribution_id,
        contributor_id,
        transaction_type,
        committee_sboe_id,
@@ -129,13 +128,13 @@ const getCandidateContributions = ({
        amount,
        form_of_payment,
        purpose,
-       candidate_or_referendum_name,
+       candidate_referendum_name,
        declaration,
        id,
        name,
        city,
        state,
-       zip_code,
+       zipcode,
        profession,
        employer_name
        from contributions
@@ -167,7 +166,6 @@ const getCandidateContributions = ({
 const getCandidateContributionsForDownload = ({ ncsbeID, client }) => {
   return client.query(
     `select count(*) over () as full_count,
-       source_contribution_id,
        contributor_id,
        transaction_type,
        committee_sboe_id,
@@ -177,13 +175,13 @@ const getCandidateContributionsForDownload = ({ ncsbeID, client }) => {
        amount,
        form_of_payment,
        purpose,
-       candidate_or_referendum_name,
+       candidate_referendum_name,
        declaration,
        id,
        coalesce(name, 'Aggregated Individual Contribution') as name,
        city,
        state,
-       zip_code,
+       zipcode,
        profession,
        employer_name
        from contributions

@@ -88,7 +88,6 @@ const expectedContributionKeys = [
   'form_of_payment',
   'purpose',
   'report_name',
-  'source_contribution_id',
   'transaction_type',
 ]
 
@@ -105,7 +104,6 @@ const expectedContributionCommitteeKeys = [
   'form_of_payment',
   'purpose',
   'report_name',
-  'source_contribution_id',
   'transaction_type',
   'total_contributions_to_committee',
 ]
