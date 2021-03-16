@@ -8,7 +8,7 @@ first-run-windows-no-docker: install migrate-up-windows etl
 
 .PHONY: wait-for-postgres
 wait-for-postgres:
-	./scripts/wait-for-postgres-local.sh
+	$(shell ./scripts/wait-for-postgres-local.sh)
 
 install:
 	npm install
