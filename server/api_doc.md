@@ -22,25 +22,25 @@ response:
 {
   "data": [
     {
-      "contributor_id": "8ce7bc9f-2c13-45ac-8395-3e46b4191490",
-      "name": "John D. Smith II",
-      "city": "Eden",
+      "contributor_id": 219157,
+      "name": "JOHN & EUNICE SMITH",
+      "city": "EDEN",
       "state": "NC",
-      "zip_code": "27289-0590",
-      "profession": "Property Management",
-      "employer_name": "Self"
+      "zipcode": "27289",
+      "profession": "",
+      "employer_name": ""
     },
     {
-      "contributor_id": "eaf72678-370f-47cd-a826-69c050c9c689",
-      "name": "JOHN J SMITH III",
-      "city": "WINSTON-SALEM",
+      "contributor_id": 215665,
+      "name": "JOE SMITH",
+      "city": "MOUNT OLIVE",
       "state": "NC",
-      "zip_code": "27103",
-      "profession": "PHYSICIAN",
-      "employer_name": "NOVANT HEALTH UROLOGY PARTNERS"
+      "zipcode": "28365",
+      "profession": "ARCHITECTURAL ENGINEER",
+      "employer_name": "SMITH ENGINEERING AND DESIGN PA"
     }
   ],
-  "count": "3"
+  "count": "47"
 }
 ```
 
@@ -71,8 +71,8 @@ response:
       "candidate_full_name": "ROY A COOPER",
       "candidate_last_name": "COOPER",
       "candidate_middle_name": "A",
-      "current_status": "Active (Non-Exempt)",
-      "juris": null,
+      "current_status": "Unknown",
+      "juris": "",
       "office": "Governor",
       "party": "Democratic",
       "committee_sboe_id": "STA-C0498N-C-002"
@@ -101,8 +101,8 @@ response:
     "candidate_full_name": "ROY A COOPER",
     "candidate_last_name": "COOPER",
     "candidate_middle_name": "A",
-    "current_status": "Active (Non-Exempt)",
-    "juris": null,
+    "current_status": "Unknown",
+    "juris": "",
     "office": "Governor",
     "party": "Democratic",
     "committee_sboe_id": "STA-C0498N-C-002"
@@ -136,40 +136,52 @@ response:
 {
   "data": [
     {
-      "account_code": "Not Available",
-      "amount": 40,
-      "candidate_referendum_name": null,
+      "contributor_id": 21907,
+      "name": "ANN M. ZIELINSKI",
+      "city": "ENDICOTT",
+      "state": "NY",
+      "zipcode": "13760",
+      "profession": "HOMEMAKER",
+      "employer_name": "RETIRED",
+      "account_code": "NOT AVAILABLE",
+      "amount": 25,
+      "candidate_referendum_name": "",
       "committee_sboe_id": "STA-C0498N-C-002",
-      "contributor_id": "e0aaac84-867a-4d9e-b80e-25145e929eaf",
-      "date_occurred": "2/11/20",
-      "declaration": null,
-      "form_of_payment": "Credit Card",
-      "purpose": null,
-      "report_name": "2020 First Quarter",
-      "source_contribution_id": "0359bad6-d26c-4367-9546-5d939fd6c604",
-      "transaction_type": "Individual"
+      "date_occurred": "2020-02-19T05:00:00.000Z",
+      "declaration": "",
+      "form_of_payment": "CHECK",
+      "purpose": "",
+      "report_name": "2020 SECOND QUARTER (AMENDMENT)",
+      "transaction_type": "INDIVIDUAL"
     },
     {
-      "account_code": "Not Available",
-      "amount": 200,
-      "candidate_referendum_name": null,
+      "contributor_id": 3494,
+      "name": "AGGREGATED INDIVIDUAL CONTRIBUTION",
+      "city": "",
+      "state": "",
+      "zipcode": "",
+      "profession": "",
+      "employer_name": "",
+      "account_code": "NOT AVAILABLE",
+      "amount": 50,
+      "candidate_referendum_name": "",
       "committee_sboe_id": "STA-C0498N-C-002",
-      "contributor_id": "2423d2db-2dd1-493e-8bf6-d85a44c2a58d",
-      "date_occurred": "5/20/19",
-      "declaration": null,
-      "form_of_payment": "Credit Card",
-      "purpose": null,
-      "report_name": "2019 Mid Year Semi-Annual",
-      "source_contribution_id": "fe5b3577-567f-4813-991f-8fc63e60cd2c",
-      "transaction_type": "Individual"
+      "date_occurred": "2020-08-15T04:00:00.000Z",
+      "declaration": "",
+      "form_of_payment": "CREDIT CARD",
+      "purpose": "",
+      "report_name": "2020 THIRD QUARTER",
+      "transaction_type": "INDIVIDUAL"
     }
   ],
-  "count": "25059",
+  "count": "135057",
   "summary": {
-    "sum": 7348500,
-    "avg": 293.247912627501,
-    "max": 158187,
-    "count": 25059
+    "sum": 37950100,
+    "avg": 281.041759813853,
+    "max": 3500000,
+    "count": 135057,
+    "aggregated_contributions_count": "0",
+    "aggregated_contributions_sum": null
   }
 }
 ```
@@ -180,13 +192,13 @@ response: A CSV file
 When `toCSV` is true, the `offset` and `limit` will be ignored.
 When `toCSV` is true, the endpoint will work as an `href` or with a `fetch` call. Using it as an `href` should automatically download it as a file
 
-> "account_code","amount","candidate_referendum_name","committee_sboe_id","contributor_id","date_occurred","declaration","form_of_payment","purpose","report_name","source_contribution_id","transaction_type"
-> "Not Available",60,,"177-AGM31F-C-001","c586843a-4be8-4d34-b50b-ae18922ee9fb","6/20/19",,"Credit Card",,"2019 Mid Year Semi-Annual","d3414cc1-2ca7-426d-8a6a-f8427a3b2947","Individual"
-> "Not Available",250,,"177-AGM31F-C-001","03d76952-bb20-4b75-9f32-29c6d1ff6ad2","10/29/19",,"Check",,"2019 Year End Semi-Annual","ae30b904-d7d1-40bf-81b5-633d472b8e70","Non-Party Comm"
-> "Not Available",100,,"177-AGM31F-C-001","b3488386-f0ca-4ae9-929d-6cfd86024026","10/29/19",,"Check",,"2019 Year End Semi-Annual","8c1875b1-6660-4e24-8e54-12bfe8891fb1","Individual"
-> "Not Available",400,,"177-AGM31F-C-001","aaf94246-1448-44a6-b1dd-5548c23f3a7d","10/29/19",,"Check",,"2019 Year End Semi-Annual","ce993345-dd38-4610-ba29-fb343789e7ae","Outside Source"
-> "Not Available",2000,,"177-AGM31F-C-001","64ef975f-01ae-4207-ad8f-6cb46c732957","7/1/19",,"Check",,"2019 Year End Semi-Annual","cf9be735-ef73-4f49-a024-0fa3c9c77321","Outstanding Loan"
-> "Not Available",2000,,"177-AGM31F-C-001","64ef975f-01ae-4207-ad8f-6cb46c732957","7/1/19",,"Check",,"2019 Pre-Election","94ba281e-97ec-4593-9f81-86a074df1c09","Outstanding Loan"
+> "contributor_id","name","city","state","zipcode","profession","employer_name","account_code","amount","candidate_referendum_name","committee_sboe_id","date_occurred","declaration","form_of_payment","purpose","report_name","transaction_type"
+> 21907,"ANN M. ZIELINSKI","ENDICOTT","NY","13760","HOMEMAKER","RETIRED","NOT AVAILABLE",25,"","STA-C0498N-C-002","2020-02-19T05:00:00.000Z","","CHECK","","2020 SECOND QUARTER (AMENDMENT)","INDIVIDUAL"
+> 3494,"AGGREGATED INDIVIDUAL CONTRIBUTION","","","","","","NOT AVAILABLE",50,"","STA-C0498N-C-002","2020-08-15T04:00:00.000Z","","CREDIT CARD","","2020 THIRD QUARTER","INDIVIDUAL"
+> 3494,"AGGREGATED INDIVIDUAL CONTRIBUTION","","","","","","NOT AVAILABLE",50,"","STA-C0498N-C-002","2020-08-15T04:00:00.000Z","","CREDIT CARD","","2020 THIRD QUARTER","INDIVIDUAL"
+> 3494,"AGGREGATED INDIVIDUAL CONTRIBUTION","","","","","","NOT AVAILABLE",50,"","STA-C0498N-C-002","2020-08-15T04:00:00.000Z","","CREDIT CARD","","2020 THIRD QUARTER","INDIVIDUAL"
+> 3494,"AGGREGATED INDIVIDUAL CONTRIBUTION","","","","","","NOT AVAILABLE",50,"","STA-C0498N-C-002","2020-08-15T04:00:00.000Z","","CREDIT CARD","","2020 THIRD QUARTER","INDIVIDUAL"
+> 3494,"AGGREGATED INDIVIDUAL CONTRIBUTION","","","","","","NOT AVAILABLE",50,"","STA-C0498N-C-002","2020-08-15T04:00:00.000Z","","CREDIT CARD","","2020 THIRD QUARTER","INDIVIDUAL"
 
 ## GET `/api/contributors/:contributorId/contributions`
 
@@ -198,48 +210,30 @@ Query Params (optional):
 - `limit` default value `50`
 - `toCSV` default value `false`
 
-Example: `/api/contributors/2423d2db-2dd1-493e-8bf6-d85a44c2a58d/contributions?limit=2&offset=0`
+Example: `/api/contributors/5123/contributions?limit=2&offset=0`
 response:
 
 ```json
 {
   "data": [
     {
-      "account_code": "Not Available",
+      "account_code": "NOT AVAILABLE",
       "amount": 250,
-      "candidate_referendum_name": null,
-      "committee_sboe_id": "STA-D34P1G-C-001",
-      "contributor_id": "2423d2db-2dd1-493e-8bf6-d85a44c2a58d",
-      "date_occurred": "11/20/19",
-      "declaration": null,
-      "form_of_payment": "Credit Card",
-      "purpose": null,
-      "report_name": "2019 Year End Semi-Annual",
-      "source_contribution_id": "1223e0c7-05d3-411f-932f-d1ac90fde0b7",
-      "transaction_type": "Individual",
-      "candidate_full_name": "WILLIAM WALTER TOOLE",
-      "committee_name": "TOOLE FOR NC ",
-      "total_contributions_to_committee": 1232.23
-    },
-    {
-      "account_code": "Not Available",
-      "amount": 500,
-      "candidate_referendum_name": null,
-      "committee_sboe_id": "STA-D34P1G-C-001",
-      "contributor_id": "2423d2db-2dd1-493e-8bf6-d85a44c2a58d",
-      "date_occurred": "1/27/20",
-      "declaration": null,
-      "form_of_payment": "Credit Card",
-      "purpose": null,
-      "report_name": "2020 First Quarter",
-      "source_contribution_id": "306a9814-876c-405b-9f53-9b0301d37bdb",
-      "transaction_type": "Individual",
-      "candidate_full_name": "WILLIAM WALTER TOOLE",
-      "committee_name": "TOOLE FOR NC ",
-      "total_contributions_to_committee": 1232.23
+      "candidate_referendum_name": "",
+      "committee_sboe_id": "STA-42T4MV-C-001",
+      "contributor_id": 5123,
+      "date_occurred": "2020-06-18T04:00:00.000Z",
+      "declaration": "",
+      "form_of_payment": "ELECTRONIC FUNDS TRANSFER",
+      "purpose": "",
+      "report_name": "2020 SECOND QUARTER (AMENDMENT)",
+      "transaction_type": "INDIVIDUAL",
+      "candidate_full_name": "CECELIA DULA SURRATT",
+      "committee_name": "COMMITTEE TO ELECT CECELIA SURRATT- HOUSE 86 REPRESENTATIVE",
+      "total_contributions_to_committee": 250
     }
   ],
-  "count": "5"
+  "count": "1"
 }
 ```
 
@@ -247,12 +241,43 @@ Example: `/api/contributors/2423d2db-2dd1-493e-8bf6-d85a44c2a58d/contributions?t
 response:
 
 ```CSV
-"account_code","amount","candidate_referendum_name","committee_sboe_id","contributor_id","date_occurred","declaration","form_of_payment","purpose","report_name","source_contribution_id","transaction_type","candidate_full_name","committee_name","total_contributions_to_committee"
-"Not Available",250,,"STA-D34P1G-C-001","2423d2db-2dd1-493e-8bf6-d85a44c2a58d","11/20/19",,"Credit Card",,"2019 Year End Semi-Annual","1223e0c7-05d3-411f-932f-d1ac90fde0b7","Individual","WILLIAM WALTER TOOLE","TOOLE FOR NC ",750
-"Not Available",500,,"STA-D34P1G-C-001","2423d2db-2dd1-493e-8bf6-d85a44c2a58d","1/27/20",,"Credit Card",,"2020 First Quarter","306a9814-876c-405b-9f53-9b0301d37bdb","Individual","WILLIAM WALTER TOOLE","TOOLE FOR NC ",750
-"Not Available",200,,"STA-C0498N-C-002","2423d2db-2dd1-493e-8bf6-d85a44c2a58d","5/20/19",,"Credit Card",,"2019 Mid Year Semi-Annual","fe5b3577-567f-4813-991f-8fc63e60cd2c","Individual","ROY A COOPER","COOPER FOR NORTH CAROLINA",200
-"Not Available",500,,"STA-196F43-C-002","2423d2db-2dd1-493e-8bf6-d85a44c2a58d","6/27/19",,"Credit Card",,"2019 Mid Year Semi-Annual (Amendment)","d418ce8e-b2b4-4cf0-b1f9-ad72a4cceb7d","Individual","MARK A DAVIS","JUSTICE MARK DAVIS COMMITTEE",500
-"Not Available",500,,"STA-WP1LKA-C-001","2423d2db-2dd1-493e-8bf6-d85a44c2a58d","8/1/19",,"Credit Card",,"2019 Year End Semi-Annual","e7f83a5e-c948-4d4f-a151-fd91d18143c7","Individual","JOSHUA H STEIN","JOSH STEIN FOR ATTORNEY GENERAL",500
+{
+  "data": [
+    {
+      "account_code": "NOT AVAILABLE",
+      "amount": 0.17,
+      "candidate_referendum_name": "",
+      "committee_sboe_id": "STA-C3372N-C-001",
+      "contributor_id": 3494,
+      "date_occurred": "2019-01-02T05:00:00.000Z",
+      "declaration": "",
+      "form_of_payment": "",
+      "purpose": "",
+      "report_name": "2019 MID YEAR SEMI-ANNUAL",
+      "transaction_type": "INDIVIDUAL",
+      "candidate_full_name": "NULL NULL NULL",
+      "committee_name": "NCAE PAC",
+      "total_contributions_to_committee": 91785.4
+    },
+    {
+      "account_code": "NOT AVAILABLE",
+      "amount": 0.17,
+      "candidate_referendum_name": "",
+      "committee_sboe_id": "STA-C3372N-C-001",
+      "contributor_id": 3494,
+      "date_occurred": "2019-01-02T05:00:00.000Z",
+      "declaration": "",
+      "form_of_payment": "",
+      "purpose": "",
+      "report_name": "2019 MID YEAR SEMI-ANNUAL",
+      "transaction_type": "INDIVIDUAL",
+      "candidate_full_name": "NULL NULL NULL",
+      "committee_name": "NCAE PAC",
+      "total_contributions_to_committee": 91785.4
+    }
+  ],
+  "count": "1076394"
+}
 ```
 
 ## GET `/api/contributor/:contributorId`
@@ -268,20 +293,20 @@ status code: 200
 ```json
 {
   "data": {
-    "contributor_id": "8ce7bc9f-2c13-45ac-8395-3e46b4191490",
-    "name": "John D. Smith II",
-    "city": "Eden",
+    "contributor_id": 5123,
+    "name": "AL BACCHI",
+    "city": "MORGANTON",
     "state": "NC",
-    "zip_code": "27289-0590",
-    "profession": "Property Management",
-    "employer_name": "Self"
+    "zipcode": "28655",
+    "profession": "BANKER",
+    "employer_name": "REGIONS BANK"
   }
 }
 ```
 
 If the contributor id is not found, the `data` field will be `null` and the response code will be `404`
 
-Example: `/api/contributor/00000000-0000-0000-0000-000000000000`
+Example: `/api/contributor/0`
 
 status code: 404
 
@@ -307,25 +332,25 @@ response:
 {
   "data": [
     {
-      "contributor_id": "21fd4377-fe56-4889-accd-a0ef3a29f7b7",
-      "name": "03RD CONGRESSIONAL DISTRICT REC",
+      "contributor_id": 14,
+      "name": "03RD CONGRESSIONAL DISTRICT",
       "city": "WASHINGTON",
       "state": "NC",
-      "zip_code": "27889",
-      "profession": null,
-      "employer_name": null
+      "zipcode": "27889",
+      "profession": "",
+      "employer_name": ""
     },
     {
-      "contributor_id": "21fd4377-fe56-4889-accd-a0ef3a29f7b7",
-      "name": "03RD CONGRESSIONAL DISTRICT REC",
+      "contributor_id": 14,
+      "name": "03RD CONGRESSIONAL DISTRICT",
       "city": "WASHINGTON",
       "state": "NC",
-      "zip_code": "27889",
-      "profession": null,
-      "employer_name": null
+      "zipcode": "27889",
+      "profession": "",
+      "employer_name": ""
     }
   ],
-  "count": "183929"
+  "count": "536628"
 }
 ```
 
@@ -345,29 +370,31 @@ response:
 {
   "data": [
     {
-      "sboe_id": "STA-C2342N-C-004",
-      "candidate_last_name": "JONES",
-      "candidate_first_name": "ABRAHAM",
-      "candidate_middle_name": "PENN",
-      "party": "Democratic",
+      "candidate_first_last_name": "ABBIE LANE",
+      "candidate_first_name": "ABBIE",
+      "candidate_full_name": "ABBIE L LANE",
+      "candidate_last_name": "LANE",
+      "candidate_middle_name": "L",
+      "current_status": "Unknown",
+      "juris": "23",
       "office": "N.C. House",
-      "candidate_full_name": "ABRAHAM PENN JONES",
-      "candidate_first_last_name": "ABRAHAM JONES",
-      "full_count": "523"
+      "party": "Unaffiliated",
+      "committee_sboe_id": "STA-041DV7-C-001"
     },
     {
-      "sboe_id": "STA-5JHUJB-C-001",
-      "candidate_last_name": "ERICSON",
-      "candidate_first_name": "ADAM",
-      "candidate_middle_name": "FLETCHER",
-      "party": "Democratic",
+      "candidate_first_last_name": "ABRAHAM JONES",
+      "candidate_first_name": "ABRAHAM",
+      "candidate_full_name": "ABRAHAM PENN JONES",
+      "candidate_last_name": "JONES",
+      "candidate_middle_name": "PENN",
+      "current_status": "Unknown",
+      "juris": "38",
       "office": "N.C. House",
-      "candidate_full_name": "ADAM FLETCHER ERICSON",
-      "candidate_first_last_name": "ADAM ERICSON",
-      "full_count": "523"
+      "party": "Democratic",
+      "committee_sboe_id": "STA-C2342N-C-004"
     }
   ],
-  "count": "523"
+  "count": "1506"
 }
 ```
 
@@ -388,33 +415,33 @@ response:
   "candidates": {
     "data": [
       {
-        "candidate_first_last_name": "ROY COOPER",
-        "candidate_first_name": "ROY",
-        "candidate_full_name": "ROY A COOPER",
-        "candidate_last_name": "COOPER",
-        "candidate_middle_name": "A",
-        "current_status": "Active (Non-Exempt)",
-        "juris": null,
-        "office": "Governor",
+        "candidate_first_last_name": "JAMES STANFORD",
+        "candidate_first_name": "JAMES",
+        "candidate_full_name": "JAMES COOPER STANFORD",
+        "candidate_last_name": "STANFORD",
+        "candidate_middle_name": "COOPER",
+        "current_status": "Unknown",
+        "juris": "COUNTY",
+        "office": "Clerk of Superior Court",
         "party": "Democratic",
-        "committee_sboe_id": "STA-C0498N-C-002"
+        "committee_sboe_id": "ORA-I2J52O-C-001"
       }
     ],
-    "count": "1"
+    "count": "3"
   },
   "donors": {
     "data": [
       {
-        "contributor_id": "7351285a-cce4-4dfd-aeee-bfc297ee8139",
-        "name": "KAY COOPER",
-        "city": "HILLSBOROUGH",
+        "contributor_id": 335348,
+        "name": "NORTH CAROLINA ASSOCIATION OF ELECTRIC COOPERATIVES RURAL ELECTRIC ACTION PROGRAM",
+        "city": "RALEIGH",
         "state": "NC",
-        "zip_code": "27278",
-        "profession": "RETIRED",
-        "employer_name": "RETIRED"
+        "zipcode": "27611-6566",
+        "profession": "",
+        "employer_name": ""
       }
     ],
-    "count": "1"
+    "count": "780"
   },
   "pacs": {
     "data": [],
