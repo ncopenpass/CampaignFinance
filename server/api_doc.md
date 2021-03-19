@@ -138,7 +138,7 @@ response:
     {
       "account_code": "Not Available",
       "amount": 40,
-      "candidate_or_referendum_name": null,
+      "candidate_referendum_name": null,
       "committee_sboe_id": "STA-C0498N-C-002",
       "contributor_id": "e0aaac84-867a-4d9e-b80e-25145e929eaf",
       "date_occurred": "2/11/20",
@@ -152,7 +152,7 @@ response:
     {
       "account_code": "Not Available",
       "amount": 200,
-      "candidate_or_referendum_name": null,
+      "candidate_referendum_name": null,
       "committee_sboe_id": "STA-C0498N-C-002",
       "contributor_id": "2423d2db-2dd1-493e-8bf6-d85a44c2a58d",
       "date_occurred": "5/20/19",
@@ -180,7 +180,7 @@ response: A CSV file
 When `toCSV` is true, the `offset` and `limit` will be ignored.
 When `toCSV` is true, the endpoint will work as an `href` or with a `fetch` call. Using it as an `href` should automatically download it as a file
 
-> "account_code","amount","candidate_or_referendum_name","committee_sboe_id","contributor_id","date_occurred","declaration","form_of_payment","purpose","report_name","source_contribution_id","transaction_type"
+> "account_code","amount","candidate_referendum_name","committee_sboe_id","contributor_id","date_occurred","declaration","form_of_payment","purpose","report_name","source_contribution_id","transaction_type"
 > "Not Available",60,,"177-AGM31F-C-001","c586843a-4be8-4d34-b50b-ae18922ee9fb","6/20/19",,"Credit Card",,"2019 Mid Year Semi-Annual","d3414cc1-2ca7-426d-8a6a-f8427a3b2947","Individual"
 > "Not Available",250,,"177-AGM31F-C-001","03d76952-bb20-4b75-9f32-29c6d1ff6ad2","10/29/19",,"Check",,"2019 Year End Semi-Annual","ae30b904-d7d1-40bf-81b5-633d472b8e70","Non-Party Comm"
 > "Not Available",100,,"177-AGM31F-C-001","b3488386-f0ca-4ae9-929d-6cfd86024026","10/29/19",,"Check",,"2019 Year End Semi-Annual","8c1875b1-6660-4e24-8e54-12bfe8891fb1","Individual"
@@ -207,7 +207,7 @@ response:
     {
       "account_code": "Not Available",
       "amount": 250,
-      "candidate_or_referendum_name": null,
+      "candidate_referendum_name": null,
       "committee_sboe_id": "STA-D34P1G-C-001",
       "contributor_id": "2423d2db-2dd1-493e-8bf6-d85a44c2a58d",
       "date_occurred": "11/20/19",
@@ -224,7 +224,7 @@ response:
     {
       "account_code": "Not Available",
       "amount": 500,
-      "candidate_or_referendum_name": null,
+      "candidate_referendum_name": null,
       "committee_sboe_id": "STA-D34P1G-C-001",
       "contributor_id": "2423d2db-2dd1-493e-8bf6-d85a44c2a58d",
       "date_occurred": "1/27/20",
@@ -247,7 +247,7 @@ Example: `/api/contributors/2423d2db-2dd1-493e-8bf6-d85a44c2a58d/contributions?t
 response:
 
 ```CSV
-"account_code","amount","candidate_or_referendum_name","committee_sboe_id","contributor_id","date_occurred","declaration","form_of_payment","purpose","report_name","source_contribution_id","transaction_type","candidate_full_name","committee_name","total_contributions_to_committee"
+"account_code","amount","candidate_referendum_name","committee_sboe_id","contributor_id","date_occurred","declaration","form_of_payment","purpose","report_name","source_contribution_id","transaction_type","candidate_full_name","committee_name","total_contributions_to_committee"
 "Not Available",250,,"STA-D34P1G-C-001","2423d2db-2dd1-493e-8bf6-d85a44c2a58d","11/20/19",,"Credit Card",,"2019 Year End Semi-Annual","1223e0c7-05d3-411f-932f-d1ac90fde0b7","Individual","WILLIAM WALTER TOOLE","TOOLE FOR NC ",750
 "Not Available",500,,"STA-D34P1G-C-001","2423d2db-2dd1-493e-8bf6-d85a44c2a58d","1/27/20",,"Credit Card",,"2020 First Quarter","306a9814-876c-405b-9f53-9b0301d37bdb","Individual","WILLIAM WALTER TOOLE","TOOLE FOR NC ",750
 "Not Available",200,,"STA-C0498N-C-002","2423d2db-2dd1-493e-8bf6-d85a44c2a58d","5/20/19",,"Credit Card",,"2019 Mid Year Semi-Annual","fe5b3577-567f-4813-991f-8fc63e60cd2c","Individual","ROY A COOPER","COOPER FOR NORTH CAROLINA",200

@@ -394,7 +394,7 @@ api.get('/candidates/:year', async (req, res) => {
         from committees
         inner join contributions
         on contributions.committee_sboe_id = committees.sboe_id
-        where date_part('year', to_date(contributions.date_occurred, 'MM/DD/YY')) = $1
+        where date_part('year', contributions.date_occurred) = $1
         and candidate_full_name != '' -- Exclude non-candidate committees
       )
       select *, count(*) over () as full_count
@@ -428,7 +428,7 @@ api.get('/contributors/:year', async (req, res) => {
       `select contributors.*, count(*) over () as full_count from contributors
       inner join contributions on
       contributions.contributor_id = contributors.id
-      where date_part('year', to_date(contributions.date_occurred, 'MM/DD/YY')) = $1
+      where date_part('year', contributions.date_occurred) = $1
       order by contributors.name
       limit $2
       offset $3
