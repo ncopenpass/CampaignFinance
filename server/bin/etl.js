@@ -24,12 +24,6 @@ const { copyFromCSV } = require('../db/copyFromCSV')
       'committees',
       client
     )
-    // await client.query(
-    //   'alter table committees add column candidate_full_name text'
-    // )
-    // await client.query(
-    //   'alter table committees add column candidate_first_last_name text'
-    // )
     await client.query(
       `update committees set candidate_full_name = CONCAT_WS(' ', candidate_first_name, candidate_middle_name, candidate_last_name)`
     )
