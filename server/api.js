@@ -37,7 +37,7 @@ const apiReprContributor = (row) => {
     name: row.name,
     city: row.city,
     state: row.state,
-    zip_code: row.zip_code,
+    zipcode: row.zipcode,
     profession: row.profession,
     employer_name: row.employer_name,
   }
@@ -47,7 +47,7 @@ const apiReprContribution = (row) => {
   return {
     account_code: row.account_code,
     amount: row.amount,
-    candidate_or_referendum_name: row.candidate_or_referendum_name,
+    candidate_referendum_name: row.candidate_referendum_name,
     committee_sboe_id: row.committee_sboe_id,
     contributor_id: row.contributor_id,
     date_occurred: row.date_occurred,
@@ -55,7 +55,6 @@ const apiReprContribution = (row) => {
     form_of_payment: row.form_of_payment,
     purpose: row.purpose,
     report_name: row.report_name,
-    source_contribution_id: row.source_contribution_id,
     transaction_type: row.transaction_type,
   }
 }
@@ -395,7 +394,7 @@ api.get('/candidates/:year', async (req, res) => {
         from committees
         inner join contributions
         on contributions.committee_sboe_id = committees.sboe_id
-        where date_part('year', to_date(contributions.date_occurred, 'MM/DD/YY')) = $1
+        where date_part('year', contributions.date_occurred) = $1
         and candidate_full_name != '' -- Exclude non-candidate committees
       )
       select *, count(*) over () as full_count
@@ -429,7 +428,7 @@ api.get('/contributors/:year', async (req, res) => {
       `select contributors.*, count(*) over () as full_count from contributors
       inner join contributions on
       contributions.contributor_id = contributors.id
-      where date_part('year', to_date(contributions.date_occurred, 'MM/DD/YY')) = $1
+      where date_part('year', contributions.date_occurred) = $1
       order by contributors.name
       limit $2
       offset $3

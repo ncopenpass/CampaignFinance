@@ -1,6 +1,6 @@
 node_modules
 .DS_Store
 .env
-server/tmp/*.csv
+server/tmp/
 .idea
 build/

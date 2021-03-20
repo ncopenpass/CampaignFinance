@@ -72,7 +72,7 @@ const expectedContributorKeys = [
   'name',
   'city',
   'state',
-  'zip_code',
+  'zipcode',
   'profession',
   'employer_name',
 ]
@@ -80,7 +80,7 @@ const expectedContributorKeys = [
 const expectedContributionKeys = [
   'account_code',
   'amount',
-  'candidate_or_referendum_name',
+  'candidate_referendum_name',
   'committee_sboe_id',
   'contributor_id',
   'date_occurred',
@@ -88,14 +88,13 @@ const expectedContributionKeys = [
   'form_of_payment',
   'purpose',
   'report_name',
-  'source_contribution_id',
   'transaction_type',
 ]
 
 const expectedContributionCommitteeKeys = [
   'account_code',
   'amount',
-  'candidate_or_referendum_name',
+  'candidate_referendum_name',
   'committee_sboe_id',
   'committee_name',
   'candidate_full_name',
@@ -105,7 +104,6 @@ const expectedContributionCommitteeKeys = [
   'form_of_payment',
   'purpose',
   'report_name',
-  'source_contribution_id',
   'transaction_type',
   'total_contributions_to_committee',
 ]
@@ -329,7 +327,7 @@ describe('GET /api/contributor/:contributorId', function () {
   it('it should have status 404 and data=null when contributor id is not found', async function () {
     const client = await getClient()
     client.release()
-    const id = encodeURIComponent('00000000-0000-0000-0000-000000000000')
+    const id = encodeURIComponent('0')
     const response = await supertest(app).get(`/api/contributor/${id}`)
     response.status.should.equal(404)
     response.body.should.be.an('object').that.has.all.keys(['data'])
@@ -341,7 +339,7 @@ describe('GET /api/candidates/:year', function () {
   it('it should have status 200 and correct schema', async function () {
     const client = await getClient()
     const { rows } = await client.query(
-      `select date_part('year', to_date(contributions.date_occurred, 'MM/DD/YY')) as year
+      `select date_part('year', contributions.date_occurred) as year
       FROM contributions limit 1`,
       []
     )
@@ -363,7 +361,7 @@ describe('GET /api/contributors/:year', function () {
   it('it should have status 200 and correct schema', async function () {
     const client = await getClient()
     const { rows } = await client.query(
-      `select date_part('year', to_date(contributions.date_occurred, 'MM/DD/YY')) as year
+      `select date_part('year', contributions.date_occurred) as year
       FROM contributions limit 1`,
       []
     )

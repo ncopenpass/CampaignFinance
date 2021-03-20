@@ -29,18 +29,6 @@ const setUpDb = async () => {
     await dropTables(client)
     console.log('Running migrations to set up db')
     await migrate(config)
-    await client.query(
-      'alter table committees add column candidate_full_name text'
-    )
-    await client.query(
-      'alter table committees add column candidate_first_last_name text'
-    )
-    await client.query(
-      `update committees set candidate_full_name = candidate_first_name || ' ' || candidate_middle_name || ' ' || candidate_last_name`
-    )
-    await client.query(
-      `update committees set candidate_first_last_name = candidate_first_name || ' ' || candidate_last_name`
-    )
   } catch (error) {
     console.error(error)
   } finally {

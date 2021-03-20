@@ -2,7 +2,6 @@
 # wait-for-postgres-local.sh
 
 dburl="$1"
-shift
 
 # If DBURL does not exist, default to the .env
 if [ -z $dburl ];
