@@ -26,7 +26,7 @@ const SUPPORTED_CANDIDATE_CONTRIBUTION_SORT_FIELDS = [
  */
 const getCandidateSummary = async (ncsbeID, client) => {
   // Post MVP we should probably find a way to speed this up.
-  // console.time("getCandidateSummary")
+  console.time('getCandidateSummary')
   const summary = await client.query(
     `
     with aggregated_contributions as (
@@ -48,7 +48,7 @@ const getCandidateSummary = async (ncsbeID, client) => {
 `,
     [ncsbeID]
   )
-  // console.timeEnd("getCandidateSummary")
+  console.timeEnd('getCandidateSummary')
   return summary.rows.length > 0 ? summary.rows[0] : {}
 }
 
@@ -68,7 +68,7 @@ const getCandidateSummary = async (ncsbeID, client) => {
  * @param {string} args.date_occurred_lte
  * @returns {Promise<import('pg').QueryResult>}
  */
-const getCandidateContributions = ({
+const getCandidateContributions = async ({
   ncsbeID,
   limit = 50,
   offset = 0,
@@ -120,7 +120,8 @@ const getCandidateContributions = ({
       )
     : ''
 
-  return client.query(
+  console.time('getCandidateContributions - query')
+  const result = await client.query(
     `select
        count(*) over () as full_count,
        contributor_id,
@@ -157,6 +158,8 @@ const getCandidateContributions = ({
       offset $3`,
     [ncsbeID, limit, offset]
   )
+  console.timeEnd('getCandidateContributions - query')
+  return result
 }
 
 /**

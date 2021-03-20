@@ -1,3 +1,4 @@
+// @ts-check
 const _ = require('lodash')
 const { Pool } = require('pg')
 require('dotenv').config()
