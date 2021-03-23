@@ -16,9 +16,15 @@ const pool = new Pool({
       : undefined,
 })
 
+/**
+ *
+ * @param {string} text
+ * @param {any[]} params
+ * @returns {Promise<import('pg').QueryResult>}
+ */
 const query = (text, params) => pool.query(text, params)
 /**
- * @returns {Promise<pg.PoolClient>}
+ * @returns {Promise<import('pg').PoolClient>}
  */
 const getClient = () => pool.connect()
 

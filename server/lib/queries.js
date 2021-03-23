@@ -1,4 +1,5 @@
 // @ts-check
+const db = require('../db')
 const format = require('pg-format')
 
 const SUPPORTED_CANDIDATE_CONTRIBUTION_SORT_FIELDS = [
@@ -21,13 +22,12 @@ const SUPPORTED_CANDIDATE_CONTRIBUTION_SORT_FIELDS = [
 /**
  *
  * @param {string} ncsbeID
- * @param {import('pg').PoolClient} client
  * @returns {Promise<CandidateSummary>}
  */
-const getCandidateSummary = async (ncsbeID, client) => {
+const getCandidateSummary = async (ncsbeID) => {
   // Post MVP we should probably find a way to speed this up.
   console.time('getCandidateSummary')
-  const summary = await client.query(
+  const summary = await db.query(
     `
     with aggregated_contributions as (
       select count(*)    as aggregated_contributions_count,
@@ -72,7 +72,6 @@ const getCandidateContributions = async ({
   ncsbeID,
   limit = 50,
   offset = 0,
-  client,
   sortBy = null,
   name: nameFilter = null,
   transaction_type: transaction_typeFilter = null,
@@ -121,7 +120,7 @@ const getCandidateContributions = async ({
     : ''
 
   console.time('getCandidateContributions - query')
-  const result = await client.query(
+  const result = await db.query(
     `select
        count(*) over () as full_count,
        contributor_id,
@@ -145,7 +144,7 @@ const getCandidateContributions = async ({
        from contributions
               join contributors c on contributions.contributor_id = c.id
       where (
-        lower(contributions.committee_sboe_id) = lower($1)
+        contributions.committee_sboe_id = $1
         ${safeNameFilter}
         ${safeTransactionTypeFilter}
         ${safeAmountFilter}

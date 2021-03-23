@@ -234,14 +234,12 @@ api.get('/candidate/:ncsbeID/contributions', async (req, res) => {
         error: 'empty ncsbeID',
       })
     }
-    client = await getClient()
 
     if (!toCSV) {
       const contributionsPromise = getCandidateContributions({
         ncsbeID,
         limit,
         offset,
-        client,
         sortBy,
         name,
         transaction_type,
@@ -251,7 +249,7 @@ api.get('/candidate/:ncsbeID/contributions', async (req, res) => {
         date_occurred_lte,
       })
 
-      const summaryPromise = getCandidateSummary(ncsbeID, client)
+      const summaryPromise = getCandidateSummary(ncsbeID)
 
       const [contributions, summary] = await Promise.all([
         contributionsPromise,
@@ -265,6 +263,7 @@ api.get('/candidate/:ncsbeID/contributions', async (req, res) => {
         summary,
       })
     } else {
+      client = await getClient()
       const contributionsPromise = await getCandidateContributionsForDownload({
         ncsbeID,
         client,
