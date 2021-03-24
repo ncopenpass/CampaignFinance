@@ -50,25 +50,6 @@ const SearchBar = ({ hideQuickLinks }) => {
           size="big"
         />
       </div>
-      {!hideQuickLinks && (
-        <div className="quick-search-btns">
-          <p className="quick-search">Quick Search</p>
-          <Button
-            type="button"
-            className="quick-search-btn"
-            onClick={handleQuickCandidateLink}
-          >
-            {`${ELECTION_YEAR} Candidates`}
-          </Button>
-          <Button
-            type="button"
-            className="quick-search-btn"
-            onClick={handleQuickDonorLink}
-          >
-            {`${ELECTION_YEAR} Contributors`}
-          </Button>
-        </div>
-      )}
     </div>
   )
 }
