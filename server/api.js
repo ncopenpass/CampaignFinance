@@ -211,6 +211,25 @@ api.get('/candidate/:ncsbeID', async (req, res) => {
   }
 })
 
+api.get('/candidate/:ncsbeID/contributions/summary', async (req, res) => {
+  try {
+    let { ncsbeID = '' } = req.params
+    ncsbeID = decodeURIComponent(ncsbeID)
+    if (!ncsbeID) {
+      res.status(500)
+      return res.send({
+        error: 'empty ncsbeID',
+      })
+    }
+    const summary = await getCandidateSummary(ncsbeID)
+    res.send({
+      data: summary,
+    })
+  } catch (err) {
+    handleError(err, res)
+  }
+})
+
 api.get('/candidate/:ncsbeID/contributions', async (req, res) => {
   let client = null
   try {
@@ -236,7 +255,7 @@ api.get('/candidate/:ncsbeID/contributions', async (req, res) => {
     }
 
     if (!toCSV) {
-      const contributionsPromise = getCandidateContributions({
+      const contributions = await getCandidateContributions({
         ncsbeID,
         limit,
         offset,
@@ -249,18 +268,10 @@ api.get('/candidate/:ncsbeID/contributions', async (req, res) => {
         date_occurred_lte,
       })
 
-      const summaryPromise = getCandidateSummary(ncsbeID)
-
-      const [contributions, summary] = await Promise.all([
-        contributionsPromise,
-        summaryPromise,
-      ])
-
       return res.send({
         data: contributions.rows.map(apiReprContributorContributions),
         count:
           contributions.rows.length > 0 ? contributions.rows[0].full_count : 0,
-        summary,
       })
     } else {
       client = await getClient()

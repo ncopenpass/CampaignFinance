@@ -33,10 +33,17 @@ export const useCandidate = () => {
   const [apiStatus, setApiStatus] = useState(STATUSES.Unsent)
   const [candidate, setCandidate] = useState([])
   const [contributions, setContributions] = useState([])
-  const [summary, setSummary] = useState([])
+  const [summary, setSummary] = useState({
+    sum: 0,
+    avg: 0,
+    max: 0,
+    count: 0,
+    aggregated_contributions_count: 0,
+    aggregated_contributions_sum: 0,
+  })
   const [contributionCount, setContributionCount] = useState(0)
 
-  const getDataCountSummary = useCallback(async (url) => {
+  const getDataCount = useCallback(async (url) => {
     try {
       setApiStatus(STATUSES.Pending)
       const response = await fetch(url)
@@ -58,13 +65,13 @@ export const useCandidate = () => {
         offset,
       })
       try {
-        const { data } = await getDataCountSummary(url)
+        const { data } = await getDataCount(url)
         setCandidate(data)
       } catch (e) {
         console.log(e)
       }
     },
-    [getDataCountSummary]
+    [getDataCount]
   )
 
   const fetchContributions = useCallback(
@@ -84,23 +91,37 @@ export const useCandidate = () => {
         filters,
       })
       try {
-        const { data, count, summary } = await getDataCountSummary(url)
+        const { data, count } = await getDataCount(url)
         setContributions(data)
-        setSummary(summary)
         setContributionCount(count)
       } catch (e) {
         console.log(e)
       }
     },
-    [getDataCountSummary]
+    [getDataCount]
+  )
+
+  const fetchSummary = useCallback(
+    async ({ candidateId } = {}) => {
+      try {
+        const url = `${CANDIDATE_URL}${candidateId}/contributions/summary`
+        const response = await fetch(url)
+        const body = await response.json()
+        setSummary(body.data)
+      } catch (e) {
+        console.log(e)
+      }
+    },
+    [setSummary]
   )
 
   const fetchInitialSearchData = useCallback(
     async ({ candidateId, limit, offset, sort }) => {
       await fetchCandidate({ candidateId })
       await fetchContributions({ candidateId, limit, offset, sort })
+      await fetchSummary({ candidateId })
     },
-    [fetchCandidate, fetchContributions]
+    [fetchCandidate, fetchContributions, fetchSummary]
   )
 
   return {
@@ -112,5 +133,6 @@ export const useCandidate = () => {
     fetchInitialSearchData,
     fetchCandidate,
     fetchContributions,
+    fetchSummary,
   }
 }
