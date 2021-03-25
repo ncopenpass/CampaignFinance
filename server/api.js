@@ -11,7 +11,7 @@ const {
   getContributorContributions,
   getContributor,
 } = require('./lib/queries')
-const { getClient } = require('./db')
+const db = require('./db')
 
 const TRIGRAM_LIMIT = 0.6
 
@@ -180,7 +180,6 @@ api.get('/search/candidates/:name', async (req, res) => {
 })
 
 api.get('/candidate/:ncsbeID', async (req, res) => {
-  let client = null
   try {
     let { ncsbeID = '' } = req.params
     ncsbeID = decodeURIComponent(ncsbeID)
@@ -191,8 +190,7 @@ api.get('/candidate/:ncsbeID', async (req, res) => {
       })
     }
 
-    client = await getClient()
-    const candidate = await client.query(
+    const candidate = await db.query(
       `select * from committees
       where upper(committees.sboe_id) = upper($1)`,
       [ncsbeID]
@@ -203,10 +201,6 @@ api.get('/candidate/:ncsbeID', async (req, res) => {
     })
   } catch (error) {
     handleError(error, res)
-  } finally {
-    if (client !== null) {
-      client.release()
-    }
   }
 })
 
@@ -230,7 +224,6 @@ api.get('/candidate/:ncsbeID/contributions/summary', async (req, res) => {
 })
 
 api.get('/candidate/:ncsbeID/contributions', async (req, res) => {
-  let client = null
   try {
     let { ncsbeID = '' } = req.params
     const {
@@ -273,17 +266,11 @@ api.get('/candidate/:ncsbeID/contributions', async (req, res) => {
           contributions.rows.length > 0 ? contributions.rows[0].full_count : 0,
       })
     } else {
-      client = await getClient()
-      const contributionsPromise = await getCandidateContributionsForDownload({
-        ncsbeID,
-        client,
-      })
-
-      const candidatePromise = await getCandidate(ncsbeID, client)
-
       const [contributions, candidate] = await Promise.all([
-        contributionsPromise,
-        candidatePromise,
+        getCandidateContributionsForDownload({
+          ncsbeID,
+        }),
+        getCandidate(ncsbeID),
       ])
 
       if (contributions.rows.length < 1 || !candidate) {
@@ -307,10 +294,6 @@ api.get('/candidate/:ncsbeID/contributions', async (req, res) => {
     }
   } catch (error) {
     handleError(error, res)
-  } finally {
-    if (client !== null) {
-      client.release()
-    }
   }
 })
 
@@ -354,14 +337,11 @@ api.get('/contributor/:contributorId/contributions', async (req, res) => {
 })
 
 api.get('/contributor/:contributorId', async (req, res) => {
-  let client = null
   try {
     const { contributorId } = req.params
-    client = await getClient()
-    const result = await client.query(
-      `select * from contributors where id = $1`,
-      [contributorId]
-    )
+    const result = await db.query(`select * from contributors where id = $1`, [
+      contributorId,
+    ])
     const contributor =
       result.rows.length > 0 ? apiReprContributor(result.rows[0]) : null
 
@@ -372,21 +352,14 @@ api.get('/contributor/:contributorId', async (req, res) => {
     })
   } catch (error) {
     handleError(error, res)
-  } finally {
-    if (client !== null) {
-      client.release()
-    }
   }
 })
 
 api.get('/search/candidates-donors-pacs/:name', async (req, res) => {
-  let client = null
   try {
     const { name } = req.params
     const { limit = 50 } = req.query
     const decodedName = decodeURIComponent(name)
-
-    client = await getClient()
 
     const committees = await searchCommittees(
       decodedName,
@@ -418,10 +391,6 @@ api.get('/search/candidates-donors-pacs/:name', async (req, res) => {
     })
   } catch (error) {
     handleError(error, res)
-  } finally {
-    if (client !== null) {
-      client.release()
-    }
   }
 })
 

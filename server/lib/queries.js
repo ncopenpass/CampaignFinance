@@ -163,7 +163,7 @@ const getCandidateContributions = async ({
  * @returns {Promise<import('pg').QueryResult>}
  */
 const getCandidateContributionsForDownload = ({ ncsbeID, client }) => {
-  return client.query(
+  return db.query(
     `select count(*) over () as full_count,
        contributor_id,
        transaction_type,
@@ -194,11 +194,10 @@ const getCandidateContributionsForDownload = ({ ncsbeID, client }) => {
 /**
  *
  * @param {string} ncsbeID
- * @param {import('pg').PoolClient} client
  * @returns {Promise<Object|null>}
  */
-const getCandidate = async (ncsbeID, client) => {
-  const result = await client.query(
+const getCandidate = async (ncsbeID) => {
+  const result = await db.query(
     `select * from committees
       where upper(committees.sboe_id) = upper($1)`,
     [ncsbeID]
