@@ -208,18 +208,16 @@ const getCandidate = async (ncsbeID, client) => {
 
 /**
  * @param {Object} args
- * @param {import('pg').PoolClient} args.client
  * @param {string} args.contributorId
  * @param {Number|string|null} args.limit
  * @param {Number|string|null} args.offset
  **/
 const getContributorContributions = ({
-  client,
   contributorId,
   limit = null,
   offset = null,
 }) =>
-  client.query(
+  db.query(
     `select *, count(*) over () as full_count,
   (select sum(amount) from contributions c where contributor_id = $1
     and c.committee_sboe_id = contributions.committee_sboe_id) as total_contributions_to_committee
@@ -239,7 +237,7 @@ const getContributorContributions = ({
  * @param {string} args.contributorId
  **/
 const getContributor = ({ client, contributorId }) =>
-  client.query(`select * from contributors where id = $1`, [contributorId])
+  db.query(`select * from contributors where id = $1`, [contributorId])
 
 module.exports = {
   getCandidateSummary,

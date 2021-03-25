@@ -314,15 +314,12 @@ api.get('/candidate/:ncsbeID/contributions', async (req, res) => {
   }
 })
 
-api.get('/contributors/:contributorId/contributions', async (req, res) => {
-  let client = null
+api.get('/contributor/:contributorId/contributions', async (req, res) => {
   try {
     const { contributorId } = req.params
     const { limit = 50, offset = 0, toCSV = false } = req.query
-    client = await getClient()
     if (!toCSV) {
       const contributions = await getContributorContributions({
-        client,
         offset,
         limit,
         contributorId,
@@ -334,10 +331,10 @@ api.get('/contributors/:contributorId/contributions', async (req, res) => {
       })
     } else {
       const contributionsPromise = getContributorContributions({
-        client,
         contributorId,
       })
-      const contributorPromise = getContributor({ contributorId, client })
+      const contributorPromise = getContributor({ contributorId })
+
       const [contributions, contributor] = await Promise.all([
         contributionsPromise,
         contributorPromise,
@@ -353,10 +350,6 @@ api.get('/contributors/:contributorId/contributions', async (req, res) => {
     }
   } catch (error) {
     handleError(error, res)
-  } finally {
-    if (client !== null) {
-      client.release()
-    }
   }
 })
 
