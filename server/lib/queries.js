@@ -83,7 +83,6 @@ const getCandidateContributions = async ({
   let order = SUPPORTED_CANDIDATE_CONTRIBUTION_SORT_FIELDS.includes(sortBy)
     ? sortBy
     : ''
-  order = order.replace('date_occurred', 'CAST(date_occurred as DATE)')
   order = order.startsWith('-')
     ? `${order.replace('-', '')} DESC`
     : `${order} ASC`
@@ -107,16 +106,10 @@ const getCandidateContributions = async ({
       )
     : ''
   const safeDateOccurredGteFilter = date_occurred_gteFilter
-    ? format(
-        'AND CAST(date_occurred as DATE) >= CAST(%L as DATE)',
-        date_occurred_gteFilter
-      )
+    ? format('AND date_occurred >= CAST(%L as DATE)', date_occurred_gteFilter)
     : ''
   const safeDateOccurredLteFilter = date_occurred_lteFilter
-    ? format(
-        'AND CAST(date_occurred as DATE) <= CAST(%L as DATE)',
-        date_occurred_lteFilter
-      )
+    ? format('AND date_occurred <= CAST(%L as DATE)', date_occurred_lteFilter)
     : ''
 
   console.time('getCandidateContributions - query')
@@ -144,7 +137,7 @@ const getCandidateContributions = async ({
        from contributions
               join contributors c on contributions.contributor_id = c.id
       where (
-        contributions.committee_sboe_id = $1
+        lower(contributions.committee_sboe_id) = lower($1)
         ${safeNameFilter}
         ${safeTransactionTypeFilter}
         ${safeAmountFilter}
