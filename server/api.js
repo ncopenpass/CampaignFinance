@@ -1,5 +1,4 @@
 const express = require('express')
-const bodyParser = require('body-parser')
 const sanitize = require('sanitize-filename')
 const { parse } = require('json2csv')
 
@@ -114,7 +113,7 @@ const sendCSV = (data, filename, res) => {
 }
 
 const api = express.Router()
-api.use(bodyParser.json())
+api.use(express.json())
 
 api.get('/search/contributors/:name', async (req, res) => {
   try {
