@@ -190,6 +190,42 @@ describe('GET /api/candidate/:ncsbeID', function () {
   })
 })
 
+describe('GET /api/candidate/:ncsbeID/contributions/summary', function () {
+  it('it should have status 200 and correct schema', async function () {
+    const client = await getClient()
+    const { rows } = await client.query(
+      `select sboe_id FROM committees
+      inner join contributions
+      on committees.sboe_id = contributions.committee_sboe_id
+      limit 1`,
+      []
+    )
+    client.release()
+
+    const id = encodeURIComponent(rows[0].sboe_id)
+
+    const expectedSummaryKeys = [
+      'sum',
+      'avg',
+      'max',
+      'count',
+      'aggregated_contributions_count',
+      'aggregated_contributions_sum',
+    ]
+
+    const response = await supertest(app).get(
+      `/api/candidate/${id}/contributions/summary`
+    )
+    response.status.should.equal(200)
+    response.body.data.should.be
+      .an('object')
+      .that.has.all.keys(expectedSummaryKeys)
+    Object.keys(response.body.data).length.should.equal(
+      expectedSummaryKeys.length
+    )
+  })
+})
+
 describe('GET /api/candidate/:ncsbeID/contributions', function () {
   it('it should have status 200 and correct schema', async function () {
     const client = await getClient()
@@ -206,24 +242,8 @@ describe('GET /api/candidate/:ncsbeID/contributions', function () {
       `/api/candidate/${id}/contributions`
     )
 
-    const expectedSummaryKeys = [
-      'sum',
-      'avg',
-      'max',
-      'count',
-      'aggregated_contributions_count',
-      'aggregated_contributions_sum',
-    ]
     response.status.should.equal(200)
-    response.body.should.be
-      .an('object')
-      .that.has.all.keys(['data', 'count', 'summary'])
-    response.body.summary.should.be
-      .an('object')
-      .that.has.all.keys(expectedSummaryKeys)
-    Object.keys(response.body.summary).length.should.equal(
-      expectedSummaryKeys.length
-    )
+    response.body.should.be.an('object').that.has.all.keys(['data', 'count'])
     response.body.data[0].should.be
       .an('object')
       .that.has.all.keys(expectedContributorContributionsKeys)
@@ -259,7 +279,7 @@ describe('GET /api/candidate/:ncsbeID/contributions CSV download', function () {
   })
 })
 
-describe('GET /api/contributors/:contributorId/contributions CSV download', function () {
+describe('GET /api/contributor/:contributorId/contributions CSV download', function () {
   it('it should have status 200 and right headers', async function () {
     const client = await getClient()
     const { rows } = await client.query(
@@ -269,7 +289,7 @@ describe('GET /api/contributors/:contributorId/contributions CSV download', func
     client.release()
     const id = encodeURIComponent(rows[0].id)
     const response = await supertest(app)
-      .get(`/api/contributors/${id}/contributions`)
+      .get(`/api/contributor/${id}/contributions`)
       .query({ toCSV: 'true' })
       .set('Accept', 'text/csv')
       .set('Content-Type', 'text/csv')
@@ -282,7 +302,7 @@ describe('GET /api/contributors/:contributorId/contributions CSV download', func
   })
 })
 
-describe('GET /api/contributors/:contributorId/contributions', function () {
+describe('GET /api/contributor/:contributorId/contributions', function () {
   it('it should have status 200 and correct schema', async function () {
     const client = await getClient()
     const { rows } = await client.query(
@@ -292,7 +312,7 @@ describe('GET /api/contributors/:contributorId/contributions', function () {
     client.release()
     const id = encodeURIComponent(rows[0].id)
     const response = await supertest(app).get(
-      `/api/contributors/${id}/contributions`
+      `/api/contributor/${id}/contributions`
     )
     response.status.should.equal(200)
     response.body.should.be.an('object').that.has.all.keys(['data', 'count'])
@@ -332,50 +352,6 @@ describe('GET /api/contributor/:contributorId', function () {
     response.status.should.equal(404)
     response.body.should.be.an('object').that.has.all.keys(['data'])
     chai.should().equal(response.body.data, null)
-  })
-})
-
-describe('GET /api/candidates/:year', function () {
-  it('it should have status 200 and correct schema', async function () {
-    const client = await getClient()
-    const { rows } = await client.query(
-      `select date_part('year', contributions.date_occurred) as year
-      FROM contributions limit 1`,
-      []
-    )
-    client.release()
-    const year = rows[0].year
-    const response = await supertest(app).get(`/api/candidates/${year}`)
-    response.status.should.equal(200)
-    response.body.should.be.an('object').that.has.all.keys(['data', 'count'])
-    response.body.data[0].should.be
-      .an('object')
-      .that.has.all.keys(expectedCandidateKeys)
-    Object.keys(response.body.data[0]).length.should.equal(
-      expectedCandidateKeys.length
-    )
-  })
-})
-
-describe('GET /api/contributors/:year', function () {
-  it('it should have status 200 and correct schema', async function () {
-    const client = await getClient()
-    const { rows } = await client.query(
-      `select date_part('year', contributions.date_occurred) as year
-      FROM contributions limit 1`,
-      []
-    )
-    client.release()
-    const year = rows[0].year
-    const response = await supertest(app).get(`/api/contributors/${year}`)
-    response.status.should.equal(200)
-    response.body.should.be.an('object').that.has.all.keys(['data', 'count'])
-    response.body.data[0].should.be
-      .an('object')
-      .that.has.all.keys(expectedContributorKeys)
-    Object.keys(response.body.data[0]).length.should.equal(
-      expectedContributorKeys.length
-    )
   })
 })
 
