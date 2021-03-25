@@ -200,7 +200,7 @@ When `toCSV` is true, the endpoint will work as an `href` or with a `fetch` call
 > 3494,"AGGREGATED INDIVIDUAL CONTRIBUTION","","","","","","NOT AVAILABLE",50,"","STA-C0498N-C-002","2020-08-15T04:00:00.000Z","","CREDIT CARD","","2020 THIRD QUARTER","INDIVIDUAL"
 > 3494,"AGGREGATED INDIVIDUAL CONTRIBUTION","","","","","","NOT AVAILABLE",50,"","STA-C0498N-C-002","2020-08-15T04:00:00.000Z","","CREDIT CARD","","2020 THIRD QUARTER","INDIVIDUAL"
 
-## GET `/api/contributors/:contributorId/contributions`
+## GET `/api/contributor/:contributorId/contributions`
 
 Retrieve contributions for a contributor id.
 
@@ -210,7 +210,7 @@ Query Params (optional):
 - `limit` default value `50`
 - `toCSV` default value `false`
 
-Example: `/api/contributors/5123/contributions?limit=2&offset=0`
+Example: `/api/contributor/5123/contributions?limit=2&offset=0`
 response:
 
 ```json
@@ -237,7 +237,7 @@ response:
 }
 ```
 
-Example: `/api/contributors/2423d2db-2dd1-493e-8bf6-d85a44c2a58d/contributions?toCSV=true`  
+Example: `/api/contributor/2423d2db-2dd1-493e-8bf6-d85a44c2a58d/contributions?toCSV=true`  
 response:
 
 ```CSV
