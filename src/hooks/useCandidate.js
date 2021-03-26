@@ -34,12 +34,12 @@ export const useCandidate = () => {
   const [candidate, setCandidate] = useState([])
   const [contributions, setContributions] = useState([])
   const [summary, setSummary] = useState({
-    sum: 0,
-    avg: 0,
-    max: 0,
-    count: 0,
-    aggregated_contributions_count: 0,
-    aggregated_contributions_sum: 0,
+    sum: '-',
+    avg: '-',
+    max: '-',
+    count: '-',
+    aggregated_contributions_count: '-',
+    aggregated_contributions_sum: '-',
   })
   const [contributionCount, setContributionCount] = useState(0)
 
