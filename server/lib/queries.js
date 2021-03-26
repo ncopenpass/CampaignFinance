@@ -1,4 +1,5 @@
 // @ts-check
+const db = require('../db')
 const format = require('pg-format')
 
 const SUPPORTED_CANDIDATE_CONTRIBUTION_SORT_FIELDS = [
@@ -21,31 +22,33 @@ const SUPPORTED_CANDIDATE_CONTRIBUTION_SORT_FIELDS = [
 /**
  *
  * @param {string} ncsbeID
- * @param {import('pg').PoolClient} client
  * @returns {Promise<CandidateSummary>}
  */
-const getCandidateSummary = async (ncsbeID, client) => {
+const getCandidateSummary = async (ncsbeID) => {
   // Post MVP we should probably find a way to speed this up.
-  // console.time("getCandidateSummary")
-  const summary = await client.query(
-    `select sum(amount),
-       avg(amount),
-       max(amount),
-       count(*)::int,
-       (select count(*)
-        from contributions
-        where contributor_id IS NULl
-          and committee_sboe_id = $1) as aggregated_contributions_count,
-       (select sum(amount)
-        from contributions
-        where contributor_id IS NULL
-          and committee_sboe_id = $1) as aggregated_contributions_sum
+  console.time('getCandidateSummary')
+  const summary = await db.query(
+    `
+    with aggregated_contributions as (
+      select count(*)    as aggregated_contributions_count,
+             sum(amount) as aggregated_contributions_sum
       from contributions
-      where committee_sboe_id = $1;
+      where contributor_id IS NULl
+        and committee_sboe_id = $1 
+  )
+  select sum(amount),
+         avg(amount),
+         max(amount),
+         count(*)::int,
+         (select aggregated_contributions_count from aggregated_contributions limit 1) as aggregated_contributions_count,
+         (select aggregated_contributions_sum from aggregated_contributions limit 1)   as aggregated_contributions_sum
+  from contributions
+  where committee_sboe_id = $1 
+  
 `,
     [ncsbeID]
   )
-  // console.timeEnd("getCandidateSummary")
+  console.timeEnd('getCandidateSummary')
   return summary.rows.length > 0 ? summary.rows[0] : {}
 }
 
@@ -65,11 +68,10 @@ const getCandidateSummary = async (ncsbeID, client) => {
  * @param {string} args.date_occurred_lte
  * @returns {Promise<import('pg').QueryResult>}
  */
-const getCandidateContributions = ({
+const getCandidateContributions = async ({
   ncsbeID,
   limit = 50,
   offset = 0,
-  client,
   sortBy = null,
   name: nameFilter = null,
   transaction_type: transaction_typeFilter = null,
@@ -81,7 +83,6 @@ const getCandidateContributions = ({
   let order = SUPPORTED_CANDIDATE_CONTRIBUTION_SORT_FIELDS.includes(sortBy)
     ? sortBy
     : ''
-  order = order.replace('date_occurred', 'CAST(date_occurred as DATE)')
   order = order.startsWith('-')
     ? `${order.replace('-', '')} DESC`
     : `${order} ASC`
@@ -105,20 +106,16 @@ const getCandidateContributions = ({
       )
     : ''
   const safeDateOccurredGteFilter = date_occurred_gteFilter
-    ? format(
-        'AND CAST(date_occurred as DATE) >= CAST(%L as DATE)',
-        date_occurred_gteFilter
-      )
+    ? format('AND date_occurred >= CAST(%L as DATE)', date_occurred_gteFilter)
     : ''
   const safeDateOccurredLteFilter = date_occurred_lteFilter
-    ? format(
-        'AND CAST(date_occurred as DATE) <= CAST(%L as DATE)',
-        date_occurred_lteFilter
-      )
+    ? format('AND date_occurred <= CAST(%L as DATE)', date_occurred_lteFilter)
     : ''
 
-  return client.query(
-    `select count(*) over () as full_count,
+  console.time('getCandidateContributions - query')
+  const result = await db.query(
+    `select
+       count(*) over () as full_count,
        contributor_id,
        transaction_type,
        committee_sboe_id,
@@ -153,6 +150,8 @@ const getCandidateContributions = ({
       offset $3`,
     [ncsbeID, limit, offset]
   )
+  console.timeEnd('getCandidateContributions - query')
+  return result
 }
 
 /**
@@ -164,7 +163,7 @@ const getCandidateContributions = ({
  * @returns {Promise<import('pg').QueryResult>}
  */
 const getCandidateContributionsForDownload = ({ ncsbeID, client }) => {
-  return client.query(
+  return db.query(
     `select count(*) over () as full_count,
        contributor_id,
        transaction_type,
@@ -195,11 +194,10 @@ const getCandidateContributionsForDownload = ({ ncsbeID, client }) => {
 /**
  *
  * @param {string} ncsbeID
- * @param {import('pg').PoolClient} client
  * @returns {Promise<Object|null>}
  */
-const getCandidate = async (ncsbeID, client) => {
-  const result = await client.query(
+const getCandidate = async (ncsbeID) => {
+  const result = await db.query(
     `select * from committees
       where upper(committees.sboe_id) = upper($1)`,
     [ncsbeID]
@@ -209,18 +207,16 @@ const getCandidate = async (ncsbeID, client) => {
 
 /**
  * @param {Object} args
- * @param {import('pg').PoolClient} args.client
  * @param {string} args.contributorId
  * @param {Number|string|null} args.limit
  * @param {Number|string|null} args.offset
  **/
 const getContributorContributions = ({
-  client,
   contributorId,
   limit = null,
   offset = null,
 }) =>
-  client.query(
+  db.query(
     `select *, count(*) over () as full_count,
   (select sum(amount) from contributions c where contributor_id = $1
     and c.committee_sboe_id = contributions.committee_sboe_id) as total_contributions_to_committee
@@ -240,7 +236,7 @@ const getContributorContributions = ({
  * @param {string} args.contributorId
  **/
 const getContributor = ({ client, contributorId }) =>
-  client.query(`select * from contributors where id = $1`, [contributorId])
+  db.query(`select * from contributors where id = $1`, [contributorId])
 
 module.exports = {
   getCandidateSummary,
