@@ -33,13 +33,14 @@ export const useCandidate = () => {
   const [apiStatus, setApiStatus] = useState(STATUSES.Unsent)
   const [candidate, setCandidate] = useState([])
   const [contributions, setContributions] = useState([])
+  // Give the summary default values, to avoid using a spinner or doing a check
   const [summary, setSummary] = useState({
-    sum: 0,
-    avg: 0,
-    max: 0,
-    count: 0,
-    aggregated_contributions_count: 0,
-    aggregated_contributions_sum: 0,
+    sum: '-',
+    avg: '-',
+    max: '-',
+    count: '-',
+    aggregated_contributions_count: '-',
+    aggregated_contributions_sum: '-',
   })
   const [contributionCount, setContributionCount] = useState(0)
 
