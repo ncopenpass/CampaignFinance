@@ -1,5 +1,4 @@
 const express = require('express')
-const bodyParser = require('body-parser')
 const sanitize = require('sanitize-filename')
 const { parse } = require('json2csv')
 
@@ -12,7 +11,7 @@ const {
   getContributorContributions,
   getContributor,
 } = require('./lib/queries')
-const { getClient } = require('./db')
+const db = require('./db')
 
 const TRIGRAM_LIMIT = 0.6
 
@@ -114,7 +113,7 @@ const sendCSV = (data, filename, res) => {
 }
 
 const api = express.Router()
-api.use(bodyParser.json())
+api.use(express.json())
 
 api.get('/search/contributors/:name', async (req, res) => {
   try {
@@ -181,7 +180,6 @@ api.get('/search/candidates/:name', async (req, res) => {
 })
 
 api.get('/candidate/:ncsbeID', async (req, res) => {
-  let client = null
   try {
     let { ncsbeID = '' } = req.params
     ncsbeID = decodeURIComponent(ncsbeID)
@@ -192,8 +190,7 @@ api.get('/candidate/:ncsbeID', async (req, res) => {
       })
     }
 
-    client = await getClient()
-    const candidate = await client.query(
+    const candidate = await db.query(
       `select * from committees
       where upper(committees.sboe_id) = upper($1)`,
       [ncsbeID]
@@ -204,15 +201,29 @@ api.get('/candidate/:ncsbeID', async (req, res) => {
     })
   } catch (error) {
     handleError(error, res)
-  } finally {
-    if (client !== null) {
-      client.release()
+  }
+})
+
+api.get('/candidate/:ncsbeID/contributions/summary', async (req, res) => {
+  try {
+    let { ncsbeID = '' } = req.params
+    ncsbeID = decodeURIComponent(ncsbeID)
+    if (!ncsbeID) {
+      res.status(500)
+      return res.send({
+        error: 'empty ncsbeID',
+      })
     }
+    const summary = await getCandidateSummary(ncsbeID)
+    res.send({
+      data: summary,
+    })
+  } catch (err) {
+    handleError(err, res)
   }
 })
 
 api.get('/candidate/:ncsbeID/contributions', async (req, res) => {
-  let client = null
   try {
     let { ncsbeID = '' } = req.params
     const {
@@ -234,14 +245,12 @@ api.get('/candidate/:ncsbeID/contributions', async (req, res) => {
         error: 'empty ncsbeID',
       })
     }
-    client = await getClient()
 
     if (!toCSV) {
-      const contributionsPromise = getCandidateContributions({
+      const contributions = await getCandidateContributions({
         ncsbeID,
         limit,
         offset,
-        client,
         sortBy,
         name,
         transaction_type,
@@ -251,30 +260,17 @@ api.get('/candidate/:ncsbeID/contributions', async (req, res) => {
         date_occurred_lte,
       })
 
-      const summaryPromise = getCandidateSummary(ncsbeID, client)
-
-      const [contributions, summary] = await Promise.all([
-        contributionsPromise,
-        summaryPromise,
-      ])
-
       return res.send({
         data: contributions.rows.map(apiReprContributorContributions),
         count:
           contributions.rows.length > 0 ? contributions.rows[0].full_count : 0,
-        summary,
       })
     } else {
-      const contributionsPromise = await getCandidateContributionsForDownload({
-        ncsbeID,
-        client,
-      })
-
-      const candidatePromise = await getCandidate(ncsbeID, client)
-
       const [contributions, candidate] = await Promise.all([
-        contributionsPromise,
-        candidatePromise,
+        getCandidateContributionsForDownload({
+          ncsbeID,
+        }),
+        getCandidate(ncsbeID),
       ])
 
       if (contributions.rows.length < 1 || !candidate) {
@@ -298,22 +294,15 @@ api.get('/candidate/:ncsbeID/contributions', async (req, res) => {
     }
   } catch (error) {
     handleError(error, res)
-  } finally {
-    if (client !== null) {
-      client.release()
-    }
   }
 })
 
-api.get('/contributors/:contributorId/contributions', async (req, res) => {
-  let client = null
+api.get('/contributor/:contributorId/contributions', async (req, res) => {
   try {
     const { contributorId } = req.params
     const { limit = 50, offset = 0, toCSV = false } = req.query
-    client = await getClient()
     if (!toCSV) {
       const contributions = await getContributorContributions({
-        client,
         offset,
         limit,
         contributorId,
@@ -325,10 +314,10 @@ api.get('/contributors/:contributorId/contributions', async (req, res) => {
       })
     } else {
       const contributionsPromise = getContributorContributions({
-        client,
         contributorId,
       })
-      const contributorPromise = getContributor({ contributorId, client })
+      const contributorPromise = getContributor({ contributorId })
+
       const [contributions, contributor] = await Promise.all([
         contributionsPromise,
         contributorPromise,
@@ -344,22 +333,15 @@ api.get('/contributors/:contributorId/contributions', async (req, res) => {
     }
   } catch (error) {
     handleError(error, res)
-  } finally {
-    if (client !== null) {
-      client.release()
-    }
   }
 })
 
 api.get('/contributor/:contributorId', async (req, res) => {
-  let client = null
   try {
     const { contributorId } = req.params
-    client = await getClient()
-    const result = await client.query(
-      `select * from contributors where id = $1`,
-      [contributorId]
-    )
+    const result = await db.query(`select * from contributors where id = $1`, [
+      contributorId,
+    ])
     const contributor =
       result.rows.length > 0 ? apiReprContributor(result.rows[0]) : null
 
@@ -370,92 +352,14 @@ api.get('/contributor/:contributorId', async (req, res) => {
     })
   } catch (error) {
     handleError(error, res)
-  } finally {
-    if (client !== null) {
-      client.release()
-    }
-  }
-})
-
-api.get('/candidates/:year', async (req, res) => {
-  let client = null
-  try {
-    const { year } = req.params
-    const { limit = 50, offset = 0 } = req.query
-    client = await getClient()
-    // NB: in rare cases, there are individuals who have > 1
-    // committee and candidacy in a given year. This endpoint
-    // will return each candidacy such individuals.
-    const candidates = await client.query(
-      `with candidates_for_year as (
-        select
-          distinct on (committees.sboe_id)
-          committees.*
-        from committees
-        inner join contributions
-        on contributions.committee_sboe_id = committees.sboe_id
-        where date_part('year', contributions.date_occurred) = $1
-        and candidate_full_name != '' -- Exclude non-candidate committees
-      )
-      select *, count(*) over () as full_count
-      from candidates_for_year
-      order by candidate_full_name
-      limit $2
-      offset $3
-      `,
-      [year, limit, offset]
-    )
-    return res.send({
-      data: candidates.rows.map(apiReprCandidate),
-      count: candidates.rows.length > 0 ? candidates.rows[0].full_count : 0,
-    })
-  } catch (error) {
-    handleError(error, res)
-  } finally {
-    if (client !== null) {
-      client.release()
-    }
-  }
-})
-
-api.get('/contributors/:year', async (req, res) => {
-  let client = null
-  try {
-    const { year } = req.params
-    const { limit = 50, offset = 0 } = req.query
-    client = await getClient()
-    const contributors = await client.query(
-      `select contributors.*, count(*) over () as full_count from contributors
-      inner join contributions on
-      contributions.contributor_id = contributors.id
-      where date_part('year', contributions.date_occurred) = $1
-      order by contributors.name
-      limit $2
-      offset $3
-      `,
-      [year, limit, offset]
-    )
-    return res.send({
-      data: contributors.rows.map(apiReprContributor),
-      count: contributors.rows.length > 0 ? contributors.rows[0].full_count : 0,
-    })
-  } catch (error) {
-    handleError(error, res)
-  } finally {
-    if (client !== null) {
-      client.release()
-    }
   }
 })
 
 api.get('/search/candidates-donors-pacs/:name', async (req, res) => {
-  let client = null
   try {
     const { name } = req.params
     const { limit = 50 } = req.query
     const decodedName = decodeURIComponent(name)
-
-    client = await getClient()
 
     const committees = await searchCommittees(
       decodedName,
@@ -487,10 +391,6 @@ api.get('/search/candidates-donors-pacs/:name', async (req, res) => {
     })
   } catch (error) {
     handleError(error, res)
-  } finally {
-    if (client !== null) {
-      client.release()
-    }
   }
 })
 

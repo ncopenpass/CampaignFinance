@@ -200,7 +200,7 @@ When `toCSV` is true, the endpoint will work as an `href` or with a `fetch` call
 > 3494,"AGGREGATED INDIVIDUAL CONTRIBUTION","","","","","","NOT AVAILABLE",50,"","STA-C0498N-C-002","2020-08-15T04:00:00.000Z","","CREDIT CARD","","2020 THIRD QUARTER","INDIVIDUAL"
 > 3494,"AGGREGATED INDIVIDUAL CONTRIBUTION","","","","","","NOT AVAILABLE",50,"","STA-C0498N-C-002","2020-08-15T04:00:00.000Z","","CREDIT CARD","","2020 THIRD QUARTER","INDIVIDUAL"
 
-## GET `/api/contributors/:contributorId/contributions`
+## GET `/api/contributor/:contributorId/contributions`
 
 Retrieve contributions for a contributor id.
 
@@ -210,7 +210,7 @@ Query Params (optional):
 - `limit` default value `50`
 - `toCSV` default value `false`
 
-Example: `/api/contributors/5123/contributions?limit=2&offset=0`
+Example: `/api/contributor/5123/contributions?limit=2&offset=0`
 response:
 
 ```json
@@ -237,7 +237,7 @@ response:
 }
 ```
 
-Example: `/api/contributors/2423d2db-2dd1-493e-8bf6-d85a44c2a58d/contributions?toCSV=true`  
+Example: `/api/contributor/2423d2db-2dd1-493e-8bf6-d85a44c2a58d/contributions?toCSV=true`  
 response:
 
 ```CSV
@@ -313,88 +313,6 @@ status code: 404
 ```json
 {
   "data": null
-}
-```
-
-## GET `/api/contributors/:year
-
-Retrieve all contributors for a given year.
-
-Query Params (optional):
-
-- `offset` default value `0`
-- `limit` default value `50`
-
-Example: `/api/contributors/2019?limit=2&offset=1`
-response:
-
-```json
-{
-  "data": [
-    {
-      "contributor_id": 14,
-      "name": "03RD CONGRESSIONAL DISTRICT",
-      "city": "WASHINGTON",
-      "state": "NC",
-      "zipcode": "27889",
-      "profession": "",
-      "employer_name": ""
-    },
-    {
-      "contributor_id": 14,
-      "name": "03RD CONGRESSIONAL DISTRICT",
-      "city": "WASHINGTON",
-      "state": "NC",
-      "zipcode": "27889",
-      "profession": "",
-      "employer_name": ""
-    }
-  ],
-  "count": "536628"
-}
-```
-
-## GET `/api/candidates/:year`
-
-Get all candidates who received donations in a given year. Note that in rare cases, individuals have more than one candidacy. In that case, there will be unique entries returned for each candidacy/committee for that single individual.
-
-Query Params (optional):
-
-- `offset` default value `0`
-- `limit` default value `50`
-
-Example: `api/candidates/2020?limit=2&offset=0`
-response:
-
-```json
-{
-  "data": [
-    {
-      "candidate_first_last_name": "ABBIE LANE",
-      "candidate_first_name": "ABBIE",
-      "candidate_full_name": "ABBIE L LANE",
-      "candidate_last_name": "LANE",
-      "candidate_middle_name": "L",
-      "current_status": "Unknown",
-      "juris": "23",
-      "office": "N.C. House",
-      "party": "Unaffiliated",
-      "committee_sboe_id": "STA-041DV7-C-001"
-    },
-    {
-      "candidate_first_last_name": "ABRAHAM JONES",
-      "candidate_first_name": "ABRAHAM",
-      "candidate_full_name": "ABRAHAM PENN JONES",
-      "candidate_last_name": "JONES",
-      "candidate_middle_name": "PENN",
-      "current_status": "Unknown",
-      "juris": "38",
-      "office": "N.C. House",
-      "party": "Democratic",
-      "committee_sboe_id": "STA-C2342N-C-004"
-    }
-  ],
-  "count": "1506"
 }
 ```
 

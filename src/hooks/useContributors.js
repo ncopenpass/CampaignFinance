@@ -2,7 +2,6 @@ import { useCallback, useState } from 'react'
 import { API_BATCH_SIZE, STATUSES } from '../constants'
 
 const CONTRIBUTOR_URL = '/api/contributor/'
-const CONTRIBUTIONS_URL = '/api/contributors/'
 
 const constructContributorUrl = ({ url, contributorId, limit, offset }) => {
   contributorId = encodeURIComponent(contributorId)
@@ -67,7 +66,7 @@ export const useContributors = () => {
   const fetchContributorContributions = useCallback(
     async ({ contributorId, limit = API_BATCH_SIZE, offset = 0 } = {}) => {
       const url = constructContributorContributionsUrl({
-        url: CONTRIBUTIONS_URL,
+        url: CONTRIBUTOR_URL,
         contributorId,
         limit,
         offset,
