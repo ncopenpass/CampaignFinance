@@ -184,8 +184,8 @@ export const useTableColumns = () => {
         disableSortBy: false,
       },
       {
-        Header: 'Comment',
-        accessor: 'purpose',
+        Header: 'Profession',
+        accessor: 'profession',
       },
     ],
     []
