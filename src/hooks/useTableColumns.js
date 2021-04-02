@@ -143,34 +143,6 @@ export const useTableColumns = () => {
   const candidateContributionColumns = useMemo(
     () => [
       {
-        Header: 'Contributor Name',
-        id: 'name',
-        accessor: ({ contributor_id, name }) => (
-          <Link to={`${CONTRIBUTOR_URL}${contributor_id}`}>&nbsp;{name}</Link>
-        ),
-        disableSortBy: false,
-      },
-      {
-        Header: 'Transaction Type',
-        accessor: 'transaction_type',
-      },
-      {
-        id: 'amount',
-        Header: 'Amount',
-        accessor: (r) => {
-          const formatter = new Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency: 'USD',
-          })
-          return formatter.format(r.amount)
-        },
-        disableSortBy: false,
-      },
-      {
-        Header: 'Form of Payment',
-        accessor: 'form_of_payment',
-      },
-      {
         id: 'date_occurred',
         Header: 'Contribution Date',
         accessor: (r) => {
@@ -184,8 +156,36 @@ export const useTableColumns = () => {
         disableSortBy: false,
       },
       {
+        Header: 'Contributor Name',
+        id: 'name',
+        accessor: ({ contributor_id, name }) => (
+          <Link to={`${CONTRIBUTOR_URL}${contributor_id}`}>&nbsp;{name}</Link>
+        ),
+        disableSortBy: false,
+      },
+      {
         Header: 'Profession',
         accessor: 'profession',
+      },
+      {
+        Header: 'Transaction Type',
+        accessor: 'transaction_type',
+      },
+      {
+        Header: 'Form of Payment',
+        accessor: 'form_of_payment',
+      },
+      {
+        id: 'amount',
+        Header: 'Amount',
+        accessor: (r) => {
+          const formatter = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+          })
+          return formatter.format(r.amount)
+        },
+        disableSortBy: false,
       },
     ],
     []
