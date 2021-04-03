@@ -1,6 +1,14 @@
 const express = require('express')
-const { searchContributors, searchCommittees } = require('../lib/search')
-const { apiReprContributor, apiReprCandidate } = require('../lib/repr')
+const {
+  searchContributors,
+  searchCommittees,
+  searchCandidates,
+} = require('../lib/search')
+const {
+  apiReprContributor,
+  apiReprCandidate,
+  apiReprCommittee,
+} = require('../lib/repr')
 const { handleError } = require('../lib/helpers')
 const router = express.Router()
 
@@ -51,7 +59,7 @@ router.get('/search/candidates/:name', async (req, res) => {
     } = req.query
     const decodedName = decodeURIComponent(name)
 
-    const committees = await searchCommittees(
+    const committees = await searchCandidates(
       decodedName,
       offset,
       limit,
@@ -63,6 +71,28 @@ router.get('/search/candidates/:name', async (req, res) => {
     )
     return res.send({
       data: committees.data.map(apiReprCandidate),
+      count: committees.data.length > 0 ? committees.data[0].full_count : 0,
+    })
+  } catch (error) {
+    handleError(error, res)
+  }
+})
+
+router.get('/search/committees/:name', async (req, res) => {
+  try {
+    const { name } = req.params
+    const { offset = 0, limit = 50, sortBy = 'first_last_sml' } = req.query
+    const decodedName = decodeURIComponent(name)
+
+    const committees = await searchCommittees(
+      decodedName,
+      offset,
+      limit,
+      TRIGRAM_LIMIT,
+      sortBy
+    )
+    return res.send({
+      data: committees.data.map(apiReprCommittee),
       count: committees.data.length > 0 ? committees.data[0].full_count : 0,
     })
   } catch (error) {
