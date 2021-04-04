@@ -10,7 +10,12 @@ const SUPPORTED_CANDIDATE_SORT_FIELDS = [
 ]
 const SUPPORTED_CONTRIBUTOR_SORT_FIELDS = ['sml', '-sml', 'name', '-name']
 
-const SUPPORTED_COMMITTEE_SORT_FIELDS = ['committee_name', '-committee_name']
+const SUPPORTED_COMMITTEE_SORT_FIELDS = [
+  'committee_name_sml',
+  '-committee_name_sml',
+  'committee_name',
+  '-committee_name',
+]
 
 /**
  * @typedef {Object} SearchResult
@@ -100,17 +105,18 @@ const searchCommittees = async (
   offset = 0,
   limit = 10,
   trigramLimit = 0.6,
-  sort = 'committee_name_sml'
+  sort = ''
 ) => {
   let client = null
-  let order = SUPPORTED_COMMITTEE_SORT_FIELDS.includes(sort)
-    ? sort
-    : 'committee_name_sml'
-  order = order.startsWith('-')
-    ? `${order.replace('-', '')} DESC`
-    : `${order} ASC`
-
-  console.log({ order })
+  // default order by to nothing because postgres default ordering of ilike
+  // works better than ordering by committee_name_sml
+  let order = SUPPORTED_COMMITTEE_SORT_FIELDS.includes(sort) ? sort : ''
+  order =
+    order === ''
+      ? ''
+      : order.startsWith('-')
+      ? `order by ${order.replace('-', '')} DESC`
+      : `order by ${order} ASC`
 
   try {
     client = await getClient()
@@ -121,8 +127,9 @@ const searchCommittees = async (
         count(*) over() as full_count
       from committees
         where
-          (committee_name % $1)
-        order by ${order}
+          committee_name % $1
+          or committee_name ilike '%' || $1 || '%'
+        ${order} 
         limit $2 offset $3`,
       [name, limit, offset]
     )
