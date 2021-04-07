@@ -6,6 +6,7 @@ import { useApi } from './useApi'
 
 const CONTRIBUTORS_URL = '/api/search/contributors/'
 const CANDIDATES_URL = '/api/search/candidates/'
+const COMMITTEES_URL = '/api/search/committees/'
 
 const filterIdMap = {
   candidate_full_name: 'name',
@@ -41,6 +42,9 @@ export const useSearch = () => {
   const [contributorApiStatus, setContributorApiStatus] = useState(
     STATUSES.Unsent
   )
+  const [committees, setCommittees] = useState([])
+  const [committeeCount, setCommitteeCount] = useState(0)
+  const [committeeApiStatus, setCommitteeApiStatus] = useState(STATUSES.Unsent)
 
   const fetchCandidates = useCallback(
     async ({
@@ -102,12 +106,43 @@ export const useSearch = () => {
     [getDataAndCount]
   )
 
+  const fetchCommittees = useCallback(
+    async ({
+      searchTerm,
+      limit = API_BATCH_SIZE,
+      offset = 0,
+      sort,
+      filters = [],
+    } = {}) => {
+      const url = constructSearchUrl({
+        url: COMMITTEES_URL,
+        searchTerm,
+        limit,
+        offset,
+        sort,
+        filters,
+      })
+      try {
+        setCommitteeApiStatus(STATUSES.Pending)
+        const { data, count } = await getDataAndCount(url)
+        setCommitteeApiStatus(STATUSES.Success)
+        setCommittees(data)
+        setCommitteeCount(count)
+      } catch (e) {
+        console.log(e)
+        setCommitteeApiStatus(STATUSES.Fail)
+      }
+    },
+    [getDataAndCount]
+  )
+
   const fetchInitialSearchData = useCallback(
     async ({ searchTerm, limit, offset, sort }) => {
       await fetchCandidates({ searchTerm, limit, offset, sort })
       await fetchContributors({ searchTerm, limit, offset, sort })
+      await fetchCommittees({ searchTerm, limit, offset, sort })
     },
-    [fetchCandidates, fetchContributors]
+    [fetchCandidates, fetchContributors, fetchCommittees]
   )
 
   return {
@@ -117,8 +152,12 @@ export const useSearch = () => {
     contributorApiStatus,
     contributors,
     contributorCount,
+    committeeApiStatus,
+    committees,
+    committeeCount,
     fetchInitialSearchData,
     fetchCandidates,
     fetchContributors,
+    fetchCommittees,
   }
 }

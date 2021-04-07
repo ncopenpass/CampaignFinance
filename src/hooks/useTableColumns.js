@@ -88,6 +88,41 @@ export const useTableColumns = () => {
     []
   )
 
+  const searchCommitteeColumns = useMemo(
+    () => [
+      {
+        Header: 'Name',
+        id: 'candidate_name',
+        accessor: 'committee_name',
+        // TODO: update the accessor after committee page is added
+        // accessor: ({ committee_name, committee_sboe_id }) => (
+        //   <Link to={`${CANDIDATE_URL}${committee_sboe_id}`}>
+        //     &nbsp;
+        //     {committee_name}
+        //   </Link>
+        // ),
+        disableSortBy: false,
+        disableFilters: false,
+        Filter: InputFilter,
+      },
+      {
+        Header: 'Party',
+        accessor: 'party',
+        disableFilters: false,
+        Filter: InputFilter,
+      },
+      {
+        Header: 'Contest',
+        id: 'contest',
+        accessor: ({ office, juris }) =>
+          juris ? `${office} ${juris}` : office,
+        disableFilters: false,
+        Filter: InputFilter,
+      },
+    ],
+    []
+  )
+
   const individualContributionsColumns = useMemo(
     () => [
       {
@@ -194,6 +229,7 @@ export const useTableColumns = () => {
   return {
     searchContributorColumns,
     searchCandidateColumns,
+    searchCommitteeColumns,
     candidateContributionColumns,
     individualContributionsColumns,
   }

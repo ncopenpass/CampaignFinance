@@ -129,6 +129,8 @@ const searchCommittees = async (
         where
           committee_name % $1
           or committee_name ilike '%' || $1 || '%'
+          or candidate_full_name % $1
+          or candidate_full_name ilike '%' || $1 || '%'
         ${order} 
         limit $2 offset $3`,
       [name, limit, offset]
