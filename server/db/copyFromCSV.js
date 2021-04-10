@@ -12,7 +12,9 @@ const copyFromCSV = (path, tableName, client) =>
   new Promise((resolve, reject) => {
     const fileStream = fs.createReadStream(path)
     const stream = client.query(
-      copyFrom(`COPY ${tableName} FROM STDIN DELIMITER ',' csv HEADER`)
+      copyFrom(
+        `COPY ${tableName} FROM STDIN DELIMITER ',' csv HEADER NULL 'NULL'`
+      )
     )
     fileStream.on('error', (error) => {
       reject(error)
