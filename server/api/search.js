@@ -80,17 +80,27 @@ router.get('/search/candidates/:name', async (req, res) => {
 
 router.get('/search/committees/:name', async (req, res) => {
   try {
-    const { name } = req.params
-    const { offset = 0, limit = 50, sortBy } = req.query
-    const decodedName = decodeURIComponent(name)
+    let { name } = req.params
+    name = decodeURIComponent(name)
+    const {
+      offset = 0,
+      limit = 50,
+      sortBy,
+      name: nameFilter = '',
+      party = '',
+      contest = '',
+    } = req.query
 
-    const committees = await searchCommittees(
-      decodedName,
+    const committees = await searchCommittees({
+      name,
       offset,
       limit,
-      TRIGRAM_LIMIT,
-      sortBy
-    )
+      trigramLimit: TRIGRAM_LIMIT,
+      sort: sortBy,
+      nameFilter,
+      partyFilter: party,
+      contestFilter: contest,
+    })
     return res.send({
       data: committees.data.map(apiReprCommittee),
       count: committees.data.length > 0 ? committees.data[0].full_count : 0,

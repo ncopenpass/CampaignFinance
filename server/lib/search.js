@@ -92,21 +92,28 @@ const searchContributors = async (
 }
 
 /**
- * @param {string} name
- * @param {string|number} offset
- * @param {string|number} limit
- * @param {string|number} trigramLimit
- * @param {string} sort
+ * @param {object} arg
+ * @param {string} arg.name
+ * @param {string|number} arg.offset
+ * @param {string|number} arg.limit
+ * @param {string|number} arg.trigramLimit
+ * @param {string} arg.partyFilter
+ * @param {string} arg.nameFilter
+ * @param {string} arg.contestFilter
+ * @param {string} arg.sort
  * @returns {Promise<SearchResult>}
  * @throws an error if the pg query or connection fails
  */
-const searchCommittees = async (
+const searchCommittees = async ({
   name,
   offset = 0,
   limit = 10,
   trigramLimit = 0.6,
-  sort = ''
-) => {
+  sort = '',
+  partyFilter = '',
+  nameFilter = '',
+  contestFilter = '',
+}) => {
   let client = null
   // default order by to nothing because postgres default ordering of ilike
   // works better than ordering by committee_name_sml
@@ -117,6 +124,16 @@ const searchCommittees = async (
       : order.startsWith('-')
       ? `order by ${order.replace('-', '')} DESC`
       : `order by ${order} ASC`
+  const safePartyFilter = format('AND party ilike %s', `'%${partyFilter}%'`)
+  const safeNameFilter = format(
+    'AND committee_name ilike %s',
+    `'%${nameFilter}%'`
+  )
+  const safeContestFilter = format(
+    'AND (juris ilike %s or office ilike %s)',
+    `'%${contestFilter}%'`,
+    `'%${contestFilter}%'`
+  )
 
   try {
     client = await getClient()
@@ -127,10 +144,15 @@ const searchCommittees = async (
         count(*) over() as full_count
       from committees
         where
+        (
           committee_name % $1
           or committee_name ilike '%' || $1 || '%'
           or candidate_full_name % $1
           or candidate_full_name ilike '%' || $1 || '%'
+        )
+          ${partyFilter ? safePartyFilter : ''}
+          ${nameFilter ? safeNameFilter : ''}
+          ${contestFilter ? safeContestFilter : ''}
         ${order} 
         limit $2 offset $3`,
       [name, limit, offset]

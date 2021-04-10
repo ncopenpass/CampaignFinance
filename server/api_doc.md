@@ -93,6 +93,9 @@ Query Params (optional):
 - `offset` default value `0`
 - `limit` default value `50`
 - `sortBy` default value `committee_name_sml`(similarity). Sort by `committee_name_sml` or `candidate_name`. Prefix with `-` for `DESC` order
+- `name` fuzzy match results on committee name
+- `party` fuzzy match results on pary name
+- `contest` fuzzy match on juris or office name
 
 Example: `/api/search/committees/cooper?limit=1&offset=0`
 response:
