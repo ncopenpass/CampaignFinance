@@ -82,6 +82,86 @@ response:
 }
 ```
 
+## GET `/api/search/committees/:name`
+
+Search for a committee by name. The search uses trigram fuzzy matching to find results and orders the results by the match similarity.
+
+The `:name` parameter must be URIEncoded (ie: `encodeURIComponent`)
+
+Query Params (optional):
+
+- `offset` default value `0`
+- `limit` default value `50`
+- `sortBy` default value `committee_name_sml`(similarity). Sort by `committee_name_sml` or `candidate_name`. Prefix with `-` for `DESC` order
+- `name` fuzzy match results on committee name
+- `party` fuzzy match results on pary name
+- `contest` fuzzy match on juris or office name
+
+Example: `/api/search/committees/cooper?limit=1&offset=0`
+response:
+
+```json
+{
+  "data": [
+    {
+      "committee_name": "COOPER FOR NORTH CAROLINA",
+      "office": "Governor",
+      "party": "Democratic",
+      "committee_sboe_id": "STA-C0498N-C-002"
+    },
+    {
+      "committee_name": "SCOTT COOPER FOR CONGRESS",
+      "office": "NULL",
+      "party": "NULL",
+      "committee_sboe_id": "FED-H543YG-C-001"
+    },
+    {
+      "committee_name": "NATIONAL RURAL ELECTRIC COOPERATIVE ASSOCIATION'S ACTION COMMITTEE FOR RURAL ELECTRIFICATION",
+      "office": "NULL",
+      "party": "NULL",
+      "committee_sboe_id": "FED-I6M71S-C-001"
+    },
+    {
+      "committee_name": "LINDA COOPER SUGGS FOR NC",
+      "office": "NULL",
+      "party": "NULL",
+      "committee_sboe_id": "STA-6QD149-C-001"
+    },
+    {
+      "committee_name": "NC ASSN OF ELECTRIC COOPERATIVES RURAL ELECTRIC ACTION PROGRAM",
+      "office": "NULL",
+      "party": "NULL",
+      "committee_sboe_id": "STA-C3341N-C-001"
+    },
+    {
+      "committee_name": "CAROLINA LINK TELEPHONE COOPERATIVE PAC",
+      "office": "NULL",
+      "party": "NULL",
+      "committee_sboe_id": "STA-C3352N-C-001"
+    },
+    {
+      "committee_name": "VOTE SAM COOPER",
+      "office": "NULL",
+      "party": "NULL",
+      "committee_sboe_id": "STA-OY590I-C-001"
+    },
+    {
+      "committee_name": "STANFORD FOR CLERK",
+      "office": "Clerk of Superior Court",
+      "party": "Democratic",
+      "committee_sboe_id": "ORA-I2J52O-C-001"
+    },
+    {
+      "committee_name": "JESSICA FOR CHAPEL HILL",
+      "office": "Council Member",
+      "party": "Democratic",
+      "committee_sboe_id": "089-R9677W-C-001"
+    }
+  ],
+  "count": "9"
+}
+```
+
 ## GET `/api/candidate/:ncsbeID`
 
 Get a candidate and details about their committee

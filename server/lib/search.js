@@ -10,6 +10,13 @@ const SUPPORTED_CANDIDATE_SORT_FIELDS = [
 ]
 const SUPPORTED_CONTRIBUTOR_SORT_FIELDS = ['sml', '-sml', 'name', '-name']
 
+const SUPPORTED_COMMITTEE_SORT_FIELDS = [
+  'committee_name_sml',
+  '-committee_name_sml',
+  'committee_name',
+  '-committee_name',
+]
+
 /**
  * @typedef {Object} SearchResult
  * @property {Array<any>} data
@@ -85,6 +92,86 @@ const searchContributors = async (
 }
 
 /**
+ * @param {object} arg
+ * @param {string} arg.name
+ * @param {string|number} arg.offset
+ * @param {string|number} arg.limit
+ * @param {string|number} arg.trigramLimit
+ * @param {string} arg.partyFilter
+ * @param {string} arg.nameFilter
+ * @param {string} arg.contestFilter
+ * @param {string} arg.sort
+ * @returns {Promise<SearchResult>}
+ * @throws an error if the pg query or connection fails
+ */
+const searchCommittees = async ({
+  name,
+  offset = 0,
+  limit = 10,
+  trigramLimit = 0.6,
+  sort = '',
+  partyFilter = '',
+  nameFilter = '',
+  contestFilter = '',
+}) => {
+  let client = null
+  // default order by to nothing because postgres default ordering of ilike
+  // works better than ordering by committee_name_sml
+  let order = SUPPORTED_COMMITTEE_SORT_FIELDS.includes(sort) ? sort : ''
+  order =
+    order === ''
+      ? ''
+      : order.startsWith('-')
+      ? `order by ${order.replace('-', '')} DESC`
+      : `order by ${order} ASC`
+  const safePartyFilter = format('AND party ilike %s', `'%${partyFilter}%'`)
+  const safeNameFilter = format(
+    'AND committee_name ilike %s',
+    `'%${nameFilter}%'`
+  )
+  const safeContestFilter = format(
+    'AND (juris ilike %s or office ilike %s)',
+    `'%${contestFilter}%'`,
+    `'%${contestFilter}%'`
+  )
+
+  try {
+    client = await getClient()
+    await client.query('select set_limit($1)', [trigramLimit])
+    const results = await client.query(
+      `select *,
+        similarity(committee_name, $1) as committee_name_sml,
+        count(*) over() as full_count
+      from committees
+        where
+        (
+          committee_name % $1
+          or committee_name ilike '%' || $1 || '%'
+          or candidate_full_name % $1
+          or candidate_full_name ilike '%' || $1 || '%'
+        )
+          ${partyFilter ? safePartyFilter : ''}
+          ${nameFilter ? safeNameFilter : ''}
+          ${contestFilter ? safeContestFilter : ''}
+        ${order} 
+        limit $2 offset $3`,
+      [name, limit, offset]
+    )
+
+    return {
+      data: results.rows,
+      count: results.rows.length > 0 ? results.rows[0].full_count : 0,
+    }
+  } catch (error) {
+    throw error
+  } finally {
+    if (client !== null) {
+      client.release()
+    }
+  }
+}
+
+/**
  * @param {string} name
  * @param {string|number} offset
  * @param {string|number} limit
@@ -96,7 +183,7 @@ const searchContributors = async (
  * @returns {Promise<SearchResult>}
  * @throws an error if the pg query or connection fails
  */
-const searchCommittees = async (
+const searchCandidates = async (
   name,
   offset = 0,
   limit = 50,
@@ -162,5 +249,6 @@ const searchCommittees = async (
 
 module.exports = {
   searchContributors,
+  searchCandidates,
   searchCommittees,
 }

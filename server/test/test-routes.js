@@ -67,6 +67,13 @@ const expectedCandidateKeys = [
   'committee_sboe_id',
 ]
 
+const expectedCommitteeKeys = [
+  'committee_name',
+  'office',
+  'party',
+  'committee_sboe_id',
+]
+
 const expectedContributorKeys = [
   'contributor_id',
   'name',
@@ -165,6 +172,28 @@ describe('GET /api/search/candidates/:name', function () {
       .that.has.all.keys(expectedCandidateKeys)
     Object.keys(response.body.data[0]).length.should.equal(
       expectedCandidateKeys.length
+    )
+  })
+})
+
+describe('GET /api/search/committees/:name', function () {
+  it('it should have status 200 and correct schema', async function () {
+    const client = await getClient()
+    const { rows } = await client.query(
+      'select committee_name from committees limit 1',
+      []
+    )
+    client.release()
+    const name = encodeURIComponent(rows[0].committee_name)
+    const response = await supertest(app).get(`/api/search/committees/${name}`)
+    response.status.should.equal(200)
+    response.body.should.be.an('object').that.has.all.keys(['data', 'count'])
+    console.log(response.body)
+    response.body.data[0].should.be
+      .an('object')
+      .that.has.all.keys(expectedCommitteeKeys)
+    Object.keys(response.body.data[0]).length.should.equal(
+      expectedCommitteeKeys.length
     )
   })
 })
