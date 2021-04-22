@@ -93,14 +93,16 @@ export const useTableColumns = () => {
       {
         Header: 'Name',
         id: 'candidate_name',
-        accessor: 'committee_name',
         // TODO: update the accessor after committee page is added
-        // accessor: ({ committee_name, committee_sboe_id }) => (
-        //   <Link to={`${CANDIDATE_URL}${committee_sboe_id}`}>
-        //     &nbsp;
-        //     {committee_name}
-        //   </Link>
-        // ),
+        accessor: ({ committee_name, committee_sboe_id, office }) =>
+          `${office}` !== 'NULL' ? (
+            <Link to={`${CANDIDATE_URL}${committee_sboe_id}`}>
+              &nbsp;
+              {committee_name}
+            </Link>
+          ) : (
+            `${committee_name}`
+          ),
         disableSortBy: false,
         disableFilters: false,
         Filter: InputFilter,
