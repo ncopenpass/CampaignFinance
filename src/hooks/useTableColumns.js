@@ -4,6 +4,7 @@ import InputFilter from '../components/InputFilter'
 
 const CANDIDATE_URL = '/candidate/'
 const CONTRIBUTOR_URL = '/contributors/'
+const COMMITTEE_URL = '/committee/'
 
 export const useTableColumns = () => {
   const searchContributorColumns = useMemo(
@@ -93,7 +94,6 @@ export const useTableColumns = () => {
       {
         Header: 'Name',
         id: 'candidate_name',
-        // TODO: update the accessor after committee page is added
         accessor: ({ committee_name, committee_sboe_id, office }) =>
           `${office}` !== 'NULL' ? (
             <Link to={`${CANDIDATE_URL}${committee_sboe_id}`}>
@@ -101,7 +101,10 @@ export const useTableColumns = () => {
               {committee_name}
             </Link>
           ) : (
-            `${committee_name}`
+            <Link to={`${COMMITTEE_URL}${committee_sboe_id}`}>
+              &nbsp;
+              {committee_name}
+            </Link>
           ),
         disableSortBy: false,
         disableFilters: false,
@@ -228,11 +231,55 @@ export const useTableColumns = () => {
     []
   )
 
+  const committeeContributionColumns = useMemo(
+    () => [
+      {
+        id: 'date_occurred',
+        Header: 'Contribution Date',
+        accessor: (r) => {
+          const d = new Date(r.date_occurred)
+          return d.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: '2-digit',
+          })
+        },
+        disableSortBy: false,
+      },
+      {
+        Header: 'Profession',
+        accessor: 'profession',
+      },
+      {
+        Header: 'Transaction Type',
+        accessor: 'transaction_type',
+      },
+      {
+        Header: 'Form of Payment',
+        accessor: 'form_of_payment',
+      },
+      {
+        id: 'amount',
+        Header: 'amount',
+        accessor: (r) => {
+          const formatter = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+          })
+          return formatter.format(r.amount)
+        },
+        disableSortBy: false,
+      },
+    ],
+    []
+  )
+
   return {
     searchContributorColumns,
     searchCandidateColumns,
     searchCommitteeColumns,
     candidateContributionColumns,
     individualContributionsColumns,
+    committeeContributionColumns,
   }
 }
