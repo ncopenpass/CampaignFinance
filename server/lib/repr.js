@@ -49,10 +49,6 @@ const apiReprCommittee = (row) => {
     office: row.office,
     party: row.party,
     committee_sboe_id: row.sboe_id,
-    amount: row.amount,
-    date_occurred: row.date_occurred,
-    form_of_payment: row.form_of_payment,
-    transaction_type: row.transaction_type,
     city: row.city,
     state: row.state,
   }
