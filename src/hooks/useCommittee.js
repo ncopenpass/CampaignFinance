@@ -19,7 +19,7 @@ const constructContributionsUrl = ({
   committeeId = encodeURIComponent(committeeId)
   let contributionsUrl = `${url}${committeeId}/contributions?limit=${limit}&offset=${offset}`
   if (sort) {
-    contributionsUrl = `${contributionsUrl}$sortBy=${sort}`
+    contributionsUrl = `${contributionsUrl}&sortBy=${sort}`
   }
   if (filters.length) {
     filters.forEach(({ id, value }) => {
