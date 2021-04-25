@@ -249,7 +249,7 @@ export const useTableColumns = () => {
       {
         id: 'name',
         Header: 'Contributor Name',
-        accesor: ({ contributor_id, name }) => (
+        accessor: ({ contributor_id, name }) => (
           <Link to={`${CONTRIBUTOR_URL}${contributor_id}`}>&nbsp;{name}</Link>
         ),
         disableSortBy: false,
