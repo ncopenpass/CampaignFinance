@@ -247,6 +247,14 @@ export const useTableColumns = () => {
         disableSortBy: false,
       },
       {
+        id: 'name',
+        Header: 'Contributor Name',
+        accesor: ({ contributor_id, name }) => (
+          <Link to={`${CONTRIBUTOR_URL}${contributor_id}`}>&nbsp;{name}</Link>
+        ),
+        disableSortBy: false,
+      },
+      {
         Header: 'Profession',
         accessor: 'profession',
       },
@@ -260,7 +268,7 @@ export const useTableColumns = () => {
       },
       {
         id: 'amount',
-        Header: 'amount',
+        Header: 'Amount',
         accessor: (r) => {
           const formatter = new Intl.NumberFormat('en-US', {
             style: 'currency',

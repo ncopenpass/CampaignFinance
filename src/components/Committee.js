@@ -92,7 +92,7 @@ const Committee = () => {
         <Grid row>
           <Grid col>
             <h1 className="candiate-name">{committee.committee_name}</h1>
-            <p className="candidate-party">{committee.party}</p>
+            {/* <p className="candidate-party">{committee.party}</p> */}
             <p className="location">{committee.state}</p>
           </Grid>
           {/* <Grid col>
