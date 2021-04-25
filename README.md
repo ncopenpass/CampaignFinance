@@ -8,14 +8,14 @@
 
 [Join the Google Group](https://groups.google.com/forum/#!forum/raleigh-brigade-cfd) to join the discussion.
 [Join us on Slack](http://code-for-nc-slack-invitations.herokuapp.com/)
-Questions? Email nccampaignfinance@gmail.com. 
+Questions? Email nccampaignfinance@gmail.com.
 
 - After registering join the `#campaign-finance-dash-dev`, `#campaign-finance-dash-ux`, and `#campaign-finance-dash-data` channels
 
 ## Getting Started
 
 See the [contributing](./CONTRIBUTING.md) guide for instructions on running the project and more.
-See the [project board](https://github.com/ncopenpass/CampaignFinance/projects/3) for open tasks
+See the [project board](https://github.com/ncopenpass/CampaignFinance/projects/4) for open tasks
 
 ## Code of Conduct
 
