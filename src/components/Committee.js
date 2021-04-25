@@ -93,8 +93,12 @@ const Committee = () => {
           <Grid col>
             <h1 className="committee-name">{committee.committee_name}</h1>
             <p className="committee-prop">
+              <span className="committee-prop-label">Party:</span>
+              {committee.party}
+            </p>
+            <p className="committee-prop">
               <span className="committee-prop-label">Location:</span>
-              {committee.state}
+              {`${committee.city}, ${committee.state}`}
             </p>
           </Grid>
           <Grid col>
