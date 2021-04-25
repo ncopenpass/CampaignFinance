@@ -19,7 +19,7 @@ const Committee = () => {
     apiStatus,
     committee,
     contributions,
-    // summary,
+    summary,
     contributionCount,
     fetchInitialSearchData,
     fetchContributions,
@@ -95,7 +95,7 @@ const Committee = () => {
             {/* <p className="candidate-party">{committee.party}</p> */}
             <p className="location">{committee.state}</p>
           </Grid>
-          {/* <Grid col>
+          <Grid col>
             <p className="summary-stat">
               <NumberFormat
                 className="total-funding"
@@ -162,7 +162,7 @@ const Committee = () => {
                 prefix="$"
               />
             </p>
-          </Grid> */}
+          </Grid>
         </Grid>
         <Grid row></Grid>
         <Grid row gap="sm">

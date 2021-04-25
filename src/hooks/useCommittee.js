@@ -34,14 +34,14 @@ export const useCommittee = () => {
   const [committee, setCommittee] = useState([])
   const [contributions, setContributions] = useState([])
   // Give the summary default values, to avoid using a spinner or doing a check
-  // const [summary, setSummary] = useState({
-  //   sum: '-',
-  //   avg: '-',
-  //   max: '-',
-  //   count: '-',
-  //   aggregated_contributions_count: '-',
-  //   aggregated_contributions_sum: '-',
-  // })
+  const [summary, setSummary] = useState({
+    sum: '-',
+    avg: '-',
+    max: '-',
+    count: '-',
+    aggregated_contributions_count: '-',
+    aggregated_contributions_sum: '-',
+  })
   const [contributionCount, setContributionCount] = useState(0)
 
   const getDataCount = useCallback(async (url) => {
@@ -102,38 +102,38 @@ export const useCommittee = () => {
     [getDataCount]
   )
 
-  // const fetchSummary = useCallback(
-  //   async ({ committeeId } = {}) => {
-  //     try {
-  //       const url = `${COMMITTEE_URL}${committeeId}/contributions/summary`
-  //       const response = await fetch(url)
-  //       const body = await response.json()
-  //       setSummary(body.data)
-  //     } catch (e) {
-  //       console.log(e)
-  //     }
-  //   },
-  //   [setSummary]
-  // )
+  const fetchSummary = useCallback(
+    async ({ committeeId } = {}) => {
+      try {
+        const url = `${COMMITTEE_URL}${committeeId}/contributions/summary`
+        const response = await fetch(url)
+        const body = await response.json()
+        setSummary(body.data)
+      } catch (e) {
+        console.log(e)
+      }
+    },
+    [setSummary]
+  )
 
   const fetchInitialSearchData = useCallback(
     async ({ committeeId, limit, offset, sort }) => {
       await fetchCommittee({ committeeId })
       await fetchContributions({ committeeId, limit, offset, sort })
-      // await fetchSummary({ committeeId })
+      await fetchSummary({ committeeId })
     },
-    [fetchCommittee, fetchContributions]
+    [fetchCommittee, fetchContributions, fetchSummary]
   )
 
   return {
     apiStatus,
     committee,
     contributions,
-    // summary,
+    summary,
     contributionCount,
     fetchInitialSearchData,
     fetchCommittee,
     fetchContributions,
-    // fetchSummary,
+    fetchSummary,
   }
 }

@@ -9,7 +9,7 @@ const { handleError, sendCSV } = require('../lib/helpers')
 
 const {
   getCommittee,
-  //   getCommitteeSummary,
+  getCommitteeSummary,
   getCommitteeContributions,
   getCommitteeContributionsForDownload,
 } = require('../lib/queries')
@@ -41,24 +41,24 @@ router.get('/committee/:ncsbeID', async (req, res) => {
   }
 })
 
-// router.get('/committee/:ncsbeID/contributions/summary', async (req, res) => {
-//   try {
-//     let { ncsbeID = '' } = req.params
-//     ncsbeID = decodeURIComponent(ncsbeID)
-//     if (!ncsbeID) {
-//       res.status(500)
-//       return res.send({
-//         error: 'empty ncsbeID',
-//       })
-//     }
-//     const summary = await getCommitteeSummary(ncsbeID)
-//     res.send({
-//       data: summary,
-//     })
-//   } catch (err) {
-//     handleError(err, res)
-//   }
-// })
+router.get('/committee/:ncsbeID/contributions/summary', async (req, res) => {
+  try {
+    let { ncsbeID = '' } = req.params
+    ncsbeID = decodeURIComponent(ncsbeID)
+    if (!ncsbeID) {
+      res.status(500)
+      return res.send({
+        error: 'empty ncsbeID',
+      })
+    }
+    const summary = await getCommitteeSummary(ncsbeID)
+    res.send({
+      data: summary,
+    })
+  } catch (err) {
+    handleError(err, res)
+  }
+})
 
 router.get('/committee/:ncsbeID/contributions', async (req, res) => {
   try {

@@ -53,6 +53,47 @@ const getCandidateSummary = async (ncsbeID) => {
 }
 
 /**
+ * @typedef {Object} CommitteeSummary
+ * @property {Number} sum - The sum of all donations given to a candidate
+ * @property {Number} avg - The avg of all donation given to a candidate
+ * @property {Number} max - The largest donation given to a candidate
+ * @property {Number} count - The number of donations given to a candidate
+ */
+
+/**
+ *
+ * @param {string} ncsbeID
+ * @returns {Promise<CandidateSummary>}
+ */
+const getCommitteeSummary = async (ncsbeID) => {
+  // Post MVP we should probably find a way to speed this up.
+  console.time('getCommitteeSummary')
+  const summary = await db.query(
+    `
+    with aggregated_contributions as (
+      select count(*)    as aggregated_contributions_count,
+             sum(amount) as aggregated_contributions_sum
+      from contributions
+      where contributor_id IS NULl
+        and committee_sboe_id = $1 
+  )
+  select sum(amount),
+         avg(amount),
+         max(amount),
+         count(*)::int,
+         (select aggregated_contributions_count from aggregated_contributions limit 1) as aggregated_contributions_count,
+         (select aggregated_contributions_sum from aggregated_contributions limit 1)   as aggregated_contributions_sum
+  from contributions
+  where committee_sboe_id = $1 
+  
+`,
+    [ncsbeID]
+  )
+  console.timeEnd('getCommitteeSummary')
+  return summary.rows.length > 0 ? summary.rows[0] : {}
+}
+
+/**
  *
  * @param {Object} args
  * @param {string} args.ncsbeID
@@ -399,4 +440,5 @@ module.exports = {
   getCommitteeContributions,
   getCommitteeContributionsForDownload,
   getCommittee,
+  getCommitteeSummary,
 }
