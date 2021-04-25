@@ -1,16 +1,32 @@
 import { useCallback, useState } from 'react'
 import { API_BATCH_SIZE, STATUSES } from '../constants'
 
-const COMMITTEE_URL = '/api/committee'
+const COMMITTEE_URL = '/api/committee/'
 
 const constructCommitteeUrl = ({ url, committeeId, limit, offset }) => {
   committeeId = encodeURIComponent(committeeId)
   return `${url}${committeeId}?limit=${limit}&offset=${offset}`
 }
 
-const constructContributionsUrl = ({ url, committeeId, limit, offset }) => {
+const constructContributionsUrl = ({
+  url,
+  committeeId,
+  limit,
+  offset,
+  sort,
+  filters,
+}) => {
   committeeId = encodeURIComponent(committeeId)
-  return `${url}${committeeId}/contributions?limit=${limit}$offset=${offset}`
+  let contributionsUrl = `${url}${committeeId}/contributions?limit=${limit}$offset=${offset}`
+  if (sort) {
+    contributionsUrl = `${contributionsUrl}$sortBy=${sort}`
+  }
+  if (filters.length) {
+    filters.forEach(({ id, value }) => {
+      contributionsUrl = `${contributionsUrl}&${id}=${value}`
+    })
+  }
+  return contributionsUrl
 }
 
 export const useCommittee = () => {
@@ -18,23 +34,23 @@ export const useCommittee = () => {
   const [committee, setCommittee] = useState([])
   const [contributions, setContributions] = useState([])
   // Give the summary default values, to avoid using a spinner or doing a check
-  // const [summary, setSummary] = useState({
-  //   sum: '-',
-  //   avg: '-',
-  //   max: '-',
-  //   count: '-',
-  //   aggregated_contributions_count: '-',
-  //   aggregated_contributions_sum: '-',
-  // })
+  const [summary, setSummary] = useState({
+    sum: '-',
+    avg: '-',
+    max: '-',
+    count: '-',
+    aggregated_contributions_count: '-',
+    aggregated_contributions_sum: '-',
+  })
   const [contributionCount, setContributionCount] = useState(0)
 
   const getDataCount = useCallback(async (url) => {
     try {
       setApiStatus(STATUSES.Pending)
       const response = await fetch(url)
-      const { data, count } = await response.json()
+      const { data, count, summary } = await response.json()
       setApiStatus(STATUSES.Success)
-      return { data, count }
+      return { data, count, summary }
     } catch (e) {
       console.log(e)
       setApiStatus(STATUSES.Fail)
@@ -60,12 +76,20 @@ export const useCommittee = () => {
   )
 
   const fetchContributions = useCallback(
-    async ({ committeeId, limit = API_BATCH_SIZE, offset = 0 } = {}) => {
+    async ({
+      committeeId,
+      limit = API_BATCH_SIZE,
+      offset = 0,
+      sort,
+      filters = [],
+    } = {}) => {
       const url = constructContributionsUrl({
         url: COMMITTEE_URL,
         committeeId,
         limit,
         offset,
+        sort,
+        filters,
       })
       try {
         const { data, count } = await getDataCount(url)
@@ -78,38 +102,38 @@ export const useCommittee = () => {
     [getDataCount]
   )
 
-  // const fetchSummary = useCallback(
-  //   async ({ committeeId } = {}) => {
-  //     try {
-  //       const url = `${COMMITTEE_URL}${committeeId}/contributions/summary`
-  //       const response = await fetch(url)
-  //       const body = await response.json()
-  //       setSummary(body.data)
-  //     } catch (e) {
-  //       console.log(e)
-  //     }
-  //   },
-  //   [setSummary]
-  // )
+  const fetchSummary = useCallback(
+    async ({ committeeId } = {}) => {
+      try {
+        const url = `${COMMITTEE_URL}${committeeId}/contributions/summary`
+        const response = await fetch(url)
+        const body = await response.json()
+        setSummary(body.data)
+      } catch (e) {
+        console.log(e)
+      }
+    },
+    [setSummary]
+  )
 
   const fetchInitialSearchData = useCallback(
-    async ({ committeeId, limit, offset }) => {
+    async ({ committeeId, limit, offset, sort }) => {
       await fetchCommittee({ committeeId })
-      await fetchContributions({ committeeId, limit, offset })
-      // await fetchSummary({ committeeId })
+      await fetchContributions({ committeeId, limit, offset, sort })
+      await fetchSummary({ committeeId })
     },
-    [fetchCommittee, fetchContributions]
+    [fetchCommittee, fetchContributions, fetchSummary]
   )
 
   return {
     apiStatus,
     committee,
     contributions,
-    // summary,
+    summary,
     contributionCount,
     fetchInitialSearchData,
     fetchCommittee,
     fetchContributions,
-    // fetchSummary,
+    fetchSummary,
   }
 }
