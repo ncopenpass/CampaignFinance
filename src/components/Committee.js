@@ -86,7 +86,7 @@ const Committee = () => {
       <GridContainer>
         <Grid row>
           <Grid col>
-            <p className="candidate-label">COMMITTEE</p>
+            <p className="candidate-label">POLITICAL ACTION COMMITTEE (PAC)</p>
           </Grid>
         </Grid>
         <Grid row>
