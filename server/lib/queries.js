@@ -214,7 +214,7 @@ const getCommitteeContributions = async ({
     ? format('AND date_occurred <= CAST(%L as DATE)', date_occurred_lteFilter)
     : ''
 
-  console.time('getCandidateContributions - query')
+  console.time('getCommitteeContributions - query')
   const result = await db.query(
     `select
        count(*) over () as full_count,
@@ -251,7 +251,7 @@ const getCommitteeContributions = async ({
       offset $3`,
     [ncsbeID, limit, offset]
   )
-  console.timeEnd('getCandidateContributions - query')
+  console.timeEnd('getCommitteeContributions - query')
   return result
 }
 

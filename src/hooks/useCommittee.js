@@ -8,25 +8,9 @@ const constructCommitteeUrl = ({ url, committeeId, limit, offset }) => {
   return `${url}${committeeId}?limit=${limit}&offset=${offset}`
 }
 
-const constructContributionsUrl = ({
-  url,
-  committeeId,
-  limit,
-  offset,
-  sort,
-  filters,
-}) => {
+const constructContributionsUrl = ({ url, committeeId, limit, offset }) => {
   committeeId = encodeURIComponent(committeeId)
-  let contributionsUrl = `${url}${committeeId}/contributions?limit=${limit}$offset=${offset}`
-  if (sort) {
-    contributionsUrl = `${contributionsUrl}/sortBy=${sort}`
-  }
-  if (filters.length) {
-    filters.forEach(({ id, value }) => {
-      contributionsUrl = `${contributionsUrl}&${id}=${value}`
-    })
-  }
-  return contributionsUrl
+  return `${url}${committeeId}/contributions?limit=${limit}$offset=${offset}`
 }
 
 export const useCommittee = () => {
@@ -76,20 +60,12 @@ export const useCommittee = () => {
   )
 
   const fetchContributions = useCallback(
-    async ({
-      committeeId,
-      limit = API_BATCH_SIZE,
-      offset = 0,
-      sort,
-      filters = [],
-    } = {}) => {
+    async ({ committeeId, limit = API_BATCH_SIZE, offset = 0 } = {}) => {
       const url = constructContributionsUrl({
         url: COMMITTEE_URL,
         committeeId,
         limit,
         offset,
-        sort,
-        filters,
       })
       try {
         const { data, count } = await getDataCount(url)
@@ -117,9 +93,9 @@ export const useCommittee = () => {
   )
 
   const fetchInitialSearchData = useCallback(
-    async ({ committeeId, limit, offset, sort }) => {
+    async ({ committeeId, limit, offset }) => {
       await fetchCommittee({ committeeId })
-      await fetchContributions({ committeeId, limit, offset, sort })
+      await fetchContributions({ committeeId, limit, offset })
       await fetchSummary({ committeeId })
     },
     [fetchCommittee, fetchContributions, fetchSummary]
