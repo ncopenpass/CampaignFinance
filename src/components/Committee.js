@@ -5,7 +5,7 @@ import NumberFormat from 'react-number-format'
 
 import { useCommittee, useTableColumns } from '../hooks'
 import { API_BATCH_SIZE } from '../constants'
-import '../css/candidate.scss'
+import '../css/committee.scss'
 import { formatSortBy } from '../utils'
 
 import SearchResultTable from './SearchResultTable'
@@ -91,9 +91,11 @@ const Committee = () => {
         </Grid>
         <Grid row>
           <Grid col>
-            <h1 className="candiate-name">{committee.committee_name}</h1>
-            {/* <p className="candidate-party">{committee.party}</p> */}
-            <p className="location">{committee.state}</p>
+            <h1 className="committee-name">{committee.committee_name}</h1>
+            <p className="committee-prop">
+              <span className="committee-prop-label">Location:</span>
+              {committee.state}
+            </p>
           </Grid>
           <Grid col>
             <p className="summary-stat">
@@ -107,11 +109,11 @@ const Committee = () => {
                 prefix="$"
               />
             </p>
-            <p className="total-funding-tooltop">Total Funding</p>
+            <p className="total-funding-tooltip">Total Funding</p>
             <p className="summary-stat">
               Total number of donations:
               <NumberFormat
-                className="summary-sum"
+                className="summary-num"
                 value={summary.count}
                 displayType="text"
                 thousandSeparator={true}
