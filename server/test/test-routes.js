@@ -72,6 +72,8 @@ const expectedCommitteeKeys = [
   'office',
   'party',
   'committee_sboe_id',
+  'city',
+  'state',
 ]
 
 const expectedContributorKeys = [
