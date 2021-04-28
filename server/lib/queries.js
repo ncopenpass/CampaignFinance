@@ -346,7 +346,7 @@ const getCommitteeContributionsForDownload = ({ ncsbeID, client }) => {
     `select count(*) over () as full_count,
        contributor_id,
        transaction_type,
-       sboe_id,
+       committee_sboe_id,
        report_name,
        date_occurred,
        account_code,
@@ -363,7 +363,7 @@ const getCommitteeContributionsForDownload = ({ ncsbeID, client }) => {
        employer_name
        from contributions
               left outer join contributors c on contributions.contributor_id = c.id
-      where lower(contributions.sboe_id) = lower($1)
+      where lower(contributions.committee_sboe_id) = lower($1)
       `,
     [ncsbeID]
   )
