@@ -310,6 +310,32 @@ describe('GET /api/candidate/:ncsbeID/contributions CSV download', function () {
   })
 })
 
+describe('GET /api/committee/:ncsbeID/contributions CSV download', function () {
+  it('it should have status 200 and right headers', async function () {
+    const client = await getClient()
+    const { rows } = await client.query(
+      `select sboe_id FROM committees
+      inner join contributions
+      on committees.sboe_id = contributions.committee_sboe_id
+      limit 1`,
+      []
+    )
+    client.release()
+    const id = encodeURIComponent(rows[0].sboe_id)
+    const response = await supertest(app)
+      .get(`/api/committee/${id}/contributions`)
+      .query({ toCSV: 'true' })
+      .set('Accept', 'text/csv')
+      .set('Content-Type', 'text/csv')
+    response.status.should.equal(200)
+    response.text
+      .split('\n')[0]
+      .split(',')
+      .map((item) => item.replace(/"/g, ''))
+      .should.deep.equalInAnyOrder(expectedContributorContributionsKeys)
+  })
+})
+
 describe('GET /api/contributor/:contributorId/contributions CSV download', function () {
   it('it should have status 200 and right headers', async function () {
     const client = await getClient()
