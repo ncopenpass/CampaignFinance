@@ -33,7 +33,7 @@ const getCandidateSummary = async (ncsbeID) => {
       select count(*)    as aggregated_contributions_count,
              sum(amount) as aggregated_contributions_sum
       from contributions
-      where contributor_id IS NULl
+      where contributor_id IS NULL
         and committee_sboe_id = $1 
   )
   select sum(amount),
