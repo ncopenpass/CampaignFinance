@@ -290,7 +290,41 @@ Query Params (optional):
 
 Candidate Committee Example: `/api/candidate/STA-C0498N-C-002
 
-Non-candidate Committee Example: `/api/
+Non-candidate Committee Example: `/api/committee/###`
+
+Candidate Committee response:
+
+```json
+{
+  "data": {
+    "candidate_first_last_name": "ROY COOPER",
+    "candidate_first_name": "ROY",
+    "candidate_full_name": "ROY A COOPER",
+    "candidate_last_name": "COOPER",
+    "candidate_middle_name": "A",
+    "current_status": "Unknown",
+    "juris": "",
+    "office": "Governor",
+    "party": "Democratic",
+    "committee_sboe_id": "STA-C0498N-C-002"
+  }
+}
+```
+
+Non-Candidate Committee response:
+
+```json
+{
+  "data": {
+    "committee_name": "COMMITTEE NAME",
+    "office": NULL,
+    "party": NULL,
+    "committee_sboe_id": "SBOE-ID",
+    "city": "CITY",
+    "state": "STATE"
+  }
+}
+```
 
 ## GET `/api/contributor/:contributorId/contributions`
 
