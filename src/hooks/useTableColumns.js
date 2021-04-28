@@ -95,7 +95,7 @@ export const useTableColumns = () => {
         Header: 'Name',
         id: 'candidate_name',
         accessor: ({ committee_name, committee_sboe_id, office }) =>
-          `${office}` !== 'NULL' ? (
+          `${office}` !== 'null' ? (
             <Link to={`${CANDIDATE_URL}${committee_sboe_id}`}>
               &nbsp;
               {committee_name}
