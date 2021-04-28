@@ -280,6 +280,18 @@ When `toCSV` is true, the endpoint will work as an `href` or with a `fetch` call
 > 3494,"AGGREGATED INDIVIDUAL CONTRIBUTION","","","","","","NOT AVAILABLE",50,"","STA-C0498N-C-002","2020-08-15T04:00:00.000Z","","CREDIT CARD","","2020 THIRD QUARTER","INDIVIDUAL"
 > 3494,"AGGREGATED INDIVIDUAL CONTRIBUTION","","","","","","NOT AVAILABLE",50,"","STA-C0498N-C-002","2020-08-15T04:00:00.000Z","","CREDIT CARD","","2020 THIRD QUARTER","INDIVIDUAL"
 
+## GET `/api/committee/:ncsbeID`
+
+Get a candidate and non-candidate political action committees (PAC) and details about the committees
+
+The `:ncsbeID` parameter must be URIEncoded (ie: `encodeURIComponent`)
+
+Query Params (optional):
+
+Candidate Committee Example: `/api/candidate/STA-C0498N-C-002
+
+Non-candidate Committee Example: `/api/
+
 ## GET `/api/contributor/:contributorId/contributions`
 
 Retrieve contributions for a contributor id.
