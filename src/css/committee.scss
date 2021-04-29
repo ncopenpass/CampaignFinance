@@ -1,0 +1,62 @@
+.container {
+    background-color: #fff;
+    padding-top: 50px;
+    margin-top: 0;
+  }
+  
+  .committee-name {
+    text-align: left;
+    font-size: 1.5rem;
+    margin: auto;
+  }
+
+  .committee-prop {
+    margin: auto;
+  }
+  
+  .committee-prop-label {
+    font-weight: bold;
+    margin-right: 5px;
+  }
+  
+  
+  .total-funding {
+    font-size: 1.5em;
+    font-weight: bold;
+    text-align: right;
+    margin: auto;
+  }
+  
+  .total-funding-tooltip {
+    text-align: right;
+    margin: auto;
+    margin-bottom: 0.5em;
+  }
+  
+  .summary-stat {
+    text-align: right;
+    margin: auto;
+  }
+  
+  .summary-num {
+    margin-left: 5px;
+    font-weight: bold;
+  }
+  
+  .table-label {
+    position: absolute;
+    bottom: 0;
+    font-size: 1.5rem;
+    margin: 0;
+  }
+  
+  .csv-download-button {
+    margin-top: 15px;
+    float: right;
+  }
+  
+  .csv-download-link {
+    color: white;
+    text-decoration: none;
+  }
+  
