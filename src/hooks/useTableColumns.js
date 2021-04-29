@@ -132,17 +132,32 @@ export const useTableColumns = () => {
     () => [
       {
         Header: 'Recipient Name',
-        accessor: ({ candidate_full_name, committee_sboe_id }) => (
-          <Link
-            to={(location) => ({
-              pathname: CANDIDATE_URL + committee_sboe_id,
-              fromPathname: location.pathname,
-            })}
-          >
-            {' '}
-            {candidate_full_name}
-          </Link>
-        ),
+        accessor: ({
+          candidate_full_name,
+          committee_sboe_id,
+          committee_name,
+        }) =>
+          Boolean(candidate_full_name) ? (
+            <Link
+              to={(location) => ({
+                pathname: CANDIDATE_URL + committee_sboe_id,
+                fromPathname: location.pathname,
+              })}
+            >
+              {' '}
+              {candidate_full_name}
+            </Link>
+          ) : (
+            <Link
+              to={(location) => ({
+                pathname: COMMITTEE_URL + committee_sboe_id,
+                fromPathname: location.pathname,
+              })}
+            >
+              {' '}
+              {committee_name}
+            </Link>
+          ),
       },
       {
         Header: 'Amount',
