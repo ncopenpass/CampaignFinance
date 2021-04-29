@@ -288,9 +288,9 @@ The `:ncsbeID` parameter must be URIEncoded (ie: `encodeURIComponent`)
 
 Query Params (optional):
 
-Candidate Committee Example: `/api/candidate/STA-C0498N-C-002
+Candidate Committee Example: `/api/candidate/STA-C0498N-C-002`
 
-Non-candidate Committee Example: `/api/committee/###`
+Non-candidate Committee Example: `/api/committee/STA-29M3E4-C-001`
 
 Candidate Committee response:
 
@@ -316,12 +316,12 @@ Non-Candidate Committee response:
 ```json
 {
   "data": {
-    "committee_name": "COMMITTEE NAME",
+    "committee_name": "NC DEMOCRATIC LEADERSHIP COMMITTEE (NCDLC)",
     "office": NULL,
-    "party": NULL,
-    "committee_sboe_id": "SBOE-ID",
-    "city": "CITY",
-    "state": "STATE"
+    "party": "Democratic",
+    "committee_sboe_id": "STA-29M3E4-C-001",
+    "city": "RALEIGH",
+    "state": "NC"
   }
 }
 ```
