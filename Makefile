@@ -57,3 +57,6 @@ migrate-down:
 
 build-dictionary:
 	cd scripts && node createDataDictionary
+
+test-server:
+	cd server && npm run test

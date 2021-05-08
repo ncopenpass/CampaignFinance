@@ -45,15 +45,20 @@ const apiReprContribution = (row) => {
 
 const apiReprCommittee = (row) => {
   return {
-    candidate_full_name: row.candidate_full_name,
     committee_name: row.committee_name,
+    office: row.office,
+    party: row.party,
+    committee_sboe_id: row.sboe_id,
+    city: row.committee_city,
+    state: row.committee_state,
   }
 }
 
 const apiReprContributionCommittee = (row) => {
   return {
     ...apiReprContribution(row),
-    ...apiReprCommittee(row),
+    candidate_full_name: row.candidate_full_name,
+    committee_name: row.committee_name,
     total_contributions_to_committee: row.total_contributions_to_committee,
   }
 }

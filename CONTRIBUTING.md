@@ -54,7 +54,7 @@ After the initial setup, to start and stop the project just run `make start` and
 
 ## Wireframes
 
-Wireframes are on [Figma](https://www.figma.com/proto/OcC48DWJjwCsPigGa9vb82/Campaign-Finance-Dashboard-Wireframes?node-id=2%3A59&viewport=-1320%2C-986%2C0.3811715841293335&scaling=scale-down-width)
+Wireframes are on [Figma](https://www.figma.com/proto/Ga6UbshTN4N1vONCmYpq9b/CF-Dashboard-VO2?node-id=2%3A2&scaling=contain&page-id=0%3A1)
 
 ## How to contribute
 

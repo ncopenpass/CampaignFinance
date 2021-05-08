@@ -11,6 +11,7 @@ import {
   QUICK_SEARCH_ROUTE,
   ABOUT_ROUTE,
   CONTRIBUTOR_ROUTE,
+  COMMITTEE_ROUTE,
 } from '../constants'
 
 import Header from './Header'
@@ -23,6 +24,7 @@ import DataDictionary from './DataDictionary'
 import PrivacyPolicy from './PrivacyPolicy'
 import Candidate from './Candidate'
 import Contributor from './Contributor'
+import Committee from './Committee'
 import About from './About'
 
 export default function App() {
@@ -43,6 +45,9 @@ export default function App() {
           </Route>
           <Route path={CONTRIBUTOR_ROUTE}>
             <Contributor />
+          </Route>
+          <Route path={COMMITTEE_ROUTE}>
+            <Committee />
           </Route>
           <Route path={PRIVACY_POLICY_ROUTE}>
             <PrivacyPolicy />

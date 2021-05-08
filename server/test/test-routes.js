@@ -67,6 +67,15 @@ const expectedCandidateKeys = [
   'committee_sboe_id',
 ]
 
+const expectedCommitteeKeys = [
+  'committee_name',
+  'office',
+  'party',
+  'committee_sboe_id',
+  'city',
+  'state',
+]
+
 const expectedContributorKeys = [
   'contributor_id',
   'name',
@@ -169,6 +178,28 @@ describe('GET /api/search/candidates/:name', function () {
   })
 })
 
+describe('GET /api/search/committees/:name', function () {
+  it('it should have status 200 and correct schema', async function () {
+    const client = await getClient()
+    const { rows } = await client.query(
+      'select committee_name from committees limit 1',
+      []
+    )
+    client.release()
+    const name = encodeURIComponent(rows[0].committee_name)
+    const response = await supertest(app).get(`/api/search/committees/${name}`)
+    response.status.should.equal(200)
+    response.body.should.be.an('object').that.has.all.keys(['data', 'count'])
+    console.log(response.body)
+    response.body.data[0].should.be
+      .an('object')
+      .that.has.all.keys(expectedCommitteeKeys)
+    Object.keys(response.body.data[0]).length.should.equal(
+      expectedCommitteeKeys.length
+    )
+  })
+})
+
 describe('GET /api/candidate/:ncsbeID', function () {
   it('it should have status 200 and correct schema', async function () {
     const client = await getClient()
@@ -267,6 +298,32 @@ describe('GET /api/candidate/:ncsbeID/contributions CSV download', function () {
     const id = encodeURIComponent(rows[0].sboe_id)
     const response = await supertest(app)
       .get(`/api/candidate/${id}/contributions`)
+      .query({ toCSV: 'true' })
+      .set('Accept', 'text/csv')
+      .set('Content-Type', 'text/csv')
+    response.status.should.equal(200)
+    response.text
+      .split('\n')[0]
+      .split(',')
+      .map((item) => item.replace(/"/g, ''))
+      .should.deep.equalInAnyOrder(expectedContributorContributionsKeys)
+  })
+})
+
+describe('GET /api/committee/:ncsbeID/contributions CSV download', function () {
+  it('it should have status 200 and right headers', async function () {
+    const client = await getClient()
+    const { rows } = await client.query(
+      `select sboe_id FROM committees
+      inner join contributions
+      on committees.sboe_id = contributions.committee_sboe_id
+      limit 1`,
+      []
+    )
+    client.release()
+    const id = encodeURIComponent(rows[0].sboe_id)
+    const response = await supertest(app)
+      .get(`/api/committee/${id}/contributions`)
       .query({ toCSV: 'true' })
       .set('Accept', 'text/csv')
       .set('Content-Type', 'text/csv')

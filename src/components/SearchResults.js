@@ -16,21 +16,30 @@ const SearchBarContainer = styled.div`
 const SearchResults = React.memo(() => {
   const { searchTerm } = useParams()
   const [lastCandidatesQuery, setLastCandidatesQuery] = useState({})
+  const [lastCommitteesQuery, setLastCommitteesQuery] = useState({})
   const [lastContributorsQuery, setLastContributorsQuery] = useState({})
 
   const {
     candidateApiStatus,
+    committeeApiStatus,
     contributorApiStatus,
     contributors,
+    committees,
     candidates,
     contributorCount,
+    committeeCount,
     candidateCount,
     fetchCandidates,
+    fetchCommittees,
     fetchContributors,
     fetchInitialSearchData,
   } = useSearch()
 
-  const { searchContributorColumns, searchCandidateColumns } = useTableColumns()
+  const {
+    searchContributorColumns,
+    searchCandidateColumns,
+    searchCommitteeColumns,
+  } = useTableColumns()
 
   useEffect(() => {
     if (fetchInitialSearchData) {
@@ -42,6 +51,7 @@ const SearchResults = React.memo(() => {
       }
       setLastCandidatesQuery(query)
       setLastContributorsQuery(query)
+      setLastCommitteesQuery(query)
       fetchInitialSearchData({ searchTerm })
     }
   }, [searchTerm, fetchInitialSearchData])
@@ -59,6 +69,21 @@ const SearchResults = React.memo(() => {
       }
     },
     [fetchCandidates, lastCandidatesQuery]
+  )
+
+  const handleCommitteeDataChange = useCallback(
+    ({ sortBy, filters }) => {
+      const sort = formatSortBy(sortBy)
+      if (
+        sort !== lastCommitteesQuery.sort ||
+        JSON.stringify(filters) !== JSON.stringify(lastCommitteesQuery.filters)
+      ) {
+        const query = { ...lastCommitteesQuery, sort, filters }
+        setLastCommitteesQuery(query)
+        fetchCommittees(query)
+      }
+    },
+    [fetchCommittees, lastCommitteesQuery]
   )
 
   const handleContributorDataChange = useCallback(
@@ -111,6 +136,42 @@ const SearchResults = React.memo(() => {
       fetchCandidates(query)
     },
     [fetchCandidates, lastCandidatesQuery]
+  )
+
+  // Table limit and pagination functions for Committees
+  const fetchSameCommittees = useCallback(
+    (limit = API_BATCH_SIZE) => {
+      const query = { ...lastCommitteesQuery, limit }
+      setLastCommitteesQuery(query)
+      fetchCommittees(query)
+    },
+    [fetchCommittees, lastCommitteesQuery]
+  )
+
+  const fetchNextCommittees = useCallback(
+    (limit = API_BATCH_SIZE) => {
+      const query = {
+        ...lastCommitteesQuery,
+        limit,
+        offset: lastCommitteesQuery.offset + limit,
+      }
+      setLastCommitteesQuery(query)
+      fetchCommittees(query)
+    },
+    [fetchCommittees, lastCommitteesQuery]
+  )
+
+  const fetchPreviousCommittees = useCallback(
+    (limit = API_BATCH_SIZE) => {
+      const query = {
+        ...lastCommitteesQuery,
+        limit,
+        offset: lastCommitteesQuery.offset - limit,
+      }
+      setLastCommitteesQuery(query)
+      fetchCommittees(query)
+    },
+    [fetchCommittees, lastCommitteesQuery]
   )
 
   // Table limit and pagination functions for Contributors
@@ -173,6 +234,27 @@ const SearchResults = React.memo(() => {
         id: 'candidates',
       },
       {
+        title: `Committees (${committeeCount}) matching "${searchTerm}"`,
+        content: (
+          <SearchResultTable
+            apiStatus={committeeApiStatus}
+            columns={searchCommitteeColumns}
+            data={committees}
+            count={committeeCount}
+            offset={lastCommitteesQuery.offset}
+            fetchSame={fetchSameCommittees}
+            fetchNext={fetchNextCommittees}
+            fetchPrevious={fetchPreviousCommittees}
+            searchTerm={searchTerm}
+            searchType="committees"
+            onFetchData={handleCommitteeDataChange}
+            appliedFilters={lastCommitteesQuery.filters}
+          />
+        ),
+        expanded: true,
+        id: 'committees',
+      },
+      {
         title: `Contributors (${contributorCount}) matching "${searchTerm}"`,
         content: (
           <SearchResultTable
@@ -199,6 +281,10 @@ const SearchResults = React.memo(() => {
       searchCandidateColumns,
       candidates,
       candidateCount,
+      committeeApiStatus,
+      searchCommitteeColumns,
+      committees,
+      committeeCount,
       contributorApiStatus,
       searchContributorColumns,
       contributors,
@@ -206,14 +292,19 @@ const SearchResults = React.memo(() => {
       searchTerm,
       lastContributorsQuery,
       lastCandidatesQuery,
+      lastCommitteesQuery,
       fetchSameCandidates,
       fetchNextCandidates,
       fetchPreviousCandidates,
+      fetchSameCommittees,
+      fetchNextCommittees,
+      fetchPreviousCommittees,
       fetchSameContributors,
       fetchNextContributors,
       fetchPreviousContributors,
       handleCandidateDataChange,
       handleContributorDataChange,
+      handleCommitteeDataChange,
     ]
   )
 
