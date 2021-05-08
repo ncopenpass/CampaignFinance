@@ -190,7 +190,6 @@ describe('GET /api/search/committees/:name', function () {
     const response = await supertest(app).get(`/api/search/committees/${name}`)
     response.status.should.equal(200)
     response.body.should.be.an('object').that.has.all.keys(['data', 'count'])
-    console.log(response.body)
     response.body.data[0].should.be
       .an('object')
       .that.has.all.keys(expectedCommitteeKeys)
@@ -316,7 +315,7 @@ describe('GET /api/committee/:ncsbeID/contributions CSV download', function () {
     const { rows } = await client.query(
       `select sboe_id FROM committees
       inner join contributions
-      on committees.sboe_id = contributions.committee_sboe_id
+      on committees.sboe_id = contributions.canon_committee_sboe_id
       limit 1`,
       []
     )

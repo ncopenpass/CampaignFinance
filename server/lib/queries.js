@@ -261,7 +261,7 @@ const getCommitteeContributions = async ({
        count(*) over () as full_count,
        contributor_id,
        transaction_type,
-       committee_sboe_id,
+       canon_committee_sboe_id,
        report_name,
        date_occurred,
        account_code,
@@ -269,17 +269,17 @@ const getCommitteeContributions = async ({
        form_of_payment,
        purpose,
        declaration,
-       id,
+       account_id,
        name,
        city,
        state,
-       zipcode,
+       zip_code,
        profession,
        employer_name
        from contributions
-              join contributors c on contributions.contributor_id = c.id
+              join contributors c on contributions.contributor_id = c.account_id
       where (
-        lower(contributions.committee_sboe_id) = lower($1)
+        lower(contributions.canon_committee_sboe_id) = lower($1)
         ${safeNameFilter}
         ${safeTransactionTypeFilter}
         ${safeAmountFilter}
@@ -345,7 +345,7 @@ const getCommitteeContributionsForDownload = ({ ncsbeID, client }) => {
     `select count(*) over () as full_count,
        contributor_id,
        transaction_type,
-       committee_sboe_id,
+       canon_committee_sboe_id,
        report_name,
        date_occurred,
        account_code,
@@ -353,16 +353,16 @@ const getCommitteeContributionsForDownload = ({ ncsbeID, client }) => {
        form_of_payment,
        purpose,
        declaration,
-       id,
+       account_id,
        coalesce(name, 'Aggregated Individual Contribution') as name,
        city,
        state,
-       zipcode,
+       zip_code,
        profession,
        employer_name
        from contributions
-              left outer join contributors c on contributions.contributor_id = c.id
-      where lower(contributions.committee_sboe_id) = lower($1)
+              left outer join contributors c on contributions.contributor_id = c.account_id
+      where lower(contributions.canon_committee_sboe_id) = lower($1)
       `,
     [ncsbeID]
   )
