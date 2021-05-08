@@ -6,7 +6,7 @@ const handleError = (error, res) => {
   res.status(500)
   const { NODE_ENV } = process.env
   const message =
-    NODE_ENV === 'development'
+    NODE_ENV === 'development' || NODE_ENV === 'test'
       ? `unable to process request: ${error.message}`
       : 'unable to process request'
   res.send({ error: message })

@@ -196,7 +196,7 @@ describe('GET /api/candidate/:ncsbeID/contributions/summary', function () {
     const { rows } = await client.query(
       `select sboe_id FROM committees
       inner join contributions
-      on committees.sboe_id = contributions.committee_sboe_id
+      on committees.sboe_id = contributions.canon_committee_sboe_id
       limit 1`,
       []
     )
@@ -232,7 +232,7 @@ describe('GET /api/candidate/:ncsbeID/contributions', function () {
     const { rows } = await client.query(
       `select sboe_id FROM committees
       inner join contributions
-      on committees.sboe_id = contributions.committee_sboe_id
+      on committees.sboe_id = contributions.canon_committee_sboe_id
       limit 1`,
       []
     )
@@ -259,7 +259,7 @@ describe('GET /api/candidate/:ncsbeID/contributions CSV download', function () {
     const { rows } = await client.query(
       `select sboe_id FROM committees
       inner join contributions
-      on committees.sboe_id = contributions.committee_sboe_id
+      on committees.sboe_id = contributions.canon_committee_sboe_id
       limit 1`,
       []
     )
@@ -283,11 +283,11 @@ describe('GET /api/contributor/:contributorId/contributions CSV download', funct
   it('it should have status 200 and right headers', async function () {
     const client = await getClient()
     const { rows } = await client.query(
-      `select id from contributors limit 1`,
+      `select account_id from contributors limit 1`,
       []
     )
     client.release()
-    const id = encodeURIComponent(rows[0].id)
+    const id = encodeURIComponent(rows[0].account_id)
     const response = await supertest(app)
       .get(`/api/contributor/${id}/contributions`)
       .query({ toCSV: 'true' })
@@ -306,11 +306,11 @@ describe('GET /api/contributor/:contributorId/contributions', function () {
   it('it should have status 200 and correct schema', async function () {
     const client = await getClient()
     const { rows } = await client.query(
-      'select id FROM contributors limit 1',
+      'select account_id FROM contributors limit 1',
       []
     )
     client.release()
-    const id = encodeURIComponent(rows[0].id)
+    const id = encodeURIComponent(rows[0].account_id)
     const response = await supertest(app).get(
       `/api/contributor/${id}/contributions`
     )
@@ -329,11 +329,11 @@ describe('GET /api/contributor/:contributorId', function () {
   it('it should have status 200 and correct schema', async function () {
     const client = await getClient()
     const { rows } = await client.query(
-      'select id FROM contributors limit 1',
+      'select account_id FROM contributors limit 1',
       []
     )
     client.release()
-    const id = encodeURIComponent(rows[0].id)
+    const id = encodeURIComponent(rows[0].account_id)
     const response = await supertest(app).get(`/api/contributor/${id}`)
     response.status.should.equal(200)
     response.body.should.be.an('object').that.has.all.keys(['data'])
