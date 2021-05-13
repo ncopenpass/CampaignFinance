@@ -85,8 +85,8 @@ const Contributor = () => {
               {contributor.employer_name}
             </p>
             <p className="candidate-prop">
-              <span className="candidate-prop-label">City/State:</span>'
-              {contributor.city}/{contributor.state}'
+              <span className="candidate-prop-label">City/State:</span>
+              {`${contributor.city}, ${contributor.state}`}
             </p>
           </Grid>
         </Grid>
