@@ -49,6 +49,8 @@ const apiReprCommittee = (row) => {
     office: row.office,
     party: row.party,
     committee_sboe_id: row.sboe_id,
+    city: row.committee_city,
+    state: row.committee_state,
   }
 }
 
