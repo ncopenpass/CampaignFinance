@@ -27,14 +27,15 @@ const SUPPORTED_CANDIDATE_CONTRIBUTION_SORT_FIELDS = [
 const getCandidateSummary = async (ncsbeID) => {
   // Post MVP we should probably find a way to speed this up.
   console.time('getCandidateSummary')
+  // TODO: fix aggregated individual contribution logic
   const summary = await db.query(
     `
     with aggregated_contributions as (
       select count(*)    as aggregated_contributions_count,
              sum(amount) as aggregated_contributions_sum
       from contributions
-      where contributor_id IS NULL
-        and committee_sboe_id = $1 
+      where contributor_id IS NULl
+        and canon_committee_sboe_id = $1
   )
   select sum(amount),
          avg(amount),
@@ -43,7 +44,7 @@ const getCandidateSummary = async (ncsbeID) => {
          (select aggregated_contributions_count from aggregated_contributions limit 1) as aggregated_contributions_count,
          (select aggregated_contributions_sum from aggregated_contributions limit 1)   as aggregated_contributions_sum
   from contributions
-  where committee_sboe_id = $1 
+  where canon_committee_sboe_id = $1 
   
 `,
     [ncsbeID]
@@ -159,7 +160,7 @@ const getCandidateContributions = async ({
        count(*) over () as full_count,
        contributor_id,
        transaction_type,
-       committee_sboe_id,
+       canon_committee_sboe_id,
        report_name,
        date_occurred,
        account_code,
@@ -168,17 +169,16 @@ const getCandidateContributions = async ({
        purpose,
        candidate_referendum_name,
        declaration,
-       id,
        name,
        city,
        state,
-       zipcode,
+       zip_code,
        profession,
        employer_name
        from contributions
-              join contributors c on contributions.contributor_id = c.id
+              join contributors c on contributions.contributor_id = c.account_id
       where (
-        lower(contributions.committee_sboe_id) = lower($1)
+        lower(contributions.canon_committee_sboe_id) = lower($1)
         ${safeNameFilter}
         ${safeTransactionTypeFilter}
         ${safeAmountFilter}
@@ -261,7 +261,7 @@ const getCommitteeContributions = async ({
        count(*) over () as full_count,
        contributor_id,
        transaction_type,
-       committee_sboe_id,
+       canon_committee_sboe_id,
        report_name,
        date_occurred,
        account_code,
@@ -269,17 +269,17 @@ const getCommitteeContributions = async ({
        form_of_payment,
        purpose,
        declaration,
-       id,
+       account_id,
        name,
        city,
        state,
-       zipcode,
+       zip_code,
        profession,
        employer_name
        from contributions
-              join contributors c on contributions.contributor_id = c.id
+              join contributors c on contributions.contributor_id = c.account_id
       where (
-        lower(contributions.committee_sboe_id) = lower($1)
+        lower(contributions.canon_committee_sboe_id) = lower($1)
         ${safeNameFilter}
         ${safeTransactionTypeFilter}
         ${safeAmountFilter}
@@ -309,7 +309,7 @@ const getCandidateContributionsForDownload = ({ ncsbeID, client }) => {
     `select count(*) over () as full_count,
        contributor_id,
        transaction_type,
-       committee_sboe_id,
+       canon_committee_sboe_id,
        report_name,
        date_occurred,
        account_code,
@@ -318,16 +318,15 @@ const getCandidateContributionsForDownload = ({ ncsbeID, client }) => {
        purpose,
        candidate_referendum_name,
        declaration,
-       id,
        coalesce(name, 'Aggregated Individual Contribution') as name,
        city,
        state,
-       zipcode,
+       zip_code,
        profession,
        employer_name
        from contributions
-              left outer join contributors c on contributions.contributor_id = c.id
-      where lower(contributions.committee_sboe_id) = lower($1)
+              left outer join contributors c on contributions.contributor_id = c.account_id
+      where lower(contributions.canon_committee_sboe_id) = lower($1)
       `,
     [ncsbeID]
   )
@@ -346,7 +345,7 @@ const getCommitteeContributionsForDownload = ({ ncsbeID, client }) => {
     `select count(*) over () as full_count,
        contributor_id,
        transaction_type,
-       committee_sboe_id,
+       canon_committee_sboe_id,
        report_name,
        date_occurred,
        account_code,
@@ -354,16 +353,16 @@ const getCommitteeContributionsForDownload = ({ ncsbeID, client }) => {
        form_of_payment,
        purpose,
        declaration,
-       id,
+       account_id,
        coalesce(name, 'Aggregated Individual Contribution') as name,
        city,
        state,
-       zipcode,
+       zip_code,
        profession,
        employer_name
        from contributions
-              left outer join contributors c on contributions.contributor_id = c.id
-      where lower(contributions.committee_sboe_id) = lower($1)
+              left outer join contributors c on contributions.contributor_id = c.account_id
+      where lower(contributions.canon_committee_sboe_id) = lower($1)
       `,
     [ncsbeID]
   )
@@ -411,9 +410,9 @@ const getContributorContributions = ({
   db.query(
     `select *, count(*) over () as full_count,
   (select sum(amount) from contributions c where contributor_id = $1
-    and c.committee_sboe_id = contributions.committee_sboe_id) as total_contributions_to_committee
+    and c.canon_committee_sboe_id = contributions.canon_committee_sboe_id) as total_contributions_to_committee
   from contributions
-  join committees on committees.sboe_id = contributions.committee_sboe_id
+  join committees on committees.sboe_id = contributions.canon_committee_sboe_id
   where contributor_id = $1
   order by contributions.date_occurred asc
   limit $2
@@ -428,7 +427,7 @@ const getContributorContributions = ({
  * @param {string} args.contributorId
  **/
 const getContributor = ({ client, contributorId }) =>
-  db.query(`select * from contributors where id = $1`, [contributorId])
+  db.query(`select * from contributors where account_id = $1`, [contributorId])
 
 module.exports = {
   getCandidateSummary,

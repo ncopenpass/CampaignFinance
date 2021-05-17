@@ -8,9 +8,9 @@ require('dotenv').config()
 const MIGRATIONS_TABLE_NAME = 'pgmigrations_test'
 
 const dropTables = async (client) => {
-  await client.query('drop table if exists committees')
-  await client.query('drop table if exists contributions')
-  await client.query('drop table if exists contributors')
+  await client.query('drop table if exists accounts cascade')
+  await client.query('drop table if exists committees cascade')
+  await client.query('drop table if exists transactions cascade')
   await client.query(`drop table if exists ${MIGRATIONS_TABLE_NAME}`)
 }
 
@@ -43,19 +43,25 @@ const seedDb = async () => {
   try {
     client = await getClient()
     await copyFromCSV(
-      `${__dirname}/fixtures/contributors.csv`,
-      'contributors',
-      client
-    )
-    await copyFromCSV(
-      `${__dirname}/fixtures/contributions.csv`,
-      'contributions',
-      client
+      `${__dirname}/fixtures/accounts.csv`,
+      'accounts',
+      client,
+      '',
+      ''
     )
     await copyFromCSV(
       `${__dirname}/fixtures/committees.csv`,
       'committees',
-      client
+      client,
+      '',
+      ''
+    )
+    await copyFromCSV(
+      `${__dirname}/fixtures/transactions.csv`,
+      'transactions',
+      client,
+      '',
+      ''
     )
   } catch (error) {
     console.error(error)
@@ -68,7 +74,7 @@ const dropRows = async () => {
   let client = null
   try {
     client = await getClient()
-    await client.query('truncate committees, contributions, contributors')
+    await client.query('truncate committees, accounts, transactions')
   } catch (err) {
     console.error(err)
   } finally {

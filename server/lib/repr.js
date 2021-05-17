@@ -17,11 +17,11 @@ const apiReprCandidate = (row) => {
 
 const apiReprContributor = (row) => {
   return {
-    contributor_id: row.id,
+    contributor_id: row.account_id,
     name: row.name,
     city: row.city,
     state: row.state,
-    zipcode: row.zipcode,
+    zipcode: row.zip_code,
     profession: row.profession,
     employer_name: row.employer_name,
   }
@@ -32,7 +32,7 @@ const apiReprContribution = (row) => {
     account_code: row.account_code,
     amount: row.amount,
     candidate_referendum_name: row.candidate_referendum_name,
-    committee_sboe_id: row.committee_sboe_id,
+    committee_sboe_id: row.canon_committee_sboe_id,
     contributor_id: row.contributor_id,
     date_occurred: row.date_occurred,
     declaration: row.declaration,
