@@ -1,16 +1,10 @@
 import React, { useCallback, useState } from 'react'
-import { Search, Button } from '@trussworks/react-uswds'
+import { Search } from '@trussworks/react-uswds'
 import { useHistory } from 'react-router-dom'
 
-import {
-  SEARCH_FRAGMENT_ROUTE,
-  QUICK_SEARCH_FRAGMENT_ROUTE,
-  CANDIDATES,
-  CONTRIBUTORS,
-  ELECTION_YEAR,
-} from '../constants'
+import { SEARCH_FRAGMENT_ROUTE } from '../constants'
 
-const SearchBar = ({ hideQuickLinks }) => {
+const SearchBar = () => {
   const history = useHistory()
   const [searchTerm, setSearchTerm] = useState('')
 
@@ -24,27 +18,11 @@ const SearchBar = ({ hideQuickLinks }) => {
     [searchTerm, history]
   )
 
-  const handleQuickCandidateLink = useCallback(
-    (e) => {
-      e.preventDefault()
-      history.push(`${QUICK_SEARCH_FRAGMENT_ROUTE}${CANDIDATES}`)
-    },
-    [history]
-  )
-
-  const handleQuickDonorLink = useCallback(
-    (e) => {
-      e.preventDefault()
-      history.push(`${QUICK_SEARCH_FRAGMENT_ROUTE}${CONTRIBUTORS}`)
-    },
-    [history]
-  )
-
   return (
     <div className="search-component">
       <div className="search-bar">
         <Search
-          placeholder="Search by Candidate or Contributor"
+          placeholder="Search by Candidate, Contributor, or PAC"
           onSubmit={handleSearch}
           onChange={handleChange}
           size="big"
