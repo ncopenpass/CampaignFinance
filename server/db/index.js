@@ -14,6 +14,7 @@ const pool = new Pool({
           rejectUnauthorized: false,
         }
       : undefined,
+  min: 1,
 })
 
 /**

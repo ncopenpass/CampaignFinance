@@ -54,9 +54,10 @@ router.get('/contributor/:contributorId/contributions', async (req, res) => {
 router.get('/contributor/:contributorId', async (req, res) => {
   try {
     const { contributorId } = req.params
-    const result = await db.query(`select * from contributors where id = $1`, [
-      contributorId,
-    ])
+    const result = await db.query(
+      `select * from contributors where account_id = $1`,
+      [contributorId]
+    )
     const contributor =
       result.rows.length > 0 ? apiReprContributor(result.rows[0]) : null
 

@@ -11,7 +11,7 @@
 ### MacOS/Linux
 
 - Ensure all pre-requisites are installed
-- Download this data and unzip this [file](https://drive.google.com/file/d/1ST7kAOuFt3J8ZwkrnAe-Llmexp6lojtC/view?usp=sharing)
+- Download this data and unzip this [file](https://drive.google.com/file/d/1AJOrBuTeGPYyXsXNs4XzX7a5QloZVTGV/view?usp=sharing)
 - Copy all the CSV files to the `./server/tmp` directory
 - Run `cp server/sample.env server/.env` (If you do not wish to use docker, change the database url in the newly created `.env` file)
 - Run `make first-run` this will run `npm install` for the ui and server and setup the db using Docker. After running this once you shouldn't need to run it again. (If you are not using Docker run `make first-run-no-docker`)
