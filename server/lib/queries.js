@@ -429,6 +429,8 @@ const getContributorContributions = ({
 const getContributor = ({ client, contributorId }) =>
   db.query(`select * from contributors where account_id = $1`, [contributorId])
 
+/* query from expenditures view */
+
 module.exports = {
   getCandidateSummary,
   getCandidateContributions,
