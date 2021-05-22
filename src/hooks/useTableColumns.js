@@ -175,7 +175,16 @@ export const useTableColumns = () => {
       },
       {
         Header: 'Donation Date',
-        accessor: 'date_occurred',
+        id: 'date_occurred',
+        accessor: (r) => {
+          const d = new Date(r.date_occurred)
+          return d.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: '2-digit',
+          })
+        },
+        disableSortBy: false,
       },
       {
         Header: 'Description',
