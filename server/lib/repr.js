@@ -63,6 +63,20 @@ const apiReprContributionCommittee = (row) => {
   }
 }
 
+const apiReprExpenditure = ({
+  date_occurred,
+  form_of_payment,
+  transaction_type,
+  purpose,
+  amount,
+}) => ({
+  date_occurred,
+  form_of_payment,
+  transaction_type,
+  purpose,
+  amount,
+})
+
 // the combined view for contributor + contributions
 const apiReprContributorContributions = (row) => {
   return {
@@ -78,4 +92,5 @@ module.exports = {
   apiReprContributor,
   apiReprContributionCommittee,
   apiReprContributorContributions,
+  apiReprExpenditure,
 }
