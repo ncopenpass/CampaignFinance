@@ -297,6 +297,45 @@ export const useTableColumns = () => {
     []
   )
 
+  const expenditureColumns = useMemo(
+    () => [
+      {
+        id: 'date_occurred',
+        Header: 'Date',
+        accessor: (r) =>
+          new Date(r.date_occurred).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: '2-digit',
+          }),
+        disableSortBy: false,
+      },
+      {
+        Header: 'Form of Payment',
+        accessor: 'form_of_payment',
+      },
+      {
+        Header: 'Transaction Type',
+        accessor: 'transaction_type',
+      },
+      {
+        Header: 'Purpose',
+        accessor: 'purpose',
+      },
+      {
+        id: 'amount',
+        Header: 'Amount',
+        accessor: (r) =>
+          new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+          }).format(r.amount),
+        disableSortBy: false,
+      },
+    ],
+    []
+  )
+
   return {
     searchContributorColumns,
     searchCandidateColumns,
@@ -304,5 +343,6 @@ export const useTableColumns = () => {
     candidateContributionColumns,
     individualContributionsColumns,
     committeeContributionColumns,
+    expenditureColumns,
   }
 }
