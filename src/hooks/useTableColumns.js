@@ -133,14 +133,12 @@ export const useTableColumns = () => {
       {
         Header: 'Donation Date',
         id: 'date_occurred',
-        accessor: (r) => {
-          const d = new Date(r.date_occurred)
-          return d.toLocaleDateString('en-US', {
+        accessor: (r) =>
+          new Date(r.date_occurred).toLocaleDateString('en-US', {
             year: 'numeric',
             month: 'short',
             day: '2-digit',
-          })
-        },
+          }),
         disableSortBy: true,
       },
       {
