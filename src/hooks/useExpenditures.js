@@ -21,7 +21,7 @@ export const useExpenditures = () => {
   const getDataAndCount = useCallback(async (url) => {
     try {
       setApiStatus(STATUSES.Pending)
-      const response = await fetch(url)
+      const response = await fetch(`${window.location.origin}/${url}`)
       const { data, count } = await response.json()
       setApiStatus(STATUSES.Success)
       return { data, count }

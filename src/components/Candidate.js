@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom'
 import { Grid, GridContainer } from '@trussworks/react-uswds'
 import NumberFormat from 'react-number-format'
 
-import { useCandidate, useTableColumns } from '../hooks'
+import { useCandidate, useTableColumns, useExpenditures } from '../hooks'
 import { API_BATCH_SIZE } from '../constants'
 import '../css/candidate.scss'
 import { formatSortBy } from '../utils'
@@ -13,10 +13,11 @@ import ReportError from './ReportError'
 
 const Candidate = () => {
   let { candidateId } = useParams()
-  const [lastQuery, setLastQuery] = useState({})
+  const [lastContributionsQuery, setLastContributionsQuery] = useState({})
+  const [lastExpendituresQuery, setLastExpendituresQuery] = useState({})
 
   const {
-    apiStatus,
+    apiStatus: candidateApiStatus,
     candidate,
     contributions,
     summary,
@@ -25,63 +26,144 @@ const Candidate = () => {
     fetchContributions,
   } = useCandidate()
 
+  const {
+    apiStatus: expendituresApiStatus,
+    expenditures,
+    expenditureCount,
+    fetchExpenditures,
+  } = useExpenditures()
+
   useEffect(() => {
-    if (fetchInitialSearchData) {
-      const query = {
+    if (fetchInitialSearchData && fetchExpenditures) {
+      let query = {
         candidateId,
         limit: API_BATCH_SIZE,
         offset: 0,
         sort: '-date_occurred',
       }
-      setLastQuery(query)
+      setLastContributionsQuery(query)
       fetchInitialSearchData(query)
+      query = { ...query, ncsbeID: query.candidateId }
+      delete query.candidateId
+      setLastExpendituresQuery(query)
+      fetchExpenditures(query)
     }
-  }, [candidateId, fetchInitialSearchData])
+  }, [candidateId, fetchInitialSearchData, fetchExpenditures])
+
+  const getFunctionsAndQuery = useCallback(
+    (type) => {
+      let query, setQuery, fetchData
+      if (type === 'contributions') {
+        query = lastContributionsQuery
+        setQuery = setLastContributionsQuery
+        fetchData = fetchContributions
+      } else {
+        query = lastExpendituresQuery
+        setQuery = setLastExpendituresQuery
+        fetchData = fetchExpenditures
+      }
+      return { query, setQuery, fetchData }
+    },
+    [
+      fetchContributions,
+      fetchExpenditures,
+      lastContributionsQuery,
+      lastExpendituresQuery,
+    ]
+  )
 
   const handleDataFetch = useCallback(
-    ({ sortBy }) => {
+    ({ sortBy, type }) => {
       // we don't support multisort, so get the first element in the sortBy array if it exists
       const sort = formatSortBy(sortBy)
-      if (sort !== lastQuery.sort) {
-        const query = { ...lastQuery, sort }
-        setLastQuery(query)
-        fetchContributions(query)
+      let { query, setQuery, fetchData } = getFunctionsAndQuery(type)
+      if (sort !== query.sort) {
+        query = { ...query, sort }
+        setQuery(query)
+        fetchData(query)
       }
     },
-    [lastQuery, fetchContributions]
+    [getFunctionsAndQuery]
+  )
+
+  const handleDataFetchContributions = useCallback(
+    ({ sortBy }) => {
+      handleDataFetch({ sortBy, type: 'contributions' })
+    },
+    [handleDataFetch]
+  )
+
+  const handleDataFetchExpenditures = useCallback(
+    ({ sortBy }) => {
+      handleDataFetch({ sortBy, type: 'expenditures' })
+    },
+    [handleDataFetch]
   )
 
   // Fetches the same page of contributions when user changes limit size
-  const fetchSameContributions = useCallback(
-    (limit = API_BATCH_SIZE) => {
-      const query = { ...lastQuery, limit }
-      setLastQuery(query)
-      fetchContributions(query)
+  const fetchSame = useCallback(
+    ({ limit = API_BATCH_SIZE, type } = {}) => {
+      let { query, setQuery, fetchData } = getFunctionsAndQuery(type)
+      query = { ...query, limit }
+      setQuery(query)
+      fetchData(query)
     },
-    [fetchContributions, lastQuery]
+    [getFunctionsAndQuery]
+  )
+
+  const fetchSameContributions = useCallback(
+    (limit) => fetchSame({ limit, type: 'contributions' }),
+    [fetchSame]
+  )
+
+  const fetchSameExpenditures = useCallback(
+    (limit) => fetchSame({ limit, type: 'expenditures' }),
+    [fetchSame]
   )
 
   // Fetch next batch of contributions for pagination
-  const fetchNextContributions = useCallback(
-    (limit = API_BATCH_SIZE) => {
-      const query = { ...lastQuery, limit, offset: lastQuery.offset + limit }
-      setLastQuery(query)
-      fetchContributions(query)
+  const fetchNext = useCallback(
+    ({ limit = API_BATCH_SIZE, type } = {}) => {
+      let { query, setQuery, fetchData } = getFunctionsAndQuery(type)
+      query = { ...query, limit, offset: query.offset + limit }
+      setQuery(query)
+      fetchData(query)
     },
-    [fetchContributions, lastQuery]
+    [getFunctionsAndQuery]
+  )
+
+  const fetchNextContributions = useCallback(
+    (limit) => fetchNext({ limit, type: 'contributions' }),
+    [fetchNext]
+  )
+
+  const fetchNextExpenditures = useCallback(
+    (limit) => fetchNext({ limit, type: 'expenditures' }),
+    [fetchNext]
   )
 
   // Fetch previous batch of contributions for pagination
-  const fetchPreviousContributions = useCallback(
-    (limit = API_BATCH_SIZE) => {
-      const query = { ...lastQuery, limit, offset: lastQuery.offset - limit }
-      setLastQuery(query)
-      fetchContributions(query)
+  const fetchPrevious = useCallback(
+    ({ limit = API_BATCH_SIZE, type } = {}) => {
+      let { query, setQuery, fetchData } = getFunctionsAndQuery(type)
+      query = { ...query, limit, offset: query.offset - limit }
+      setQuery(query)
+      fetchData(query)
     },
-    [fetchContributions, lastQuery]
+    [getFunctionsAndQuery]
   )
 
-  const { candidateContributionColumns } = useTableColumns()
+  const fetchPreviousContributions = useCallback(
+    (limit) => fetchPrevious({ limit, type: 'contributions' }),
+    [fetchPrevious]
+  )
+
+  const fetchPreviousExpenditures = useCallback(
+    (limit) => fetchPrevious({ limit, type: 'expenditures' }),
+    [fetchPrevious]
+  )
+
+  const { candidateContributionColumns, expenditureColumns } = useTableColumns()
 
   return (
     <div className="container">
@@ -191,17 +273,55 @@ const Candidate = () => {
         <Grid row>
           <Grid col>
             <SearchResultTable
-              apiStatus={apiStatus}
+              apiStatus={candidateApiStatus}
               columns={candidateContributionColumns}
               data={contributions}
               count={contributionCount}
-              offset={lastQuery.offset}
+              offset={lastContributionsQuery.offset}
               fetchSame={fetchSameContributions}
               fetchNext={fetchNextContributions}
               fetchPrevious={fetchPreviousContributions}
               searchTerm={candidateId}
               searchType="contributions"
-              onFetchData={handleDataFetch}
+              onFetchData={handleDataFetchContributions}
+              initialSortBy={[{ id: 'date_occurred', desc: true }]}
+            />
+          </Grid>
+        </Grid>
+        <Grid row></Grid>
+        <br />
+        <Grid row gap="sm">
+          <Grid col={7} mobile={{ col: 6 }}>
+            <p className="table-label">Expenditures</p>
+          </Grid>
+          {/* <Grid col={5} mobile={{ col: 6 }}>
+            <ReportError />
+            <a
+              className="usa-button csv-download-button"
+              href={`${
+                process.env.NODE_ENV === 'production'
+                  ? ''
+                  : 'http://localhost:3001'
+              }/api/expenditures/${candidateId}?toCSV=true`}
+            >
+              Download Results
+            </a>
+          </Grid> */}
+        </Grid>
+        <Grid row>
+          <Grid col>
+            <SearchResultTable
+              apiStatus={expendituresApiStatus}
+              columns={expenditureColumns}
+              data={expenditures}
+              count={expenditureCount}
+              offset={lastExpendituresQuery.offset}
+              fetchSame={fetchSameExpenditures}
+              fetchNext={fetchNextExpenditures}
+              fetchPrevious={fetchPreviousExpenditures}
+              searchTerm={candidateId}
+              searchType="expenditures"
+              onFetchData={handleDataFetchExpenditures}
               initialSortBy={[{ id: 'date_occurred', desc: true }]}
             />
           </Grid>
