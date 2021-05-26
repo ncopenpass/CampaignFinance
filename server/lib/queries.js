@@ -472,7 +472,7 @@ const getExpenditures = async ({
     offset $3`,
     [ncsbeID, limit, offset]
   )
-  console.time('getExpenditures - query')
+  console.timeEnd('getExpenditures - query')
   return result
 }
 
