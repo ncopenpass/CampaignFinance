@@ -122,6 +122,25 @@ const expectedContributorContributionsKeys = [
   ...new Set([...expectedContributionKeys, ...expectedContributorKeys]),
 ]
 
+const expectedCommitteeContributorKeys = [
+  'account_code',
+  'amount',
+  'city',
+  'committee_sboe_id',
+  'contributor_id',
+  'date_occurred',
+  'declaration',
+  'employer_name',
+  'form_of_payment',
+  'name',
+  'profession',
+  'purpose',
+  'report_name',
+  'state',
+  'transaction_type',
+  'zipcode',
+]
+
 describe('GET /status', function () {
   it('it should have status 200 and online status', async function () {
     try {
@@ -444,5 +463,89 @@ describe('GET /api/search/candidates-donors-pacs/:name', function () {
         .an('object')
         .that.has.all.keys(expectedContributorKeys)
     }
+  })
+})
+
+describe('GET /api/committee/:ncsbeID', function () {
+  it('it should have status 200 and correct schema', async function () {
+    const client = await getClient()
+    const { rows } = await client.query(
+      'select sboe_id from committees where sboe_id is not null limit 1',
+      []
+    )
+    client.release()
+    const sboe_id = encodeURIComponent(rows[0].sboe_id)
+    const response = await supertest(app).get(`/api/committee/${sboe_id}`)
+    response.status.should.equal(200)
+    response.body.should.be.an('object').that.has.all.keys(['data'])
+    response.body.data.should.be
+      .an('object')
+      .that.has.all.keys(expectedCommitteeKeys)
+    Object.keys(response.body.data).length.should.equal(
+      expectedCommitteeKeys.length
+    )
+  })
+})
+
+describe('GET /api/committee/:ncsbeID/contributions/summary', function () {
+  it('it should have status 200 and correct schema', async function () {
+    const client = await getClient()
+    const { rows } = await client.query(
+      `select sboe_id FROM committees
+      inner join contributions
+      on committees.sboe_id = contributions.canon_committee_sboe_id
+      limit 1`,
+      []
+    )
+    client.release()
+
+    const id = encodeURIComponent(rows[0].sboe_id)
+
+    const expectedSummaryKeys = [
+      'sum',
+      'avg',
+      'max',
+      'count',
+      'aggregated_contributions_count',
+      'aggregated_contributions_sum',
+    ]
+
+    const response = await supertest(app).get(
+      `/api/committee/${id}/contributions/summary`
+    )
+    response.status.should.equal(200)
+    response.body.data.should.be
+      .an('object')
+      .that.has.all.keys(expectedSummaryKeys)
+    Object.keys(response.body.data).length.should.equal(
+      expectedSummaryKeys.length
+    )
+  })
+})
+
+describe('GET /api/committee/:ncsbeID/contributions', function () {
+  it('it should have status 200 and correct schema', async function () {
+    const client = await getClient()
+    const { rows } = await client.query(
+      `select sboe_id FROM committees
+      inner join contributions
+      on committees.sboe_id = contributions.canon_committee_sboe_id
+      limit 1`,
+      []
+    )
+    client.release()
+    const id = encodeURIComponent(rows[0].sboe_id)
+    const response = await supertest(app).get(
+      `/api/committee/${id}/contributions`
+    )
+
+    response.status.should.equal(200)
+    response.body.should.be.an('object').that.has.all.keys(['data', 'count'])
+    response.body.data[0].should.be
+      .an('object')
+      .that.has.all.keys(expectedCommitteeContributorKeys)
+    Object.keys(response.body.data[0]).length.should.equal(
+      expectedCommitteeContributorKeys.length
+    )
   })
 })
