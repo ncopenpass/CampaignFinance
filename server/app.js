@@ -1,7 +1,6 @@
 //@ts-check
 const express = require('express')
 const path = require('path')
-const bodyParser = require('body-parser')
 
 /**
  *
@@ -18,6 +17,28 @@ const enforceSSL = (req, res, next) => {
   next()
 }
 
+/**
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * @param {import('express').NextFunction} next
+ */
+const logHandlerTime = (req, res, next) => {
+  const startTime = Date.now()
+
+  req.on('end', () => {
+    const totalTimeMs = Date.now() - startTime
+    const totalTimeSecs = totalTimeMs / 1000
+    console.log(
+      JSON.stringify({
+        totalTimeSecs: totalTimeSecs,
+        path: req.path,
+      })
+    )
+  })
+
+  next()
+}
+
 const api = require('./api')
 
 const app = express()
@@ -28,6 +49,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 app.use(express.json())
+app.use(logHandlerTime)
 app.use('/api', api)
 app.get('/status', (req, res) => res.send({ status: 'online' }))
 
