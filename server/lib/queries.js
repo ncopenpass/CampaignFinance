@@ -76,7 +76,7 @@ const getCommitteeSummary = async (ncsbeID) => {
              sum(amount) as aggregated_contributions_sum
       from contributions
       where contributor_id IS NULl
-        and committee_sboe_id = $1 
+        and canon_committee_sboe_id = $1 
   )
   select sum(amount),
          avg(amount),
@@ -85,7 +85,7 @@ const getCommitteeSummary = async (ncsbeID) => {
          (select aggregated_contributions_count from aggregated_contributions limit 1) as aggregated_contributions_count,
          (select aggregated_contributions_sum from aggregated_contributions limit 1)   as aggregated_contributions_sum
   from contributions
-  where committee_sboe_id = $1 
+  where canon_committee_sboe_id = $1 
   
 `,
     [ncsbeID]
