@@ -421,6 +421,12 @@ const getContributorContributions = ({
     [contributorId, limit, offset]
   )
 
+const getContributorTotal = ({ contributorId, limit = null, offset = null }) =>
+  db.query(
+    `select *, count(*) over () as full_count, (select sum(amount) from contributions c where contributor_id =$1 and c.canon_committee_sboe_id = contributions.canon_committee_sboe_id) as total_contributions_to_committee`,
+    [contributorId]
+  )
+
 /**
  * @param {Object} args
  * @param {import('pg').PoolClient} args.client
@@ -436,6 +442,7 @@ module.exports = {
   getCandidateContributionsForDownload,
   getContributorContributions,
   getContributor,
+  getContributorTotal,
   getCommitteeContributions,
   getCommitteeContributionsForDownload,
   getCommittee,

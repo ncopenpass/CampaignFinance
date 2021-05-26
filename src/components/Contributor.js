@@ -9,6 +9,7 @@ import { API_BATCH_SIZE } from '../constants'
 import ReportError from './ReportError'
 
 import '../css/candidate.scss'
+import NumberFormat from 'react-number-format'
 
 const Contributor = () => {
   let { contributorId } = useParams()
@@ -19,6 +20,7 @@ const Contributor = () => {
     contributions,
     contributionCount,
     contributionOffset,
+    total,
     fetchInitialSearchData,
     fetchContributor,
     fetchContributorContributions,
@@ -87,6 +89,19 @@ const Contributor = () => {
             <p className="candidate-prop">
               <span className="candidate-prop-label">City/State:</span>
               {`${contributor.city}, ${contributor.state}`}
+            </p>
+          </Grid>
+          <Grid col>
+            <p className="summary-stat">
+              <NumberFormat
+                className="total-funding"
+                value={total}
+                displayType="text"
+                decimalScale={0}
+                fixedDecimalScale={true}
+                thousandSeparator={true}
+                prefix="$"
+              />
             </p>
           </Grid>
         </Grid>

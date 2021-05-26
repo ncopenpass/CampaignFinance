@@ -6,6 +6,7 @@ const {
 } = require('../lib/repr')
 const {
   getContributor,
+  getContributorTotal,
   getContributorContributions,
 } = require('../lib/queries')
 const { handleError, sendCSV } = require('../lib/helpers')
@@ -70,5 +71,20 @@ router.get('/contributor/:contributorId', async (req, res) => {
     handleError(error, res)
   }
 })
+
+router.get(
+  '/contributor/:contributorId/contributions/total',
+  async (req, res) => {
+    try {
+      const { contributorId } = req.params
+      const total = await getContributorTotal(contributorId)
+      res.send({
+        data: total,
+      })
+    } catch (err) {
+      handleError(err, res)
+    }
+  }
+)
 
 module.exports = router
