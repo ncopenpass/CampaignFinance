@@ -311,6 +311,10 @@ export const useTableColumns = () => {
         disableSortBy: false,
       },
       {
+        Header: 'Recipient of Payment',
+        accessor: 'name',
+      },
+      {
         Header: 'Form of Payment',
         accessor: 'form_of_payment',
       },

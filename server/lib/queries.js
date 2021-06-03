@@ -459,15 +459,16 @@ const getExpenditures = async ({
   console.time('getExpenditures - query')
   const result = await db.query(
     `select count(*) over () as full_count,
-      date_occurred,
-      form_of_payment,
-      transaction_type,
-      purpose,
-      amount
-    from expenditures where (
-      lower(expenditures.original_committee_sboe_id) = lower($1)
+      e.date_occurred,
+      e.form_of_payment,
+      e.transaction_type,
+      e.purpose,
+      e.amount,
+      v.name
+    from expenditures e join vendors v on e.contributor_id = v.account_id where (
+      lower(e.original_committee_sboe_id) = lower($1)
     )
-    ${sortBy ? `order by ${order}` : ''}
+    ${sortBy ? `order by e.${order}` : ''}
     limit $2
     offset $3`,
     [ncsbeID, limit, offset]
