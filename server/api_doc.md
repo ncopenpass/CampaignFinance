@@ -494,6 +494,50 @@ response:
 }
 ```
 
+## GET `/api/expenditures/:ncsbeID`
+
+Get a list of expenditures associated with an ncbseID
+
+The `:ncsbeID` parameter must be URIEncoded (ie: `encodeURIComponent`)
+
+Query Params (optional):
+
+- `offset` default value `0`
+- `limit` default value `50`
+- `sortBy` sort by `amount` or `date_occurred`. Prefix with `-` for `DESC` order
+
+Example: `/api/expenditures/STA-C0498N-C-002?limit=3&sortBy=-amount`
+response:
+
+```json
+{
+  "data": [
+    {
+      "date_occurred": "2020-08-21T04:00:00.000Z",
+      "form_of_payment": "DRAFT",
+      "transaction_type": "LOAN REPAYMENT",
+      "purpose": "",
+      "amount": 9206.08
+    },
+    {
+      "date_occurred": "2018-11-29T05:00:00.000Z",
+      "form_of_payment": "DEBIT CARD",
+      "transaction_type": "OPERATING EXP",
+      "purpose": "PUSH CARDS",
+      "amount": 2487.76
+    },
+    {
+      "date_occurred": "2017-08-14T04:00:00.000Z",
+      "form_of_payment": "CHECK",
+      "transaction_type": "OPERATING EXP",
+      "purpose": "T-SHIRTS",
+      "amount": 1545.21
+    }
+  ],
+  "count": "178"
+}
+```
+
 ## Error handling
 
 By default, error messages are not passed to the client. For development though, you can get full error messages in response from API by adding `NODE_ENV=development` to the `.env` file in /server.

@@ -11,6 +11,13 @@ const SUPPORTED_CANDIDATE_CONTRIBUTION_SORT_FIELDS = [
   '-date_occurred',
 ]
 
+const SUPPORTED_EXPENDITURES_SORT_FIELDS = [
+  'amount',
+  '-amount',
+  'date_occurred',
+  '-date_occurred',
+]
+
 /**
  * @typedef {Object} CandidateSummary
  * @property {Number} sum - The sum of all donations given to a candidate
@@ -429,6 +436,47 @@ const getContributorContributions = ({
 const getContributor = ({ client, contributorId }) =>
   db.query(`select * from contributors where account_id = $1`, [contributorId])
 
+/**
+ *
+ * @param {Object} args
+ * @param {string} args.ncsbeID
+ * @param {Number|string} args.limit
+ * @param {Number|string} args.offset
+ * @param {string} args.sortBy
+ * @returns {Promise<import('pg').QueryResult>}
+ */
+const getExpenditures = async ({
+  ncsbeID,
+  limit = 50,
+  offset = 0,
+  sortBy = null,
+}) => {
+  let order = SUPPORTED_EXPENDITURES_SORT_FIELDS.includes(sortBy) ? sortBy : ''
+  order = order.startsWith('-')
+    ? `${order.replace('-', '')} DESC`
+    : `${order} ASC`
+
+  console.time('getExpenditures - query')
+  const result = await db.query(
+    `select count(*) over () as full_count,
+      e.date_occurred,
+      e.form_of_payment,
+      e.transaction_type,
+      e.purpose,
+      e.amount,
+      v.name
+    from expenditures e join vendors v on e.contributor_id = v.account_id where (
+      lower(e.original_committee_sboe_id) = lower($1)
+    )
+    ${sortBy ? `order by e.${order}` : ''}
+    limit $2
+    offset $3`,
+    [ncsbeID, limit, offset]
+  )
+  console.timeEnd('getExpenditures - query')
+  return result
+}
+
 module.exports = {
   getCandidateSummary,
   getCandidateContributions,
@@ -440,4 +488,5 @@ module.exports = {
   getCommitteeContributionsForDownload,
   getCommittee,
   getCommitteeSummary,
+  getExpenditures,
 }
