@@ -26,9 +26,6 @@ export const useContributors = () => {
   const [summary, setSummary] = useState([])
   const [contributionCount, setContributionCount] = useState(0)
   const [contributionOffset, setContributionOffset] = useState(0)
-  const [total, setTotal] = useState({
-    total: '-',
-  })
 
   const getDataCountSummary = useCallback(
     async (url) => {
@@ -95,20 +92,6 @@ export const useContributors = () => {
     [fetchContributor, fetchContributorContributions]
   )
 
-  const fetchTotal = useCallback(
-    async ({ contributorId } = {}) => {
-      try {
-        const url = `${CONTRIBUTOR_URL}${contributorId}/contributions/total`
-        const response = await fetch(url)
-        const body = await response.json()
-        setTotal(body.data)
-      } catch (e) {
-        console.log(e)
-      }
-    },
-    [setTotal]
-  )
-
   return {
     hasError,
     apiStatus,
@@ -120,6 +103,5 @@ export const useContributors = () => {
     fetchInitialSearchData,
     fetchContributor,
     fetchContributorContributions,
-    fetchTotal,
   }
 }
