@@ -131,6 +131,17 @@ export const useTableColumns = () => {
   const individualContributionsColumns = useMemo(
     () => [
       {
+        Header: 'Donation Date',
+        id: 'date_occurred',
+        accessor: (r) =>
+          new Date(r.date_occurred).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: '2-digit',
+          }),
+        disableSortBy: true,
+      },
+      {
         Header: 'Recipient Name',
         accessor: ({
           candidate_full_name,
@@ -160,6 +171,10 @@ export const useTableColumns = () => {
           ),
       },
       {
+        Header: 'Donation Type',
+        accessor: 'transaction_type',
+      },
+      {
         Header: 'Amount',
         accessor: (r) => {
           const formatter = new Intl.NumberFormat('en-US', {
@@ -168,18 +183,6 @@ export const useTableColumns = () => {
           })
           return formatter.format(r.amount)
         },
-      },
-      {
-        Header: 'Donation Type',
-        accessor: 'transaction_type',
-      },
-      {
-        Header: 'Donation Date',
-        accessor: 'date_occurred',
-      },
-      {
-        Header: 'Description',
-        accessor: 'purpose',
       },
       {
         Header: 'Total Contributed',

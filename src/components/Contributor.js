@@ -9,6 +9,7 @@ import { API_BATCH_SIZE } from '../constants'
 import ReportError from './ReportError'
 
 import '../css/candidate.scss'
+import NumberFormat from 'react-number-format'
 
 const Contributor = () => {
   let { contributorId } = useParams()
