@@ -376,6 +376,29 @@ const getCommitteeContributionsForDownload = ({ ncsbeID, client }) => {
 }
 
 /**
+ * Gets all expenditures for download
+ * @param {Object} args
+ * @param {string} args.ncsbeID
+ * @param {import('pg').PoolClient} args.client
+ * @returns {Promise<import('pg').QueryResult>}
+ */
+const getExpendituresForDownload = ({ ncsbeID, client }) => {
+  return db.query(
+    `select count(*) over () as full_count,
+    e.date_occurred,
+    e.form_of_payment,
+    e.transaction_type,
+    e.purpose,
+    e.amount,
+    v.name
+  from expenditures e join vendors v on e.contributor_id = v.account_id where (
+    lower(e.original_committee_sboe_id) = lower($1)
+  )`,
+    [ncsbeID]
+  )
+}
+
+/**
  *
  * @param {string} ncsbeID
  * @returns {Promise<Object|null>}
@@ -489,4 +512,5 @@ module.exports = {
   getCommittee,
   getCommitteeSummary,
   getExpenditures,
+  getExpendituresForDownload,
 }

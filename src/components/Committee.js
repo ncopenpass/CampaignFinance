@@ -296,19 +296,18 @@ const Committee = () => {
           <Grid col={7} mobile={{ col: 6 }}>
             <p className="table-label">Expenditures</p>
           </Grid>
-          {/* <Grid col={5} mobile={{ col: 6 }}>
-            <ReportError />
+          <Grid col={5} mobile={{ col: 6 }}>
             <a
               className="usa-button csv-download-button"
               href={`${
                 process.env.NODE_ENV === 'production'
                   ? ''
                   : 'http://localhost:3001'
-              }/api/expenditures/${candidateId}?toCSV=true`}
+              }/api/expenditures/${committeeId}?toCSV=true`}
             >
               Download Results
             </a>
-          </Grid> */}
+          </Grid>
         </Grid>
         <Grid row>
           <Grid col>
