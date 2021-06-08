@@ -292,6 +292,8 @@ const Committee = () => {
         </Grid>
         <Grid row></Grid>
         <br />
+        <br />
+        <br />
         <Grid row gap="sm">
           <Grid col={7} mobile={{ col: 6 }}>
             <p className="table-label">Expenditures</p>
