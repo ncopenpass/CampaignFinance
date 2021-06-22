@@ -62,4 +62,6 @@ Wireframes are on [Figma](https://www.figma.com/proto/Ga6UbshTN4N1vONCmYpq9b/CF-
 - Create a feature branch
 - Make your changes
 - Commit and push your changes
-- Create a PR from your forked repo to the main repo
+- Create a PR from your forked repo to the main repo (be sure to link the issue)
+- Tag two reviewers
+- `Squash and merge` after PR is approved
