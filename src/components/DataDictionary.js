@@ -35,7 +35,10 @@ const DataDictionary = () => {
               .map(({ longVariableName: name, definition, source }) => (
                 <tr key={name}>
                   <th scope="row">{name}</th>
-                  <td style={{ maxWidth: '400px' }}>{definition}</td>
+                  <td
+                    style={{ minWidth: '200px' }}
+                    dangerouslySetInnerHTML={{ __html: definition }}
+                  ></td>
                   <td>{source}</td>
                 </tr>
               ))}
