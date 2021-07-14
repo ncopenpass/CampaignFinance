@@ -82,27 +82,42 @@ export default function Table({
                     <img
                       src={SortDescending}
                       alt="Descending"
-                      style={{ verticalAlign: 'middle', marginLeft: '10px' }}
-                      height="20px"
-                      width="20px"
+                      style={{
+                        verticalAlign: 'middle',
+                        marginLeft: '2px',
+                        position: 'absolute',
+                        marginTop: '4px',
+                      }}
+                      height="18px"
+                      width="18px"
                     />
                   )}
                   {column.isSortedDesc === false && (
                     <img
                       src={SortAscending}
                       alt="Ascending"
-                      style={{ verticalAlign: 'middle', marginLeft: '10px' }}
-                      height="20px"
-                      width="20px"
+                      style={{
+                        verticalAlign: 'middle',
+                        marginLeft: '2px',
+                        position: 'absolute',
+                        marginTop: '4px',
+                      }}
+                      height="18px"
+                      width="18px"
                     />
                   )}
                   {column.canSort && column.isSortedDesc === undefined && (
                     <img
                       src={SortUnsorted}
                       alt="Unsorted"
-                      style={{ verticalAlign: 'middle', marginLeft: '10px' }}
-                      height="20px"
-                      width="20px"
+                      style={{
+                        verticalAlign: 'middle',
+                        marginLeft: '2px',
+                        position: 'absolute',
+                        marginTop: '4px',
+                      }}
+                      height="18px"
+                      width="18px"
                     />
                   )}
                 </div>
