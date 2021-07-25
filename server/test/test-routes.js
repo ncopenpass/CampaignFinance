@@ -60,6 +60,7 @@ const expectedCandidateKeys = [
   'candidate_full_name',
   'candidate_last_name',
   'candidate_middle_name',
+  'committee_name',
   'current_status',
   'juris',
   'office',
