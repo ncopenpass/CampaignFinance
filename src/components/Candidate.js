@@ -181,6 +181,10 @@ const Candidate = () => {
               <span className="candidate-prop-label">Contest:</span>
               {candidate.office}
             </p>
+            <p className="candidate-prop">
+              <span className="candidate-prop-label">PAC:</span>
+              {candidate.committee_name}
+            </p>
           </Grid>
           <Grid col>
             <p className="summary-stat">

@@ -7,6 +7,7 @@ const apiReprCandidate = (row) => {
     candidate_full_name: row.candidate_full_name,
     candidate_last_name: row.candidate_last_name,
     candidate_middle_name: row.candidate_middle_name,
+    committee_name: row.committee_name,
     current_status: row.current_status,
     juris: row.juris,
     office: row.office,
