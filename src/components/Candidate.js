@@ -10,6 +10,7 @@ import { formatSortBy } from '../utils'
 
 import SearchResultTable from './SearchResultTable'
 import ReportError from './ReportError'
+import DateRange from './DateRange'
 
 const Candidate = () => {
   let { candidateId } = useParams()
@@ -187,6 +188,7 @@ const Candidate = () => {
                 {candidate.committee_name}
               </p>
             )}
+            <DateRange />
           </Grid>
           <Grid col>
             <p className="summary-stat">
