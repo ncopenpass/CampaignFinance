@@ -188,7 +188,6 @@ const Candidate = () => {
                 {candidate.committee_name}
               </p>
             )}
-            <DateRange />
           </Grid>
           <Grid col>
             <p className="summary-stat">
@@ -259,7 +258,9 @@ const Candidate = () => {
             </p>
           </Grid>
         </Grid>
-        <Grid row></Grid>
+
+        <DateRange />
+
         <Grid row gap="sm">
           <Grid col={7} mobile={{ col: 6 }}>
             <p className="table-label">Contributors</p>
