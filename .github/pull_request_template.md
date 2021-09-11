@@ -1,10 +1,10 @@
-# What did you do?
+# What?
 
-Description of changes that weere made, new systems or servicees that were added, and how things were implemented.
+Description of changes that were made, new systems or services that were added, and how things were implemented.
 
-# Why did you do it?
+# Why?
 
-Description of why we made the changes. Ideeally, user-centric description along with any errors that we were experiencing before the fix was made.
+Description of why we made the changes. Ideally, user-centric description along with any errors that we were experiencing before the fix was made.
 
 ## GitHub Issue
 
