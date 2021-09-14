@@ -4,7 +4,7 @@ Description of changes that were made, new systems or services that were added, 
 
 # Why?
 
-Description of why we made the changes. Ideally, user-centric description along with any errors that we were experienced before the fix was made.
+Description of why we made the changes. Ideally, user-centric description along with any errors that we experienced before the fix was made.
 
 ## GitHub Issue
 
