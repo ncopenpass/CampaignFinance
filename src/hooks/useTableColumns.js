@@ -36,11 +36,11 @@ export const useTableColumns = () => {
       },
       {
         Header: 'Type',
-        accessor: 'type',
+        accessor: ({ type }) => (type ? type : '—'),
       },
       {
         Header: 'Profession',
-        accessor: 'profession',
+        accessor: ({ profession }) => (profession ? profession : '—'),
         disableFilters: false,
         Filter: InputFilter,
       },
@@ -50,7 +50,7 @@ export const useTableColumns = () => {
       },
       {
         Header: 'Employer',
-        accessor: 'employer_name',
+        accessor: ({ employer_name }) => (employer_name ? employer_name : '—'),
       },
     ],
     []
@@ -112,7 +112,7 @@ export const useTableColumns = () => {
       },
       {
         Header: 'Party',
-        accessor: 'party',
+        accessor: ({ party }) => (party ? party : '—'),
         disableFilters: false,
         Filter: InputFilter,
       },
@@ -120,7 +120,7 @@ export const useTableColumns = () => {
         Header: 'Contest',
         id: 'contest',
         accessor: ({ office, juris }) =>
-          juris ? `${office} ${juris}` : office,
+          !office ? '—' : juris ? `${office} ${juris}` : office,
         disableFilters: false,
         Filter: InputFilter,
       },
@@ -223,7 +223,7 @@ export const useTableColumns = () => {
       },
       {
         Header: 'Profession',
-        accessor: 'profession',
+        accessor: ({ profession }) => (profession ? profession : '—'),
       },
       {
         Header: 'Transaction Type',
@@ -274,7 +274,7 @@ export const useTableColumns = () => {
       },
       {
         Header: 'Profession',
-        accessor: 'profession',
+        accessor: ({ profession }) => (profession ? profession : '—'),
       },
       {
         Header: 'Transaction Type',
@@ -327,7 +327,7 @@ export const useTableColumns = () => {
       },
       {
         Header: 'Purpose',
-        accessor: 'purpose',
+        accessor: ({ purpose }) => (purpose ? purpose : '—'),
       },
       {
         id: 'amount',
