@@ -1,16 +1,16 @@
 # Campaign Finance Contributing Guide
 
-## Perquisites
+## Prerequisites
 
-- NodeJS version v12 or newer and NPM
-- Docker and Docker-Compose OR PostgreSQL
+- [NodeJS](https://nodejs.org/en/download/) version v12 or newer and NPM
+- [Docker](https://docs.docker.com/get-docker/) and [Docker-Compose](https://docs.docker.com/compose/install/) OR [PostgreSQL](https://www.postgresql.org/download/)
 - Make
 
 ## How to Run
 
 ### MacOS/Linux
 
-- Ensure all pre-requisites are installed
+- Ensure all prerequisites are installed
 - Download this data and unzip this [file](https://drive.google.com/file/d/1AJOrBuTeGPYyXsXNs4XzX7a5QloZVTGV/view?usp=sharing)
 - Copy all the CSV files to the `./server/tmp` directory
 - Run `cp server/sample.env server/.env` (If you do not wish to use docker, change the database url in the newly created `.env` file)
@@ -20,7 +20,7 @@
 
 ### Windows
 
-- Ensure all pre-requisites are installed
+- Ensure all prerequisites are installed
 - Download this data and unzip this [file](https://drive.google.com/file/d/1ST7kAOuFt3J8ZwkrnAe-Llmexp6lojtC/view?usp=sharing)
 - Copy all the CSV files to the `./server/tmp` directory
 - copy `server/sample.env` to `server/.env` (If you do not wish to use docker, change the database url in the newly created `.env` file)
