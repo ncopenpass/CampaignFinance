@@ -59,7 +59,7 @@ const SearchResultTable = React.memo(
         <>
           <Dropdown
             value={apiLimit}
-            onChange={(e) => onChangeLimit(e.currentTarget.value)}
+            onChange={(e) => onChangeLimit(parseInt(e.currentTarget.value))}
           >
             {tableLimits.map(({ label, value }) => (
               <option key={value} value={value}>
