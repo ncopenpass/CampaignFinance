@@ -286,7 +286,7 @@ const Committee = () => {
               searchTerm={committeeId}
               searchType="contributions"
               onFetchData={handleDataFetchContributions}
-              inititalSortBy={[{ id: 'date_occurred', desc: true }]}
+              initialSortBy={[{ id: 'date_occurred', desc: true }]}
             />
           </Grid>
         </Grid>
