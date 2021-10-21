@@ -42,6 +42,12 @@ function DateRange({ allYears = ['2021', '2020', '2019', '2018'] }) {
     setDatePickerEnd(currentDate)
   }
 
+  function changeCustomDateRange(e) {
+    const [month, day, year] = e.split('/')
+    const newDate = year + '-' + month + '-' + day
+    setDatePickerStart(newDate)
+  }
+
   /**
    * Update state for the date range when a change is made in the Year Selector
    * If the year selector is set to All Years, set the date range to all
