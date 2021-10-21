@@ -10,6 +10,7 @@ import { formatSortBy } from '../utils'
 
 import SearchResultTable from './SearchResultTable'
 import ReportError from './ReportError'
+import DateRange from './DateRange'
 
 const Committee = () => {
   let { committeeId } = useParams()
@@ -253,7 +254,9 @@ const Committee = () => {
             </p>
           </Grid>
         </Grid>
-        <Grid row></Grid>
+
+        <DateRange />
+
         <Grid row gap="sm">
           <Grid col={7} mobile={{ col: 6 }}>
             <p className="table-label">Contributors</p>

@@ -7,6 +7,7 @@ import SearchResultTable from './SearchResultTable'
 import { useTableColumns } from '../hooks'
 import { API_BATCH_SIZE } from '../constants'
 import ReportError from './ReportError'
+import DateRange from './DateRange'
 
 import '../css/candidate.scss'
 import NumberFormat from 'react-number-format'
@@ -91,7 +92,7 @@ const Contributor = () => {
             </p>
           </Grid>
         </Grid>
-        <Grid row></Grid>
+        <DateRange />
         <Grid row gap="sm">
           <Grid col={7} mobile={{ col: 6 }}>
             <p className="table-label">Contributions</p>
