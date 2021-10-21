@@ -8,7 +8,6 @@ import {
 } from '@trussworks/react-uswds'
 import '../css/date.scss'
 
-// TODO: enable date changes from date picker
 // TODO: make api call with dates from state
 
 /**
@@ -77,7 +76,11 @@ function DateRange({ allYears = ['2021', '2020', '2019', '2018'] }) {
         startDateHint="mm/dd/yyyy"
         startDateLabel="Start date"
         startDatePickerProps={{
-          // onChange: (e) => setDatePickerStart(e),
+          onChange: (e) => {
+            const [month, day, year] = e.split('/')
+            const newDate = year + '-' + month + '-' + day
+            setDatePickerStart(newDate)
+          },
           defaultValue: datePickerStart,
           name: 'event-date-start',
           minDate: '2018-01-01',
@@ -85,10 +88,11 @@ function DateRange({ allYears = ['2021', '2020', '2019', '2018'] }) {
         endDateHint="mm/dd/yyyy"
         endDateLabel="End date"
         endDatePickerProps={{
-          // onChange: (e) => {
-          //   console.log(e)
-          //   setDatePickerEnd(e)
-          // },
+          onChange: (e) => {
+            const [month, day, year] = e.split('/')
+            const newDate = year + '-' + month + '-' + day
+            setDatePickerEnd(newDate)
+          },
           defaultValue: datePickerEnd,
           name: 'event-date-end',
           minDate: '2018-01-01',
