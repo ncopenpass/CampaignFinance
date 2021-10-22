@@ -16,6 +16,8 @@ const Committee = () => {
   let { committeeId } = useParams()
   const [lastContributionsQuery, setLastContributionsQuery] = useState({})
   const [lastExpendituresQuery, setLastExpendituresQuery] = useState({})
+  const [datePickerStart, setDatePickerStart] = useState('')
+  const [datePickerEnd, setDatePickerEnd] = useState('')
 
   const {
     apiStatus: committeeApiStatus,
@@ -41,6 +43,10 @@ const Committee = () => {
         limit: API_BATCH_SIZE,
         offset: 0,
         sort: '-date_occurred',
+        filters: [
+          { date_occurred_gte: datePickerStart },
+          { date_occurred_lte: datePickerEnd },
+        ],
       }
       setLastContributionsQuery(query)
       fetchInitialSearchData(query)
@@ -48,7 +54,13 @@ const Committee = () => {
       setLastExpendituresQuery(query)
       fetchExpenditures(query)
     }
-  }, [committeeId, fetchInitialSearchData, fetchExpenditures])
+  }, [
+    committeeId,
+    fetchInitialSearchData,
+    fetchExpenditures,
+    datePickerStart,
+    datePickerEnd,
+  ])
 
   const getFunctionsAndQuery = useCallback(
     (type) => {
@@ -255,7 +267,12 @@ const Committee = () => {
           </Grid>
         </Grid>
 
-        <DateRange />
+        <DateRange
+          datePickerStart={datePickerStart}
+          datePickerEnd={datePickerEnd}
+          setDatePickerStart={setDatePickerStart}
+          setDatePickerEnd={setDatePickerEnd}
+        />
 
         <Grid row gap="sm">
           <Grid col={7} mobile={{ col: 6 }}>

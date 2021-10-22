@@ -22,11 +22,29 @@ const constructContributionsUrl = ({
     contributionsUrl = `${contributionsUrl}&sortBy=${sort}`
   }
   if (filters.length) {
-    filters.forEach(({ id, value }) => {
-      contributionsUrl = `${contributionsUrl}&${id}=${value}`
+    filters.forEach((filter) => {
+      Object.keys(filter).forEach((key) => {
+        contributionsUrl = `${contributionsUrl}&${key}=${filter[key]}`
+      })
     })
   }
   return contributionsUrl
+}
+
+const constructSummaryUrl = ({ url, candidateId, filters }) => {
+  let summaryUrl = `${url}${candidateId}/contributions/summary`
+  if (filters.length) {
+    filters.forEach((filter) => {
+      Object.keys(filter).forEach((key) => {
+        if (summaryUrl.includes('?')) {
+          summaryUrl = `${summaryUrl}&${key}=${filter[key]}`
+        } else {
+          summaryUrl = `${summaryUrl}?${key}=${filter[key]}`
+        }
+      })
+    })
+  }
+  return summaryUrl
 }
 
 export const useCandidate = () => {
@@ -103,12 +121,17 @@ export const useCandidate = () => {
   )
 
   const fetchSummary = useCallback(
-    async ({ candidateId } = {}) => {
+    async ({ candidateId, filters } = {}) => {
       try {
-        const url = `${CANDIDATE_URL}${candidateId}/contributions/summary`
+        const url = constructSummaryUrl({
+          url: CANDIDATE_URL,
+          candidateId,
+          filters,
+        })
         const response = await fetch(url)
         const body = await response.json()
         setSummary(body.data)
+        console.log(body.data)
       } catch (e) {
         console.log(e)
       }
@@ -117,10 +140,10 @@ export const useCandidate = () => {
   )
 
   const fetchInitialSearchData = useCallback(
-    async ({ candidateId, limit, offset, sort }) => {
+    async ({ candidateId, limit, offset, sort, filters }) => {
       await fetchCandidate({ candidateId })
-      await fetchContributions({ candidateId, limit, offset, sort })
-      await fetchSummary({ candidateId })
+      await fetchContributions({ candidateId, limit, offset, sort, filters })
+      await fetchSummary({ candidateId, filters })
     },
     [fetchCandidate, fetchContributions, fetchSummary]
   )

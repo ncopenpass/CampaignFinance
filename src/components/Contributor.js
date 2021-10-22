@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { useParams } from 'react-router-dom'
 import { Grid, GridContainer } from '@trussworks/react-uswds'
 
@@ -14,6 +14,8 @@ import NumberFormat from 'react-number-format'
 
 const Contributor = () => {
   let { contributorId } = useParams()
+  const [datePickerStart, setDatePickerStart] = useState('')
+  const [datePickerEnd, setDatePickerEnd] = useState('')
 
   const {
     contributor,
@@ -28,9 +30,15 @@ const Contributor = () => {
 
   useEffect(() => {
     if (fetchInitialSearchData) {
-      fetchInitialSearchData({ contributorId })
+      fetchInitialSearchData({
+        contributorId,
+        filters: [
+          { date_occurred_gte: datePickerStart },
+          { date_occurred_lte: datePickerEnd },
+        ],
+      })
     }
-  }, [contributorId, fetchInitialSearchData])
+  }, [contributorId, fetchInitialSearchData, datePickerStart, datePickerEnd])
 
   const fetchSameContributions = useCallback(
     (limit = API_BATCH_SIZE) => {
@@ -92,7 +100,14 @@ const Contributor = () => {
             </p>
           </Grid>
         </Grid>
-        <DateRange />
+
+        <DateRange
+          datePickerStart={datePickerStart}
+          datePickerEnd={datePickerEnd}
+          setDatePickerStart={setDatePickerStart}
+          setDatePickerEnd={setDatePickerEnd}
+        />
+
         <Grid row gap="sm">
           <Grid col={7} mobile={{ col: 6 }}>
             <p className="table-label">Contributions</p>

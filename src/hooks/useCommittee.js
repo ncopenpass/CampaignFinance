@@ -22,11 +22,30 @@ const constructContributionsUrl = ({
     contributionsUrl = `${contributionsUrl}&sortBy=${sort}`
   }
   if (filters.length) {
-    filters.forEach(({ id, value }) => {
-      contributionsUrl = `${contributionsUrl}&${id}=${value}`
+    filters.forEach((filter) => {
+      Object.keys(filter).forEach((key) => {
+        contributionsUrl = `${contributionsUrl}&${key}=${filter[key]}`
+      })
     })
   }
   return contributionsUrl
+}
+
+const constructSummaryUrl = ({ url, committeeId, filters }) => {
+  committeeId = encodeURIComponent(committeeId)
+  let summaryUrl = `${url}${committeeId}/contributions/summary`
+  if (filters.length) {
+    filters.forEach((filter) => {
+      Object.keys(filter).forEach((key) => {
+        if (summaryUrl.includes('?')) {
+          summaryUrl = `${summaryUrl}&${key}=${filter[key]}`
+        } else {
+          summaryUrl = `${summaryUrl}?${key}=${filter[key]}`
+        }
+      })
+    })
+  }
+  return summaryUrl
 }
 
 export const useCommittee = () => {
@@ -103,9 +122,13 @@ export const useCommittee = () => {
   )
 
   const fetchSummary = useCallback(
-    async ({ committeeId } = {}) => {
+    async ({ committeeId, filters } = {}) => {
       try {
-        const url = `${COMMITTEE_URL}${committeeId}/contributions/summary`
+        const url = constructSummaryUrl({
+          url: COMMITTEE_URL,
+          committeeId,
+          filters,
+        })
         const response = await fetch(url)
         const body = await response.json()
         setSummary(body.data)
@@ -117,10 +140,10 @@ export const useCommittee = () => {
   )
 
   const fetchInitialSearchData = useCallback(
-    async ({ committeeId, limit, offset, sort }) => {
+    async ({ committeeId, limit, offset, sort, filters }) => {
       await fetchCommittee({ committeeId })
-      await fetchContributions({ committeeId, limit, offset, sort })
-      await fetchSummary({ committeeId })
+      await fetchContributions({ committeeId, limit, offset, sort, filters })
+      await fetchSummary({ committeeId, filters })
     },
     [fetchCommittee, fetchContributions, fetchSummary]
   )

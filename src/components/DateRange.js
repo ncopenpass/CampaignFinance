@@ -8,11 +8,7 @@ import {
 } from '@trussworks/react-uswds'
 import '../css/date.scss'
 
-// TODO: make api call with dates from state
-
 /**
- * Date Range Component
- *
  * - The component filters search data by the dates selected in the Date Range Picker
  * - There is a Year Selector dropdown for quick filtering to a specific year
  * - All Years filters to all of the data from the first date of the oldest year to the current date
@@ -20,10 +16,16 @@ import '../css/date.scss'
  * - State from the date range picker queries the database to return the requested dates
  */
 
-function DateRange({ allYears = ['2021', '2020', '2019', '2018'] }) {
+function DateRange({
+  datePickerStart,
+  datePickerEnd,
+  setDatePickerStart,
+  setDatePickerEnd,
+  allYears = ['2021', '2020', '2019', '2018'],
+}) {
   /** State for date pickers which drives query results */
-  const [datePickerStart, setDatePickerStart] = useState('')
-  const [datePickerEnd, setDatePickerEnd] = useState('')
+  // const [datePickerStart, setDatePickerStart] = useState('')
+  // const [datePickerEnd, setDatePickerEnd] = useState('')
 
   /** State for expanding the custom date picker */
   const [isCustomDatesOpen, setCustomDatesOpen] = useState(false)
