@@ -202,7 +202,7 @@ const SearchResults = React.memo(() => {
       const query = {
         ...lastContributorsQuery,
         limit,
-        offset: lastContributorsQuery.offset + limit,
+        offset: lastContributorsQuery.offset - limit,
       }
       setLastContributorsQuery(query)
       fetchContributors(query)
