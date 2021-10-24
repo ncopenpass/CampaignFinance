@@ -12,7 +12,14 @@ const router = express()
 router.get('/expenditures/:ncsbeID', async (req, res) => {
   try {
     const { ncsbeID } = req.params
-    const { limit = 50, offset = 0, toCSV = false, sortBy } = req.query
+    const {
+      limit = 50,
+      offset = 0,
+      toCSV = false,
+      sortBy,
+      date_occurred_gte,
+      date_occurred_lte,
+    } = req.query
 
     if (!toCSV) {
       const expenditures = await getExpenditures({
@@ -20,6 +27,8 @@ router.get('/expenditures/:ncsbeID', async (req, res) => {
         limit,
         offset,
         sortBy,
+        date_occurred_gte,
+        date_occurred_lte,
       })
 
       res.send({
