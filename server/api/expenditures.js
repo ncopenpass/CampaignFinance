@@ -40,6 +40,8 @@ router.get('/expenditures/:ncsbeID', async (req, res) => {
       const [expenditures, candidate] = await Promise.all([
         getExpendituresForDownload({
           ncsbeID,
+          date_occurred_gte,
+          date_occurred_lte,
         }),
         getExpenditures(ncsbeID),
       ])

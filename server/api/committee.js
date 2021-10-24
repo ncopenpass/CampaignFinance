@@ -106,6 +106,8 @@ router.get('/committee/:ncsbeID/contributions', async (req, res) => {
       const [contributions, committee] = await Promise.all([
         getCommitteeContributionsForDownload({
           ncsbeID,
+          date_occurred_gte,
+          date_occurred_lte,
         }),
         getCommittee(ncsbeID),
       ])

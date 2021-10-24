@@ -42,6 +42,7 @@ router.get('/candidate/:ncsbeID', async (req, res) => {
 router.get('/candidate/:ncsbeID/contributions/summary', async (req, res) => {
   try {
     let { ncsbeID = '' } = req.params
+    const { date_occurred_gte, date_occurred_lte } = req.query
     ncsbeID = decodeURIComponent(ncsbeID)
     if (!ncsbeID) {
       res.status(500)
@@ -104,6 +105,8 @@ router.get('/candidate/:ncsbeID/contributions', async (req, res) => {
       const [contributions, candidate] = await Promise.all([
         getCandidateContributionsForDownload({
           ncsbeID,
+          date_occurred_gte,
+          date_occurred_lte,
         }),
         getCandidate(ncsbeID),
       ])
