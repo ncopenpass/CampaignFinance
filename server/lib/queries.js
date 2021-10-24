@@ -28,10 +28,24 @@ const SUPPORTED_EXPENDITURES_SORT_FIELDS = [
 
 /**
  *
- * @param {string} ncsbeID
+ * @param {Object} args
+ * @param {string} args.ncsbeID
+ * @param {string} args.date_occurred_gte
+ * @param {string} args.date_occurred_lte
  * @returns {Promise<CandidateSummary>}
  */
-const getCandidateSummary = async (ncsbeID) => {
+const getCandidateSummary = async ({
+  ncsbeID,
+  date_occurred_gte: date_occurred_gteFilter = null,
+  date_occurred_lte: date_occurred_lteFilter = null,
+}) => {
+  const safeDateOccurredGteFilter = date_occurred_gteFilter
+    ? format('AND date_occurred >= CAST(%L as DATE)', date_occurred_gteFilter)
+    : ''
+  const safeDateOccurredLteFilter = date_occurred_lteFilter
+    ? format('AND date_occurred <= CAST(%L as DATE)', date_occurred_lteFilter)
+    : ''
+
   // Post MVP we should probably find a way to speed this up.
   console.time('getCandidateSummary')
   // TODO: fix aggregated individual contribution logic
@@ -51,9 +65,11 @@ const getCandidateSummary = async (ncsbeID) => {
          (select aggregated_contributions_count from aggregated_contributions limit 1) as aggregated_contributions_count,
          (select aggregated_contributions_sum from aggregated_contributions limit 1)   as aggregated_contributions_sum
   from contributions
-  where canon_committee_sboe_id = $1 
-  
-`,
+  where (
+    canon_committee_sboe_id = $1 
+    ${safeDateOccurredGteFilter}
+    ${safeDateOccurredLteFilter}
+    )`,
     [ncsbeID]
   )
   console.timeEnd('getCandidateSummary')
@@ -70,10 +86,24 @@ const getCandidateSummary = async (ncsbeID) => {
 
 /**
  *
- * @param {string} ncsbeID
+ * @param {Object} args
+ * @param {string} args.ncsbeID
+ * @param {string} args.date_occurred_gte
+ * @param {string} args.date_occurred_lte
  * @returns {Promise<CandidateSummary>}
  */
-const getCommitteeSummary = async (ncsbeID) => {
+const getCommitteeSummary = async ({
+  ncsbeID,
+  date_occurred_gte: date_occurred_gteFilter = null,
+  date_occurred_lte: date_occurred_lteFilter = null,
+}) => {
+  const safeDateOccurredGteFilter = date_occurred_gteFilter
+    ? format('AND date_occurred >= CAST(%L as DATE)', date_occurred_gteFilter)
+    : ''
+  const safeDateOccurredLteFilter = date_occurred_lteFilter
+    ? format('AND date_occurred <= CAST(%L as DATE)', date_occurred_lteFilter)
+    : ''
+
   // Post MVP we should probably find a way to speed this up.
   console.time('getCommitteeSummary')
   const summary = await db.query(
@@ -92,9 +122,11 @@ const getCommitteeSummary = async (ncsbeID) => {
          (select aggregated_contributions_count from aggregated_contributions limit 1) as aggregated_contributions_count,
          (select aggregated_contributions_sum from aggregated_contributions limit 1)   as aggregated_contributions_sum
   from contributions
-  where canon_committee_sboe_id = $1 
-  
-`,
+  where (
+    canon_committee_sboe_id = $1 
+    ${safeDateOccurredGteFilter}
+    ${safeDateOccurredLteFilter}
+    )`,
     [ncsbeID]
   )
   console.timeEnd('getCommitteeSummary')

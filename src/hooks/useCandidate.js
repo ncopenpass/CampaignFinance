@@ -131,7 +131,6 @@ export const useCandidate = () => {
         const response = await fetch(url)
         const body = await response.json()
         setSummary(body.data)
-        console.log(body.data)
       } catch (e) {
         console.log(e)
       }

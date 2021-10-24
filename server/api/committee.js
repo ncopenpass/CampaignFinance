@@ -44,6 +44,7 @@ router.get('/committee/:ncsbeID', async (req, res) => {
 router.get('/committee/:ncsbeID/contributions/summary', async (req, res) => {
   try {
     let { ncsbeID = '' } = req.params
+    const { date_occurred_gte, date_occurred_lte } = req.query
     ncsbeID = decodeURIComponent(ncsbeID)
     if (!ncsbeID) {
       res.status(500)
@@ -51,7 +52,11 @@ router.get('/committee/:ncsbeID/contributions/summary', async (req, res) => {
         error: 'empty ncsbeID',
       })
     }
-    const summary = await getCommitteeSummary(ncsbeID)
+    const summary = await getCommitteeSummary({
+      ncsbeID,
+      date_occurred_gte,
+      date_occurred_lte,
+    })
     res.send({
       data: summary,
     })

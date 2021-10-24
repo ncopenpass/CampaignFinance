@@ -50,7 +50,11 @@ router.get('/candidate/:ncsbeID/contributions/summary', async (req, res) => {
         error: 'empty ncsbeID',
       })
     }
-    const summary = await getCandidateSummary(ncsbeID)
+    const summary = await getCandidateSummary({
+      ncsbeID,
+      date_occurred_gte,
+      date_occurred_lte,
+    })
     res.send({
       data: summary,
     })
