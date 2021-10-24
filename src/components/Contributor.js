@@ -120,7 +120,7 @@ const Contributor = () => {
                 process.env.NODE_ENV === 'production'
                   ? ''
                   : 'http://localhost:3001'
-              }/api/contributor/${contributorId}/contributions?toCSV=true`}
+              }/api/contributor/${contributorId}/contributions?toCSV=true&date_occurred_gte=${datePickerStart}&date_occurred_lte=${datePickerEnd}`}
             >
               Download Results
             </a>

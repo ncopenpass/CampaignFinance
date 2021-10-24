@@ -290,7 +290,7 @@ const Candidate = () => {
                 process.env.NODE_ENV === 'production'
                   ? ''
                   : 'http://localhost:3001'
-              }/api/candidate/${candidateId}/contributions?toCSV=true`}
+              }/api/candidate/${candidateId}/contributions?toCSV=true&date_occurred_gte=${datePickerStart}&date_occurred_lte=${datePickerEnd}`}
             >
               Download Results
             </a>
@@ -329,7 +329,7 @@ const Candidate = () => {
                 process.env.NODE_ENV === 'production'
                   ? ''
                   : 'http://localhost:3001'
-              }/api/expenditures/${candidateId}?toCSV=true`}
+              }/api/expenditures/${candidateId}?toCSV=true&date_occurred_gte=${datePickerStart}&date_occurred_lte=${datePickerEnd}`}
             >
               Download Results
             </a>

@@ -286,7 +286,7 @@ const Committee = () => {
                 process.env.NODE_ENV === 'production'
                   ? ''
                   : 'http://localhost:3001'
-              }/api/committee/${committeeId}/contributions?toCSV=true`}
+              }/api/committee/${committeeId}/contributions?toCSV=true&date_occurred_gte=${datePickerStart}&date_occurred_lte=${datePickerEnd}`}
             >
               Download Results
             </a>
@@ -325,7 +325,7 @@ const Committee = () => {
                 process.env.NODE_ENV === 'production'
                   ? ''
                   : 'http://localhost:3001'
-              }/api/expenditures/${committeeId}?toCSV=true`}
+              }/api/expenditures/${committeeId}?toCSV=true&date_occurred_gte=${datePickerStart}&date_occurred_lte=${datePickerEnd}`}
             >
               Download Results
             </a>
