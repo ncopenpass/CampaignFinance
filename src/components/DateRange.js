@@ -5,6 +5,7 @@ import {
   Label,
   Form,
   Dropdown,
+  Fieldset,
 } from '@trussworks/react-uswds'
 import '../css/date.scss'
 
@@ -104,8 +105,7 @@ function DateRange({
   }
 
   return (
-    <Form className="date-range-form">
-      <Label htmlFor="date-range-form">Select Year or Date Range</Label>
+    <Fieldset legend="Select Year or Date Range" className="date-range-form">
       <Dropdown
         className="year-selector-dropdown"
         name="year-selector-dropdown"
@@ -136,7 +136,7 @@ function DateRange({
           datePickerEnd={datePickerEnd}
         />
       )}
-    </Form>
+    </Fieldset>
   )
 }
 
