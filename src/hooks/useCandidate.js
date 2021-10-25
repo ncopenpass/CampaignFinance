@@ -129,8 +129,13 @@ export const useCandidate = () => {
           filters,
         })
         const response = await fetch(url)
-        const body = await response.json()
-        setSummary(body.data)
+        const { data } = await response.json()
+
+        // Replace null values with 0 to correctly update the summary when there are no contributions
+        Object.keys(data).map((key) => {
+          return data[key] === null ? (data[key] = 0) : data[key]
+        })
+        setSummary(data)
       } catch (e) {
         console.log(e)
       }
