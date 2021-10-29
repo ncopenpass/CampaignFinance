@@ -146,7 +146,8 @@ const Candidate = () => {
   const fetchPrevious = useCallback(
     ({ limit = API_BATCH_SIZE, type } = {}) => {
       let { query, setQuery, fetchData } = getFunctionsAndQuery(type)
-      query = { ...query, limit, offset: query.offset - limit }
+      let offset = query.offset - limit < 0 ? 0 : query.offset - limit;
+      query = { ...query, limit, offset: offset }
       setQuery(query)
       fetchData(query)
     },
