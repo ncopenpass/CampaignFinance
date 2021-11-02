@@ -431,25 +431,35 @@ const getCommittee = async (ncsbeID) => {
  * @param {string} args.contributorId
  * @param {Number|string|null} args.limit
  * @param {Number|string|null} args.offset
+ * @param {string} args.sortBy
  **/
 const getContributorContributions = ({
   contributorId,
   limit = null,
   offset = null,
-}) =>
-  db.query(
+  sortBy = null,
+}) => {
+  let order = SUPPORTED_CANDIDATE_CONTRIBUTION_SORT_FIELDS.includes(sortBy)
+    ? sortBy
+    : ''
+  order = order.startsWith('-')
+    ? `${order.replace('-', '')} DESC`
+    : `${order} ASC`
+
+  return db.query(
     `select *, count(*) over () as full_count,
-  (select sum(amount) from contributions c where contributor_id = $1
-    and c.canon_committee_sboe_id = contributions.canon_committee_sboe_id) as total_contributions_to_committee
-  from contributions
-  join committees on committees.sboe_id = contributions.canon_committee_sboe_id
-  where contributor_id = $1
-  order by contributions.date_occurred asc
-  limit $2
-  offset $3
-  `,
+    (select sum(amount) from contributions c where contributor_id = $1
+      and c.canon_committee_sboe_id = contributions.canon_committee_sboe_id) as total_contributions_to_committee
+    from contributions
+    join committees on committees.sboe_id = contributions.canon_committee_sboe_id
+    where contributor_id = $1
+    ${sortBy ? `order by ${order}` : ''}
+    limit $2
+    offset $3
+    `,
     [contributorId, limit, offset]
   )
+}
 
 /**
  * @param {Object} args

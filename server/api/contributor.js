@@ -15,12 +15,13 @@ const router = express()
 router.get('/contributor/:contributorId/contributions', async (req, res) => {
   try {
     const { contributorId } = req.params
-    const { limit = 50, offset = 0, toCSV = false } = req.query
+    const { limit = 50, offset = 0, toCSV = false, sortBy } = req.query
     if (!toCSV) {
       const contributions = await getContributorContributions({
         offset,
         limit,
         contributorId,
+        sortBy,
       })
       return res.send({
         data: contributions.rows.map(apiReprContributionCommittee),

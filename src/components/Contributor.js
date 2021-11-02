@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react'
+import React, { useEffect, useCallback, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { Grid, GridContainer } from '@trussworks/react-uswds'
 
@@ -7,9 +7,9 @@ import SearchResultTable from './SearchResultTable'
 import { useTableColumns } from '../hooks'
 import { API_BATCH_SIZE } from '../constants'
 import ReportError from './ReportError'
+import { formatSortBy } from '../utils'
 
 import '../css/candidate.scss'
-import NumberFormat from 'react-number-format'
 
 const Contributor = () => {
   let { contributorId } = useParams()
@@ -21,47 +21,64 @@ const Contributor = () => {
     contributionCount,
     contributionOffset,
     fetchInitialSearchData,
-    fetchContributor,
     fetchContributorContributions,
   } = useContributors()
 
+  const [query, setQuery] = useState({
+    contributorId,
+    limit: API_BATCH_SIZE,
+    offset: 0,
+    sort: '-date_occurred',
+  })
+
   useEffect(() => {
     if (fetchInitialSearchData) {
-      fetchInitialSearchData({ contributorId })
+      fetchInitialSearchData({
+        contributorId,
+        limit: API_BATCH_SIZE,
+        offset: 0,
+        sort: '-date_occurred',
+      })
     }
   }, [contributorId, fetchInitialSearchData])
 
+  const handleFetchContributions = useCallback(
+    ({ sortBy }) => {
+      const sort = formatSortBy(sortBy)
+      if (sort !== query.sort) {
+        const q = { ...query, sort }
+        setQuery(q)
+        fetchContributorContributions(q)
+      }
+    },
+    [fetchContributorContributions, query]
+  )
+
   const fetchSameContributions = useCallback(
     (limit = API_BATCH_SIZE) => {
-      fetchContributor({
-        contributorId,
-        limit: limit,
-        offset: contributionOffset,
-      })
+      const q = { ...query, limit }
+      setQuery(q)
+      fetchContributorContributions(q)
     },
-    [contributionOffset, fetchContributor, contributorId]
+    [fetchContributorContributions, query]
   )
 
   const fetchNextContributions = useCallback(
     (limit = API_BATCH_SIZE) => {
-      fetchContributorContributions({
-        contributorId,
-        limit: limit,
-        offset: contributionOffset + limit,
-      })
+      const q = { ...query, offset: query.offset + limit }
+      setQuery(q)
+      fetchContributorContributions(q)
     },
-    [contributionOffset, fetchContributorContributions, contributorId]
+    [fetchContributorContributions, query]
   )
 
   const fetchPreviousContributions = useCallback(
     (limit = API_BATCH_SIZE) => {
-      fetchContributorContributions({
-        contributorId,
-        limit: limit,
-        offset: contributionOffset - limit,
-      })
+      const q = { ...query, offset: query.offset - limit }
+      setQuery(q)
+      fetchContributorContributions(q)
     },
-    [contributionOffset, contributorId, fetchContributorContributions]
+    [fetchContributorContributions, query]
   )
 
   const { individualContributionsColumns } = useTableColumns()
@@ -123,6 +140,8 @@ const Contributor = () => {
               offset={contributionOffset}
               searchTerm={contributor.name}
               searchType="contributions"
+              onFetchData={handleFetchContributions}
+              initialSortBy={[{ id: 'date_occurred', desc: true }]}
             />
           </Grid>
         </Grid>
