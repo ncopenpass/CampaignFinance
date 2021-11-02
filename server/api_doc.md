@@ -335,6 +335,8 @@ Query Params (optional):
 - `offset` default value `0`
 - `limit` default value `50`
 - `toCSV` default value `false`
+- `date_occurred_gte` match results with `date_occurred` greater than and equal to the provided date
+- `date_occurred_lte` match results with `date_occurred` greater than and equal to the provided date
 
 Example: `/api/contributor/5123/contributions?limit=2&offset=0`
 response:
@@ -505,6 +507,8 @@ Query Params (optional):
 - `offset` default value `0`
 - `limit` default value `50`
 - `sortBy` sort by `amount` or `date_occurred`. Prefix with `-` for `DESC` order
+- `date_occurred_gte` match results with `date_occurred` greater than and equal to the provided date
+- `date_occurred_lte` match results with `date_occurred` greater than and equal to the provided date
 
 Example: `/api/expenditures/STA-C0498N-C-002?limit=3&sortBy=-amount`
 response:

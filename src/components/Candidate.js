@@ -10,11 +10,14 @@ import { formatSortBy } from '../utils'
 
 import SearchResultTable from './SearchResultTable'
 import ReportError from './ReportError'
+import DateRange from './DateRange'
 
 const Candidate = () => {
   let { candidateId } = useParams()
   const [lastContributionsQuery, setLastContributionsQuery] = useState({})
   const [lastExpendituresQuery, setLastExpendituresQuery] = useState({})
+  const [datePickerStart, setDatePickerStart] = useState('')
+  const [datePickerEnd, setDatePickerEnd] = useState('')
 
   const {
     apiStatus: candidateApiStatus,
@@ -40,6 +43,10 @@ const Candidate = () => {
         limit: API_BATCH_SIZE,
         offset: 0,
         sort: '-date_occurred',
+        filters: [
+          { date_occurred_gte: datePickerStart },
+          { date_occurred_lte: datePickerEnd },
+        ],
       }
       setLastContributionsQuery(query)
       fetchInitialSearchData(query)
@@ -48,7 +55,13 @@ const Candidate = () => {
       setLastExpendituresQuery(query)
       fetchExpenditures(query)
     }
-  }, [candidateId, fetchInitialSearchData, fetchExpenditures])
+  }, [
+    candidateId,
+    fetchInitialSearchData,
+    fetchExpenditures,
+    datePickerStart,
+    datePickerEnd,
+  ])
 
   const getFunctionsAndQuery = useCallback(
     (type) => {
@@ -258,7 +271,14 @@ const Candidate = () => {
             </p>
           </Grid>
         </Grid>
-        <Grid row></Grid>
+
+        <DateRange
+          datePickerStart={datePickerStart}
+          datePickerEnd={datePickerEnd}
+          setDatePickerStart={setDatePickerStart}
+          setDatePickerEnd={setDatePickerEnd}
+        />
+
         <Grid row gap="sm">
           <Grid col={7} mobile={{ col: 6 }}>
             <p className="table-label">Contributors</p>
@@ -271,7 +291,7 @@ const Candidate = () => {
                 process.env.NODE_ENV === 'production'
                   ? ''
                   : 'http://localhost:3001'
-              }/api/candidate/${candidateId}/contributions?toCSV=true`}
+              }/api/candidate/${candidateId}/contributions?toCSV=true&date_occurred_gte=${datePickerStart}&date_occurred_lte=${datePickerEnd}`}
             >
               Download Results
             </a>
@@ -310,7 +330,7 @@ const Candidate = () => {
                 process.env.NODE_ENV === 'production'
                   ? ''
                   : 'http://localhost:3001'
-              }/api/expenditures/${candidateId}?toCSV=true`}
+              }/api/expenditures/${candidateId}?toCSV=true&date_occurred_gte=${datePickerStart}&date_occurred_lte=${datePickerEnd}`}
             >
               Download Results
             </a>

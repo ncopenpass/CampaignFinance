@@ -3,12 +3,25 @@ import { API_BATCH_SIZE, STATUSES } from '../constants'
 
 const EXPENDITURES_URL = 'api/expenditures/'
 
-const constructExpendituresUrl = ({ ncsbeID, limit, offset, sort }) => {
+const constructExpendituresUrl = ({
+  ncsbeID,
+  limit,
+  offset,
+  sort,
+  filters,
+}) => {
   let expendituresUrl = `${EXPENDITURES_URL}${encodeURIComponent(
     ncsbeID
   )}?limit=${limit}&offset=${offset}`
   if (sort) {
     expendituresUrl = `${expendituresUrl}&sortBy=${sort}`
+  }
+  if (filters.length) {
+    filters.forEach((filter) => {
+      Object.keys(filter).forEach((key) => {
+        expendituresUrl = `${expendituresUrl}&${key}=${filter[key]}`
+      })
+    })
   }
   return expendituresUrl
 }
@@ -32,8 +45,20 @@ export const useExpenditures = () => {
   }, [])
 
   const fetchExpenditures = useCallback(
-    async ({ ncsbeID, limit = API_BATCH_SIZE, offset = 0, sort } = {}) => {
-      const url = constructExpendituresUrl({ ncsbeID, limit, offset, sort })
+    async ({
+      ncsbeID,
+      limit = API_BATCH_SIZE,
+      offset = 0,
+      sort,
+      filters,
+    } = {}) => {
+      const url = constructExpendituresUrl({
+        ncsbeID,
+        limit,
+        offset,
+        sort,
+        filters,
+      })
       try {
         const { data, count } = await getDataAndCount(url)
         setExpenditures(data)

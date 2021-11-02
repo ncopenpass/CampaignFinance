@@ -10,11 +10,14 @@ import { formatSortBy } from '../utils'
 
 import SearchResultTable from './SearchResultTable'
 import ReportError from './ReportError'
+import DateRange from './DateRange'
 
 const Committee = () => {
   let { committeeId } = useParams()
   const [lastContributionsQuery, setLastContributionsQuery] = useState({})
   const [lastExpendituresQuery, setLastExpendituresQuery] = useState({})
+  const [datePickerStart, setDatePickerStart] = useState('')
+  const [datePickerEnd, setDatePickerEnd] = useState('')
 
   const {
     apiStatus: committeeApiStatus,
@@ -40,6 +43,10 @@ const Committee = () => {
         limit: API_BATCH_SIZE,
         offset: 0,
         sort: '-date_occurred',
+        filters: [
+          { date_occurred_gte: datePickerStart },
+          { date_occurred_lte: datePickerEnd },
+        ],
       }
       setLastContributionsQuery(query)
       fetchInitialSearchData(query)
@@ -47,7 +54,13 @@ const Committee = () => {
       setLastExpendituresQuery(query)
       fetchExpenditures(query)
     }
-  }, [committeeId, fetchInitialSearchData, fetchExpenditures])
+  }, [
+    committeeId,
+    fetchInitialSearchData,
+    fetchExpenditures,
+    datePickerStart,
+    datePickerEnd,
+  ])
 
   const getFunctionsAndQuery = useCallback(
     (type) => {
@@ -253,7 +266,14 @@ const Committee = () => {
             </p>
           </Grid>
         </Grid>
-        <Grid row></Grid>
+
+        <DateRange
+          datePickerStart={datePickerStart}
+          datePickerEnd={datePickerEnd}
+          setDatePickerStart={setDatePickerStart}
+          setDatePickerEnd={setDatePickerEnd}
+        />
+
         <Grid row gap="sm">
           <Grid col={7} mobile={{ col: 6 }}>
             <p className="table-label">Contributors</p>
@@ -266,7 +286,7 @@ const Committee = () => {
                 process.env.NODE_ENV === 'production'
                   ? ''
                   : 'http://localhost:3001'
-              }/api/committee/${committeeId}/contributions?toCSV=true`}
+              }/api/committee/${committeeId}/contributions?toCSV=true&date_occurred_gte=${datePickerStart}&date_occurred_lte=${datePickerEnd}`}
             >
               Download Results
             </a>
@@ -286,7 +306,7 @@ const Committee = () => {
               searchTerm={committeeId}
               searchType="contributions"
               onFetchData={handleDataFetchContributions}
-              inititalSortBy={[{ id: 'date_occurred', desc: true }]}
+              initialSortBy={[{ id: 'date_occurred', desc: true }]}
             />
           </Grid>
         </Grid>
@@ -305,7 +325,7 @@ const Committee = () => {
                 process.env.NODE_ENV === 'production'
                   ? ''
                   : 'http://localhost:3001'
-              }/api/expenditures/${committeeId}?toCSV=true`}
+              }/api/expenditures/${committeeId}?toCSV=true&date_occurred_gte=${datePickerStart}&date_occurred_lte=${datePickerEnd}`}
             >
               Download Results
             </a>

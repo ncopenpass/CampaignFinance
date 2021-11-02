@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { useParams } from 'react-router-dom'
 import { Grid, GridContainer } from '@trussworks/react-uswds'
 
@@ -7,12 +7,15 @@ import SearchResultTable from './SearchResultTable'
 import { useTableColumns } from '../hooks'
 import { API_BATCH_SIZE } from '../constants'
 import ReportError from './ReportError'
+import DateRange from './DateRange'
 
 import '../css/candidate.scss'
 import NumberFormat from 'react-number-format'
 
 const Contributor = () => {
   let { contributorId } = useParams()
+  const [datePickerStart, setDatePickerStart] = useState('')
+  const [datePickerEnd, setDatePickerEnd] = useState('')
 
   const {
     contributor,
@@ -27,9 +30,15 @@ const Contributor = () => {
 
   useEffect(() => {
     if (fetchInitialSearchData) {
-      fetchInitialSearchData({ contributorId })
+      fetchInitialSearchData({
+        contributorId,
+        filters: [
+          { date_occurred_gte: datePickerStart },
+          { date_occurred_lte: datePickerEnd },
+        ],
+      })
     }
-  }, [contributorId, fetchInitialSearchData])
+  }, [contributorId, fetchInitialSearchData, datePickerStart, datePickerEnd])
 
   const fetchSameContributions = useCallback(
     (limit = API_BATCH_SIZE) => {
@@ -91,7 +100,14 @@ const Contributor = () => {
             </p>
           </Grid>
         </Grid>
-        <Grid row></Grid>
+
+        <DateRange
+          datePickerStart={datePickerStart}
+          datePickerEnd={datePickerEnd}
+          setDatePickerStart={setDatePickerStart}
+          setDatePickerEnd={setDatePickerEnd}
+        />
+
         <Grid row gap="sm">
           <Grid col={7} mobile={{ col: 6 }}>
             <p className="table-label">Contributions</p>
@@ -104,7 +120,7 @@ const Contributor = () => {
                 process.env.NODE_ENV === 'production'
                   ? ''
                   : 'http://localhost:3001'
-              }/api/contributor/${contributorId}/contributions?toCSV=true`}
+              }/api/contributor/${contributorId}/contributions?toCSV=true&date_occurred_gte=${datePickerStart}&date_occurred_lte=${datePickerEnd}`}
             >
               Download Results
             </a>

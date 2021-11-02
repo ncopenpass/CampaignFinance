@@ -1,0 +1,26 @@
+.date-range-form {
+  max-width: 60% !important;
+}
+
+.custom-date-picker {
+  display: flex;
+  flex-direction: row;
+}
+
+.year-selector-dropdown {
+  margin-bottom: 1rem;
+}
+
+// UI Component styling does not change by default when disabled
+// Gray background for clarity that selector is disabled when custom date picker is expanded
+.year-selector-dropdown:disabled {
+  background-color: rgb(240, 240, 240);
+  color: darkgray;
+}
+
+// Set custom date range picker to a smaller width with borders to match year selector
+.expand-custom-date-picker {
+  padding-top: 0.75rem !important;
+  padding-bottom: 0.75rem !important;
+  border: 1px solid black !important;
+}
