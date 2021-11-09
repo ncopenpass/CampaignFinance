@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { useParams } from 'react-router-dom'
-import { Grid, GridContainer } from '@trussworks/react-uswds'
+import { Button, Grid, GridContainer } from '@trussworks/react-uswds'
 
 import { useContributors } from '../hooks/useContributors'
 import SearchResultTable from './SearchResultTable'
@@ -10,7 +10,6 @@ import ReportError from './ReportError'
 import DateRange from './DateRange'
 
 import '../css/candidate.scss'
-import NumberFormat from 'react-number-format'
 
 const Contributor = () => {
   let { contributorId } = useParams()
@@ -115,14 +114,18 @@ const Contributor = () => {
           <Grid col={5} mobile={{ col: 6 }}>
             <ReportError />
             <a
-              className="usa-button csv-download-button"
               href={`${
                 process.env.NODE_ENV === 'production'
                   ? ''
                   : 'http://localhost:3001'
               }/api/contributor/${contributorId}/contributions?toCSV=true&date_occurred_gte=${datePickerStart}&date_occurred_lte=${datePickerEnd}`}
             >
-              Download Results
+              <Button
+                className="csv-download-button"
+                disabled={contributionCount === 0}
+              >
+                Download Results
+              </Button>
             </a>
           </Grid>
         </Grid>

@@ -1,6 +1,6 @@
 import React, { useEffect, useCallback, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { Grid, GridContainer } from '@trussworks/react-uswds'
+import { Button, Grid, GridContainer } from '@trussworks/react-uswds'
 import NumberFormat from 'react-number-format'
 
 import { useCommittee, useTableColumns, useExpenditures } from '../hooks'
@@ -281,14 +281,18 @@ const Committee = () => {
           <Grid col={5} mobile={{ col: 6 }}>
             <ReportError />
             <a
-              className="usa-button csv-download-button"
               href={`${
                 process.env.NODE_ENV === 'production'
                   ? ''
                   : 'http://localhost:3001'
               }/api/committee/${committeeId}/contributions?toCSV=true&date_occurred_gte=${datePickerStart}&date_occurred_lte=${datePickerEnd}`}
             >
-              Download Results
+              <Button
+                className="csv-download-button"
+                disabled={contributionCount === 0}
+              >
+                Download Results
+              </Button>
             </a>
           </Grid>
         </Grid>
@@ -320,14 +324,18 @@ const Committee = () => {
           </Grid>
           <Grid col={5} mobile={{ col: 6 }}>
             <a
-              className="usa-button csv-download-button"
               href={`${
                 process.env.NODE_ENV === 'production'
                   ? ''
                   : 'http://localhost:3001'
               }/api/expenditures/${committeeId}?toCSV=true&date_occurred_gte=${datePickerStart}&date_occurred_lte=${datePickerEnd}`}
             >
-              Download Results
+              <Button
+                className="csv-download-button"
+                disabled={expenditureCount === 0}
+              >
+                Download Results
+              </Button>
             </a>
           </Grid>
         </Grid>

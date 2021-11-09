@@ -1,6 +1,6 @@
 import React, { useEffect, useCallback, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { Grid, GridContainer } from '@trussworks/react-uswds'
+import { Button, Grid, GridContainer } from '@trussworks/react-uswds'
 import NumberFormat from 'react-number-format'
 
 import { useCandidate, useTableColumns, useExpenditures } from '../hooks'
@@ -159,7 +159,7 @@ const Candidate = () => {
   const fetchPrevious = useCallback(
     ({ limit = API_BATCH_SIZE, type } = {}) => {
       let { query, setQuery, fetchData } = getFunctionsAndQuery(type)
-      let offset = query.offset - limit < 0 ? 0 : query.offset - limit;
+      let offset = query.offset - limit < 0 ? 0 : query.offset - limit
       query = { ...query, limit, offset: offset }
       setQuery(query)
       fetchData(query)
@@ -286,14 +286,18 @@ const Candidate = () => {
           <Grid col={5} mobile={{ col: 6 }}>
             <ReportError />
             <a
-              className="usa-button csv-download-button"
               href={`${
                 process.env.NODE_ENV === 'production'
                   ? ''
                   : 'http://localhost:3001'
               }/api/candidate/${candidateId}/contributions?toCSV=true&date_occurred_gte=${datePickerStart}&date_occurred_lte=${datePickerEnd}`}
             >
-              Download Results
+              <Button
+                disabled={contributionCount === 0}
+                className="csv-download-button"
+              >
+                Download Results
+              </Button>
             </a>
           </Grid>
         </Grid>
@@ -325,14 +329,18 @@ const Candidate = () => {
           </Grid>
           <Grid col={5} mobile={{ col: 6 }}>
             <a
-              className="usa-button csv-download-button"
               href={`${
                 process.env.NODE_ENV === 'production'
                   ? ''
                   : 'http://localhost:3001'
               }/api/expenditures/${candidateId}?toCSV=true&date_occurred_gte=${datePickerStart}&date_occurred_lte=${datePickerEnd}`}
             >
-              Download Results
+              <Button
+                className="csv-download-button"
+                disabled={expenditureCount === 0}
+              >
+                Download Results
+              </Button>
             </a>
           </Grid>
         </Grid>
