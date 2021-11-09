@@ -11,8 +11,6 @@
 ### MacOS/Linux
 
 - Ensure all prerequisites are installed
-- Download this data and unzip this [file](https://drive.google.com/file/d/1AJOrBuTeGPYyXsXNs4XzX7a5QloZVTGV/view?usp=sharing)
-- Copy all the CSV files to the `./server/tmp` directory
 - Run `cp server/sample.env server/.env` (If you do not wish to use docker, change the database url in the newly created `.env` file)
 - Run `make first-run` this will run `npm install` for the ui and server and setup the db using Docker. After running this once you shouldn't need to run it again. (If you are not using Docker run `make first-run-no-docker`)
 - Run `make start` this will start the UI and server running on ports 3000 and 3001 respectively. Both the UI and server will be running in watch mode, so any changes should automatically take effect. Type `CTRL-c` to exit
@@ -21,8 +19,6 @@
 ### Windows
 
 - Ensure all prerequisites are installed
-- Download this data and unzip this [file](https://drive.google.com/file/d/1ST7kAOuFt3J8ZwkrnAe-Llmexp6lojtC/view?usp=sharing)
-- Copy all the CSV files to the `./server/tmp` directory
 - copy `server/sample.env` to `server/.env` (If you do not wish to use docker, change the database url in the newly created `.env` file)
 - Add your `DATABASE_URL` to your environment
   - Powershell: `$env:DATABASE_URL = 'YOUR_DATABASE_URL'`
