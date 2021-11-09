@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import {
   NavDropDownButton,
   DateRangePicker,
-  Label,
-  Form,
   Dropdown,
   Fieldset,
 } from '@trussworks/react-uswds'
@@ -17,34 +15,25 @@ import '../css/date.scss'
  * - State from the date range picker queries the database to return the requested dates
  */
 
+// Helper function to generate array of years for year selector
+function getYears() {
+  // FIXME: remove hard-coded oldest year and update with database query
+  const oldestYear = '2011'
+  const currentYear = new Date().getFullYear()
+  return Array(currentYear - (oldestYear - 1))
+    .fill('')
+    .map((_, i) => currentYear - i)
+}
+
 function DateRange({
   datePickerStart,
   datePickerEnd,
   setDatePickerStart,
   setDatePickerEnd,
-  allYears = [
-    '2021',
-    '2020',
-    '2019',
-    '2018',
-    '2017',
-    '2016',
-    '2015',
-    '2014',
-    '2013',
-    '2012',
-    '2011',
-  ],
+  allYears = getYears(),
 }) {
-  /** State for date pickers which drives query results */
-  // const [datePickerStart, setDatePickerStart] = useState('')
-  // const [datePickerEnd, setDatePickerEnd] = useState('')
-
   /** State for expanding the custom date picker */
   const [isCustomDatesOpen, setCustomDatesOpen] = useState(false)
-
-  /** Initialize dates to all years */
-  useEffect(setAllYears, [])
 
   /**
    * Helper function to set the date range to All Years
@@ -123,6 +112,7 @@ function DateRange({
         name="year-selector-dropdown"
         onChange={(e) => changeYearSelector(e.target.value)}
         disabled={isCustomDatesOpen}
+        defaultValue={new Date().getFullYear().toString()}
       >
         <option key="all-years" value="all-years">
           {' '}
