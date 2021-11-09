@@ -87,7 +87,6 @@ function DateRange({
           },
           defaultValue: datePickerStart,
           name: 'event-date-start',
-          minDate: '2018-01-01',
         }}
         endDateHint="mm/dd/yyyy"
         endDateLabel="End date"
@@ -99,7 +98,6 @@ function DateRange({
           },
           defaultValue: datePickerEnd,
           name: 'event-date-end',
-          minDate: '2018-01-01',
         }}
       />
     )
