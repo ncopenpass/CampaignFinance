@@ -16,8 +16,13 @@ const Committee = () => {
   let { committeeId } = useParams()
   const [lastContributionsQuery, setLastContributionsQuery] = useState({})
   const [lastExpendituresQuery, setLastExpendituresQuery] = useState({})
-  const [datePickerStart, setDatePickerStart] = useState('')
-  const [datePickerEnd, setDatePickerEnd] = useState('')
+
+  // Initialize dates to current year
+  const date = new Date()
+  const currentDate = date.toISOString().split('T')[0]
+  const currentYear = date.getFullYear().toString()
+  const [datePickerStart, setDatePickerStart] = useState(currentYear + '-01-01')
+  const [datePickerEnd, setDatePickerEnd] = useState(currentDate)
 
   const {
     apiStatus: committeeApiStatus,

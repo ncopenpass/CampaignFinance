@@ -16,8 +16,13 @@ const Candidate = () => {
   let { candidateId } = useParams()
   const [lastContributionsQuery, setLastContributionsQuery] = useState({})
   const [lastExpendituresQuery, setLastExpendituresQuery] = useState({})
-  const [datePickerStart, setDatePickerStart] = useState('')
-  const [datePickerEnd, setDatePickerEnd] = useState('')
+
+  // Initialize dates to current year
+  const date = new Date()
+  const currentDate = date.toISOString().split('T')[0]
+  const currentYear = date.getFullYear().toString()
+  const [datePickerStart, setDatePickerStart] = useState(currentYear + '-01-01')
+  const [datePickerEnd, setDatePickerEnd] = useState(currentDate)
 
   const {
     apiStatus: candidateApiStatus,
@@ -159,7 +164,7 @@ const Candidate = () => {
   const fetchPrevious = useCallback(
     ({ limit = API_BATCH_SIZE, type } = {}) => {
       let { query, setQuery, fetchData } = getFunctionsAndQuery(type)
-      let offset = query.offset - limit < 0 ? 0 : query.offset - limit;
+      let offset = query.offset - limit < 0 ? 0 : query.offset - limit
       query = { ...query, limit, offset: offset }
       setQuery(query)
       fetchData(query)
