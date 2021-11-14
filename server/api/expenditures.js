@@ -19,6 +19,7 @@ router.get('/expenditures/:ncsbeID', async (req, res) => {
       sortBy,
       date_occurred_gte,
       date_occurred_lte,
+      year,
     } = req.query
 
     if (!toCSV) {
@@ -29,6 +30,7 @@ router.get('/expenditures/:ncsbeID', async (req, res) => {
         sortBy,
         date_occurred_gte,
         date_occurred_lte,
+        year,
       })
 
       res.send({
@@ -42,6 +44,7 @@ router.get('/expenditures/:ncsbeID', async (req, res) => {
           ncsbeID,
           date_occurred_gte,
           date_occurred_lte,
+          year,
         }),
         getExpenditures(ncsbeID),
       ])
