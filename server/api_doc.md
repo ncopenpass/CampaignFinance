@@ -205,6 +205,8 @@ Query Params (optional):
 - `name` fuzzy match results on contributor name
 - `transaction_type` exact match
 - `amount` exact match
+- `amount_lte` match results with `amount` less than and equal to the provided amount
+- `amount_gte` match results with `amount` greater than and equal to the provided amount
 - `form_of_payment` exact match
 - `date_occurred_gte` match results with `date_occurred` greater than and equal to the provided date (`1/1/2020`)
 - `date_occurred_lte` match results with `date_occurred` greater than and equal to the provided date (`1/1/2020`)
