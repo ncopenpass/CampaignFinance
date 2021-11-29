@@ -21,12 +21,15 @@ router.get('/contributor/:contributorId/contributions', async (req, res) => {
       toCSV = false,
       date_occurred_gte,
       date_occurred_lte,
+      sortBy
     } = req.query
+
     if (!toCSV) {
       const contributions = await getContributorContributions({
         offset,
         limit,
         contributorId,
+        sortBy,
         date_occurred_gte,
         date_occurred_lte,
       })
