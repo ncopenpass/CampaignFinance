@@ -28,10 +28,24 @@ const SUPPORTED_EXPENDITURES_SORT_FIELDS = [
 
 /**
  *
- * @param {string} ncsbeID
+ * @param {Object} args
+ * @param {string} args.ncsbeID
+ * @param {string} args.date_occurred_gte
+ * @param {string} args.date_occurred_lte
  * @returns {Promise<CandidateSummary>}
  */
-const getCandidateSummary = async (ncsbeID) => {
+const getCandidateSummary = async ({
+  ncsbeID,
+  date_occurred_gte: date_occurred_gteFilter = null,
+  date_occurred_lte: date_occurred_lteFilter = null,
+}) => {
+  const safeDateOccurredGteFilter = date_occurred_gteFilter
+    ? format('AND date_occurred >= CAST(%L as DATE)', date_occurred_gteFilter)
+    : ''
+  const safeDateOccurredLteFilter = date_occurred_lteFilter
+    ? format('AND date_occurred <= CAST(%L as DATE)', date_occurred_lteFilter)
+    : ''
+
   // Post MVP we should probably find a way to speed this up.
   console.time('getCandidateSummary')
   const excludeInterestType = "AND upper(transaction_type) != 'INTEREST'";
@@ -52,9 +66,12 @@ const getCandidateSummary = async (ncsbeID) => {
          (select aggregated_contributions_count from aggregated_contributions limit 1) as aggregated_contributions_count,
          (select aggregated_contributions_sum from aggregated_contributions limit 1)   as aggregated_contributions_sum
   from (select c.*, (CASE WHEN upper(transaction_type) = 'REFUND' THEN amount*-1 ELSE amount END) adjusted_amount from contributions c where canon_committee_sboe_id = $1) contribs
-  where canon_committee_sboe_id = $1 
+  where (
+    canon_committee_sboe_id = $1
     ${excludeInterestType}
-`,
+    ${safeDateOccurredGteFilter}
+    ${safeDateOccurredLteFilter}
+    )`,
     [ncsbeID]
   )
   console.timeEnd('getCandidateSummary')
@@ -71,10 +88,24 @@ const getCandidateSummary = async (ncsbeID) => {
 
 /**
  *
- * @param {string} ncsbeID
+ * @param {Object} args
+ * @param {string} args.ncsbeID
+ * @param {string} args.date_occurred_gte
+ * @param {string} args.date_occurred_lte
  * @returns {Promise<CandidateSummary>}
  */
-const getCommitteeSummary = async (ncsbeID) => {
+const getCommitteeSummary = async ({
+  ncsbeID,
+  date_occurred_gte: date_occurred_gteFilter = null,
+  date_occurred_lte: date_occurred_lteFilter = null,
+}) => {
+  const safeDateOccurredGteFilter = date_occurred_gteFilter
+    ? format('AND date_occurred >= CAST(%L as DATE)', date_occurred_gteFilter)
+    : ''
+  const safeDateOccurredLteFilter = date_occurred_lteFilter
+    ? format('AND date_occurred <= CAST(%L as DATE)', date_occurred_lteFilter)
+    : ''
+
   // Post MVP we should probably find a way to speed this up.
   console.time('getCommitteeSummary')
   const summary = await db.query(
@@ -93,9 +124,11 @@ const getCommitteeSummary = async (ncsbeID) => {
          (select aggregated_contributions_count from aggregated_contributions limit 1) as aggregated_contributions_count,
          (select aggregated_contributions_sum from aggregated_contributions limit 1)   as aggregated_contributions_sum
   from contributions
-  where canon_committee_sboe_id = $1 
-  
-`,
+  where (
+    canon_committee_sboe_id = $1 
+    ${safeDateOccurredGteFilter}
+    ${safeDateOccurredLteFilter}
+    )`,
     [ncsbeID]
   )
   console.timeEnd('getCommitteeSummary')
@@ -310,9 +343,21 @@ const getCommitteeContributions = async ({
  * @param {Object} args
  * @param {string} args.ncsbeID
  * @param {import('pg').PoolClient} args.client
+ * @param {string} args.date_occurred_gte
+ * @param {string} args.date_occurred_lte
  * @returns {Promise<import('pg').QueryResult>}
  */
-const getCandidateContributionsForDownload = ({ ncsbeID, client }) => {
+const getCandidateContributionsForDownload = ({
+  ncsbeID,
+  date_occurred_gte: date_occurred_gteFilter = null,
+  date_occurred_lte: date_occurred_lteFilter = null,
+}) => {
+  const safeDateOccurredGteFilter = date_occurred_gteFilter
+    ? format('AND date_occurred >= CAST(%L as DATE)', date_occurred_gteFilter)
+    : ''
+  const safeDateOccurredLteFilter = date_occurred_lteFilter
+    ? format('AND date_occurred <= CAST(%L as DATE)', date_occurred_lteFilter)
+    : ''
   return db.query(
     `select count(*) over () as full_count,
        contributor_id,
@@ -334,7 +379,11 @@ const getCandidateContributionsForDownload = ({ ncsbeID, client }) => {
        employer_name
        from contributions
               left outer join contributors c on contributions.contributor_id = c.account_id
-      where lower(contributions.canon_committee_sboe_id) = lower($1)
+      where (
+        lower(contributions.canon_committee_sboe_id) = lower($1)
+        ${safeDateOccurredGteFilter}
+        ${safeDateOccurredLteFilter}
+        )
       `,
     [ncsbeID]
   )
@@ -346,9 +395,21 @@ const getCandidateContributionsForDownload = ({ ncsbeID, client }) => {
  * @param {Object} args
  * @param {string} args.ncsbeID
  * @param {import('pg').PoolClient} args.client
+ * @param {string} args.date_occurred_gte
+ * @param {string} args.date_occurred_lte
  * @returns {Promise<import('pg').QueryResult>}
  */
-const getCommitteeContributionsForDownload = ({ ncsbeID, client }) => {
+const getCommitteeContributionsForDownload = ({
+  ncsbeID,
+  date_occurred_gte: date_occurred_gteFilter = null,
+  date_occurred_lte: date_occurred_lteFilter = null,
+}) => {
+  const safeDateOccurredGteFilter = date_occurred_gteFilter
+    ? format('AND date_occurred >= CAST(%L as DATE)', date_occurred_gteFilter)
+    : ''
+  const safeDateOccurredLteFilter = date_occurred_lteFilter
+    ? format('AND date_occurred <= CAST(%L as DATE)', date_occurred_lteFilter)
+    : ''
   return db.query(
     `select count(*) over () as full_count,
        contributor_id,
@@ -370,8 +431,11 @@ const getCommitteeContributionsForDownload = ({ ncsbeID, client }) => {
        employer_name
        from contributions
               left outer join contributors c on contributions.contributor_id = c.account_id
-      where lower(contributions.canon_committee_sboe_id) = lower($1)
-      `,
+      where (
+        lower(contributions.canon_committee_sboe_id) = lower($1)
+        ${safeDateOccurredGteFilter}
+        ${safeDateOccurredLteFilter}
+        )`,
     [ncsbeID]
   )
 }
@@ -381,9 +445,21 @@ const getCommitteeContributionsForDownload = ({ ncsbeID, client }) => {
  * @param {Object} args
  * @param {string} args.ncsbeID
  * @param {import('pg').PoolClient} args.client
+ * @param {string} args.date_occurred_gte
+ * @param {string} args.date_occurred_lte
  * @returns {Promise<import('pg').QueryResult>}
  */
-const getExpendituresForDownload = ({ ncsbeID, client }) => {
+const getExpendituresForDownload = ({
+  ncsbeID,
+  date_occurred_gte: date_occurred_gteFilter = null,
+  date_occurred_lte: date_occurred_lteFilter = null,
+}) => {
+  const safeDateOccurredGteFilter = date_occurred_gteFilter
+    ? format('AND date_occurred >= CAST(%L as DATE)', date_occurred_gteFilter)
+    : ''
+  const safeDateOccurredLteFilter = date_occurred_lteFilter
+    ? format('AND date_occurred <= CAST(%L as DATE)', date_occurred_lteFilter)
+    : ''
   return db.query(
     `select count(*) over () as full_count,
     e.date_occurred,
@@ -392,8 +468,11 @@ const getExpendituresForDownload = ({ ncsbeID, client }) => {
     e.purpose,
     e.amount,
     v.name
-  from expenditures e join vendors v on e.contributor_id = v.account_id where (
-    lower(e.original_committee_sboe_id) = lower($1)
+    from expenditures e join vendors v on e.contributor_id = v.account_id
+    where (
+      lower(e.original_committee_sboe_id) = lower($1)
+        ${safeDateOccurredGteFilter}
+        ${safeDateOccurredLteFilter}
   )`,
     [ncsbeID]
   )
@@ -432,25 +511,46 @@ const getCommittee = async (ncsbeID) => {
  * @param {string} args.contributorId
  * @param {Number|string|null} args.limit
  * @param {Number|string|null} args.offset
+ * @param {string} args.sortBy
+ * @param {string} args.date_occurred_gte
+ * @param {string} args.date_occurred_lte
  **/
 const getContributorContributions = ({
   contributorId,
   limit = null,
   offset = null,
-}) =>
-  db.query(
+  sortBy = null,
+  date_occurred_gte: date_occurred_gteFilter = null,
+  date_occurred_lte: date_occurred_lteFilter = null,
+}) => {
+  let order = SUPPORTED_CANDIDATE_CONTRIBUTION_SORT_FIELDS.includes(sortBy)
+    ? sortBy
+    : ''
+  order = order.startsWith('-')
+    ? `${order.replace('-', '')} DESC`
+    : `${order} ASC`
+  const safeDateOccurredGteFilter = date_occurred_gteFilter
+    ? format('AND date_occurred >= CAST(%L as DATE)', date_occurred_gteFilter)
+    : ''
+  const safeDateOccurredLteFilter = date_occurred_lteFilter
+    ? format('AND date_occurred <= CAST(%L as DATE)', date_occurred_lteFilter)
+    : ''
+  return db.query(
     `select *, count(*) over () as full_count,
-  (select sum(amount) from contributions c where contributor_id = $1
-    and c.canon_committee_sboe_id = contributions.canon_committee_sboe_id) as total_contributions_to_committee
-  from contributions
-  join committees on committees.sboe_id = contributions.canon_committee_sboe_id
-  where contributor_id = $1
-  order by contributions.date_occurred asc
-  limit $2
-  offset $3
-  `,
+    (select sum(amount) from contributions c where contributor_id = $1
+      and c.canon_committee_sboe_id = contributions.canon_committee_sboe_id) as total_contributions_to_committee
+    from contributions
+    join committees on committees.sboe_id = contributions.canon_committee_sboe_id
+    where contributor_id = $1
+      ${safeDateOccurredGteFilter}
+      ${safeDateOccurredLteFilter}
+      ${sortBy ? `order by ${order}` : ''}
+    limit $2
+    offset $3
+    `,
     [contributorId, limit, offset]
   )
+}
 
 /**
  * @param {Object} args
@@ -467,6 +567,8 @@ const getContributor = ({ client, contributorId }) =>
  * @param {Number|string} args.limit
  * @param {Number|string} args.offset
  * @param {string} args.sortBy
+ * @param {string} args.date_occurred_gte
+ * @param {string} args.date_occurred_lte
  * @returns {Promise<import('pg').QueryResult>}
  */
 const getExpenditures = async ({
@@ -474,12 +576,20 @@ const getExpenditures = async ({
   limit = 50,
   offset = 0,
   sortBy = null,
+  date_occurred_gte: date_occurred_gteFilter = null,
+  date_occurred_lte: date_occurred_lteFilter = null,
 }) => {
   let order = SUPPORTED_EXPENDITURES_SORT_FIELDS.includes(sortBy) ? sortBy : ''
   order = order.startsWith('-')
     ? `${order.replace('-', '')} DESC`
     : `${order} ASC`
 
+  const safeDateOccurredGteFilter = date_occurred_gteFilter
+    ? format('AND date_occurred >= CAST(%L as DATE)', date_occurred_gteFilter)
+    : ''
+  const safeDateOccurredLteFilter = date_occurred_lteFilter
+    ? format('AND date_occurred <= CAST(%L as DATE)', date_occurred_lteFilter)
+    : ''
   console.time('getExpenditures - query')
   const result = await db.query(
     `select count(*) over () as full_count,
@@ -489,8 +599,11 @@ const getExpenditures = async ({
       e.purpose,
       e.amount,
       v.name
-    from expenditures e join vendors v on e.contributor_id = v.account_id where (
+    from expenditures e join vendors v on e.contributor_id = v.account_id
+    where (
       lower(e.original_committee_sboe_id) = lower($1)
+      ${safeDateOccurredGteFilter}
+      ${safeDateOccurredLteFilter}
     )
     ${sortBy ? `order by e.${order}` : ''}
     limit $2

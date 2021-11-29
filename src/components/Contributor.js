@@ -1,18 +1,26 @@
-import React, { useEffect, useCallback } from 'react'
+import React, { useEffect, useCallback, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { Grid, GridContainer } from '@trussworks/react-uswds'
+import { Button, Grid, GridContainer } from '@trussworks/react-uswds'
 
 import { useContributors } from '../hooks/useContributors'
 import SearchResultTable from './SearchResultTable'
 import { useTableColumns } from '../hooks'
 import { API_BATCH_SIZE } from '../constants'
 import ReportError from './ReportError'
+import { formatSortBy } from '../utils'
+import DateRange from './DateRange'
 
 import '../css/candidate.scss'
-import NumberFormat from 'react-number-format'
 
 const Contributor = () => {
   let { contributorId } = useParams()
+
+  // Initialize dates to current year
+  const date = new Date()
+  const currentDate = date.toISOString().split('T')[0]
+  const currentYear = date.getFullYear().toString()
+  const [datePickerStart, setDatePickerStart] = useState(currentYear + '-01-01')
+  const [datePickerEnd, setDatePickerEnd] = useState(currentDate)
 
   const {
     contributor,
@@ -21,47 +29,68 @@ const Contributor = () => {
     contributionCount,
     contributionOffset,
     fetchInitialSearchData,
-    fetchContributor,
     fetchContributorContributions,
   } = useContributors()
 
+  const [query, setQuery] = useState({
+    contributorId,
+    limit: API_BATCH_SIZE,
+    offset: 0,
+    sort: '-date_occurred',
+  })
+
   useEffect(() => {
     if (fetchInitialSearchData) {
-      fetchInitialSearchData({ contributorId })
+      fetchInitialSearchData({
+        contributorId,
+        limit: API_BATCH_SIZE,
+        offset: 0,
+        sort: '-date_occurred',
+        filters: [
+          { date_occurred_gte: datePickerStart },
+          { date_occurred_lte: datePickerEnd },
+        ],
+      })
     }
-  }, [contributorId, fetchInitialSearchData])
+  }, [contributorId, fetchInitialSearchData, datePickerStart, datePickerEnd])
+
+  const handleFetchContributions = useCallback(
+    ({ sortBy }) => {
+      const sort = formatSortBy(sortBy)
+      if (sort !== query.sort) {
+        const q = { ...query, sort }
+        setQuery(q)
+        fetchContributorContributions(q)
+      }
+    },
+    [fetchContributorContributions, query]
+  )
 
   const fetchSameContributions = useCallback(
     (limit = API_BATCH_SIZE) => {
-      fetchContributor({
-        contributorId,
-        limit: limit,
-        offset: contributionOffset,
-      })
+      const q = { ...query, limit }
+      setQuery(q)
+      fetchContributorContributions(q)
     },
-    [contributionOffset, fetchContributor, contributorId]
+    [fetchContributorContributions, query]
   )
 
   const fetchNextContributions = useCallback(
     (limit = API_BATCH_SIZE) => {
-      fetchContributorContributions({
-        contributorId,
-        limit: limit,
-        offset: contributionOffset + limit,
-      })
+      const q = { ...query, offset: query.offset + limit }
+      setQuery(q)
+      fetchContributorContributions(q)
     },
-    [contributionOffset, fetchContributorContributions, contributorId]
+    [fetchContributorContributions, query]
   )
 
   const fetchPreviousContributions = useCallback(
     (limit = API_BATCH_SIZE) => {
-      fetchContributorContributions({
-        contributorId,
-        limit: limit,
-        offset: contributionOffset - limit,
-      })
+      const q = { ...query, offset: query.offset - limit }
+      setQuery(q)
+      fetchContributorContributions(q)
     },
-    [contributionOffset, contributorId, fetchContributorContributions]
+    [fetchContributorContributions, query]
   )
 
   const { individualContributionsColumns } = useTableColumns()
@@ -91,7 +120,14 @@ const Contributor = () => {
             </p>
           </Grid>
         </Grid>
-        <Grid row></Grid>
+
+        <DateRange
+          datePickerStart={datePickerStart}
+          datePickerEnd={datePickerEnd}
+          setDatePickerStart={setDatePickerStart}
+          setDatePickerEnd={setDatePickerEnd}
+        />
+
         <Grid row gap="sm">
           <Grid col={7} mobile={{ col: 6 }}>
             <p className="table-label">Contributions</p>
@@ -99,14 +135,18 @@ const Contributor = () => {
           <Grid col={5} mobile={{ col: 6 }}>
             <ReportError />
             <a
-              className="usa-button csv-download-button"
               href={`${
                 process.env.NODE_ENV === 'production'
                   ? ''
                   : 'http://localhost:3001'
-              }/api/contributor/${contributorId}/contributions?toCSV=true`}
+              }/api/contributor/${contributorId}/contributions?toCSV=true&date_occurred_gte=${datePickerStart}&date_occurred_lte=${datePickerEnd}`}
             >
-              Download Results
+              <Button
+                className="csv-download-button"
+                disabled={contributionCount === 0}
+              >
+                Download Results
+              </Button>
             </a>
           </Grid>
         </Grid>
@@ -123,6 +163,8 @@ const Contributor = () => {
               offset={contributionOffset}
               searchTerm={contributor.name}
               searchType="contributions"
+              onFetchData={handleFetchContributions}
+              initialSortBy={[{ id: 'date_occurred', desc: true }]}
             />
           </Grid>
         </Grid>

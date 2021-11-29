@@ -24,6 +24,7 @@
     "sanitize-filename": "^1.6.3"
   },
   "devDependencies": {
+    "adm-zip": "^0.5.9",
     "chai": "^4.2.0",
     "deep-equal-in-any-order": "^1.0.28",
     "mocha": "^8.1.1",

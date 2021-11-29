@@ -139,7 +139,7 @@ export const useTableColumns = () => {
             month: 'short',
             day: '2-digit',
           }),
-        disableSortBy: true,
+        disableSortBy: false,
       },
       {
         Header: 'Recipient Name',
@@ -175,6 +175,7 @@ export const useTableColumns = () => {
         accessor: 'transaction_type',
       },
       {
+        id: 'amount',
         Header: 'Amount',
         accessor: (r) => {
           const formatter = new Intl.NumberFormat('en-US', {
@@ -183,6 +184,7 @@ export const useTableColumns = () => {
           })
           return formatter.format(r.amount)
         },
+        disableSortBy: false,
       },
       {
         Header: 'Total Contributed',

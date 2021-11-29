@@ -1,10 +1,10 @@
-first-run: install clean-db
+first-run: install download-data clean-db
 
-first-run-no-docker: install migrate-up etl
+first-run-no-docker: install download-data migrate-up etl
 
-first-run-windows: install clean-db-windows
+first-run-windows: install download-data clean-db-windows
 
-first-run-windows-no-docker: install migrate-up-windows etl
+first-run-windows-no-docker: install download-data migrate-up-windows etl
 
 .PHONY: wait-for-postgres
 wait-for-postgres:
@@ -60,3 +60,6 @@ build-dictionary:
 
 test-server:
 	cd server && npm run test
+
+download-data:
+	cd server/tmp && ../../scripts/gdownloader.sh && node ../../scripts/extractor.js

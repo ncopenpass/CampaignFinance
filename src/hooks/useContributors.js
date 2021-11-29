@@ -13,9 +13,22 @@ const constructContributorContributionsUrl = ({
   contributorId,
   limit,
   offset,
+  sort,
+  filters,
 }) => {
   contributorId = encodeURIComponent(contributorId)
-  return `${url}${contributorId}/contributions?limit=${limit}&offset=${offset}`
+  let contributionsUrl = `${url}${contributorId}/contributions?limit=${limit}&offset=${offset}`
+  if (sort) {
+    contributionsUrl = `${contributionsUrl}&sortBy=${sort}`
+  }
+  if (filters.length) {
+    filters.forEach((filter) => {
+      Object.keys(filter).forEach((key) => {
+        contributionsUrl = `${contributionsUrl}&${key}=${filter[key]}`
+      })
+    })
+  }
+  return contributionsUrl
 }
 
 export const useContributors = () => {
@@ -64,12 +77,20 @@ export const useContributors = () => {
   )
 
   const fetchContributorContributions = useCallback(
-    async ({ contributorId, limit = API_BATCH_SIZE, offset = 0 } = {}) => {
+    async ({
+      contributorId,
+      limit = API_BATCH_SIZE,
+      offset = 0,
+      sort,
+      filters,
+    } = {}) => {
       const url = constructContributorContributionsUrl({
         url: CONTRIBUTOR_URL,
         contributorId,
         limit,
         offset,
+        sort,
+        filters,
       })
       try {
         const { data, count, summary } = await getDataCountSummary(url)
@@ -85,9 +106,15 @@ export const useContributors = () => {
   )
 
   const fetchInitialSearchData = useCallback(
-    async ({ contributorId, limit, offset }) => {
+    async ({ contributorId, limit, offset, sort, filters }) => {
       await fetchContributor({ contributorId })
-      await fetchContributorContributions({ contributorId })
+      await fetchContributorContributions({
+        contributorId,
+        limit,
+        offset,
+        sort,
+        filters,
+      })
     },
     [fetchContributor, fetchContributorContributions]
   )
