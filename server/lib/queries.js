@@ -144,6 +144,8 @@ const getCommitteeSummary = async ({
  * @param {string} args.name
  * @param {string} args.transaction_type
  * @param {string} args.amount
+ * @param {string} args.amount_gte
+ * @param {string} args.amount_lte
  * @param {string} args.form_of_payment
  * @param {string} args.date_occurred_gte
  * @param {string} args.date_occurred_lte
@@ -157,6 +159,8 @@ const getCandidateContributions = async ({
   name: nameFilter = null,
   transaction_type: transaction_typeFilter = null,
   amount: amountFilter = null,
+  amount_gte: amount_gteFilter = null,
+  amount_lte: amount_lteFilter = null,
   form_of_payment: form_of_paymentFilter = null,
   date_occurred_gte: date_occurred_gteFilter = null,
   date_occurred_lte: date_occurred_lteFilter = null,
@@ -192,6 +196,12 @@ const getCandidateContributions = async ({
   const safeDateOccurredLteFilter = date_occurred_lteFilter
     ? format('AND date_occurred <= CAST(%L as DATE)', date_occurred_lteFilter)
     : ''
+  const safeAmountGteFilter = amount_gteFilter
+    ? format('AND amount >= %L', amount_gteFilter)
+    : ''
+  const safeAmountLteFilter = amount_lteFilter
+    ? format('AND amount <= %L', amount_lteFilter)
+    : ''
 
   console.time('getCandidateContributions - query')
   const result = await db.query(
@@ -224,6 +234,8 @@ const getCandidateContributions = async ({
         ${safeFormOfPaymentFilter}
         ${safeDateOccurredGteFilter}
         ${safeDateOccurredLteFilter}
+        ${safeAmountGteFilter}
+        ${safeAmountLteFilter}
       )
       ${sortBy ? `order by ${order}` : ''}
       limit $2
