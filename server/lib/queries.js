@@ -200,6 +200,7 @@ const getCandidateContributions = async ({
     : ''
   const yearFilter = year
     ? format('AND EXTRACT(YEAR FROM CAST(date_occurred as DATE)) = %L', year)
+    : ''
   const safeAmountGteFilter = amount_gteFilter
     ? format('AND amount >= %L', amount_gteFilter)
     : ''
