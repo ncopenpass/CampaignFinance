@@ -144,6 +144,8 @@ const getCommitteeSummary = async ({
  * @param {string} args.name
  * @param {string} args.transaction_type
  * @param {string} args.amount
+ * @param {string} args.amount_gte
+ * @param {string} args.amount_lte
  * @param {string} args.form_of_payment
  * @param {string} args.date_occurred_gte
  * @param {string} args.date_occurred_lte
@@ -158,6 +160,8 @@ const getCandidateContributions = async ({
   name: nameFilter = null,
   transaction_type: transaction_typeFilter = null,
   amount: amountFilter = null,
+  amount_gte: amount_gteFilter = null,
+  amount_lte: amount_lteFilter = null,
   form_of_payment: form_of_paymentFilter = null,
   date_occurred_gte: date_occurred_gteFilter = null,
   date_occurred_lte: date_occurred_lteFilter = null,
@@ -196,6 +200,11 @@ const getCandidateContributions = async ({
     : ''
   const yearFilter = year
     ? format('AND EXTRACT(YEAR FROM CAST(date_occurred as DATE)) = %L', year)
+  const safeAmountGteFilter = amount_gteFilter
+    ? format('AND amount >= %L', amount_gteFilter)
+    : ''
+  const safeAmountLteFilter = amount_lteFilter
+    ? format('AND amount <= %L', amount_lteFilter)
     : ''
 
   console.time('getCandidateContributions - query')
@@ -230,6 +239,8 @@ const getCandidateContributions = async ({
         ${safeDateOccurredGteFilter}
         ${safeDateOccurredLteFilter}
         ${yearFilter}
+        ${safeAmountGteFilter}
+        ${safeAmountLteFilter}
       )
       ${sortBy ? `order by ${order}` : ''}
       limit $2
@@ -539,6 +550,7 @@ const getCommittee = async (ncsbeID) => {
  * @param {string} args.contributorId
  * @param {Number|string|null} args.limit
  * @param {Number|string|null} args.offset
+ * @param {string} args.sortBy
  * @param {string} args.date_occurred_gte
  * @param {string} args.date_occurred_lte
  * @param {Number} args.year
@@ -547,10 +559,17 @@ const getContributorContributions = ({
   contributorId,
   limit = null,
   offset = null,
+  sortBy = null,
   date_occurred_gte: date_occurred_gteFilter = null,
   date_occurred_lte: date_occurred_lteFilter = null,
   year = null,
 }) => {
+  let order = SUPPORTED_CANDIDATE_CONTRIBUTION_SORT_FIELDS.includes(sortBy)
+    ? sortBy
+    : ''
+  order = order.startsWith('-')
+    ? `${order.replace('-', '')} DESC`
+    : `${order} ASC`
   const safeDateOccurredGteFilter = date_occurred_gteFilter
     ? format('AND date_occurred >= CAST(%L as DATE)', date_occurred_gteFilter)
     : ''
@@ -562,20 +581,19 @@ const getContributorContributions = ({
     : ''
   return db.query(
     `select *, count(*) over () as full_count,
-  (select sum(amount) from contributions c where contributor_id = $1
-    and c.canon_committee_sboe_id = contributions.canon_committee_sboe_id) as total_contributions_to_committee
-  from contributions
-  join committees on committees.sboe_id = contributions.canon_committee_sboe_id
-  where (
-    contributor_id = $1
-    ${safeDateOccurredGteFilter}
-    ${safeDateOccurredLteFilter}
-    ${yearFilter}
-    )
-  order by contributions.date_occurred asc
-  limit $2
-  offset $3
-  `,
+    (select sum(amount) from contributions c where contributor_id = $1
+      and c.canon_committee_sboe_id = contributions.canon_committee_sboe_id) as total_contributions_to_committee
+    from contributions
+    join committees on committees.sboe_id = contributions.canon_committee_sboe_id
+    where contributor_id = $1
+      ${safeDateOccurredGteFilter}
+      ${safeDateOccurredLteFilter}
+      ${sortBy ? `order by ${order}` : ''}
+      ${yearFilter}
+    order by contributions.date_occurred asc
+    limit $2
+    offset $3
+    `,
     [contributorId, limit, offset]
   )
 }
