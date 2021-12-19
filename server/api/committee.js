@@ -79,6 +79,7 @@ router.get('/committee/:ncsbeID/contributions', async (req, res) => {
       form_of_payment,
       date_occurred_gte,
       date_occurred_lte,
+      year,
     } = req.query
     ncsbeID = decodeURIComponent(ncsbeID)
     if (!ncsbeID) {
@@ -100,6 +101,7 @@ router.get('/committee/:ncsbeID/contributions', async (req, res) => {
         form_of_payment,
         date_occurred_gte,
         date_occurred_lte,
+        year,
       })
 
       return res.send({
@@ -113,6 +115,7 @@ router.get('/committee/:ncsbeID/contributions', async (req, res) => {
           ncsbeID,
           date_occurred_gte,
           date_occurred_lte,
+          year,
         }),
         getCommittee(ncsbeID),
       ])

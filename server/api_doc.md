@@ -210,6 +210,7 @@ Query Params (optional):
 - `form_of_payment` exact match
 - `date_occurred_gte` match results with `date_occurred` greater than and equal to the provided date (`1/1/2020`)
 - `date_occurred_lte` match results with `date_occurred` greater than and equal to the provided date (`1/1/2020`)
+- `year` match results with `date_occured` containing provided year
 
 Example: `/api/candidate/STA-C0498N-C-002/contributions?limit=2`
 response:
@@ -339,6 +340,7 @@ Query Params (optional):
 - `toCSV` default value `false`
 - `date_occurred_gte` match results with `date_occurred` greater than and equal to the provided date
 - `date_occurred_lte` match results with `date_occurred` greater than and equal to the provided date
+- `year` match results with `date_occured` containing provided year
 
 Example: `/api/contributor/5123/contributions?limit=2&offset=0`
 response:
@@ -511,6 +513,7 @@ Query Params (optional):
 - `sortBy` sort by `amount` or `date_occurred`. Prefix with `-` for `DESC` order
 - `date_occurred_gte` match results with `date_occurred` greater than and equal to the provided date
 - `date_occurred_lte` match results with `date_occurred` greater than and equal to the provided date
+- `year` match results with `date_occured` containing provided year
 
 Example: `/api/expenditures/STA-C0498N-C-002?limit=3&sortBy=-amount`
 response:

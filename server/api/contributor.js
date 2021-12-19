@@ -21,6 +21,7 @@ router.get('/contributor/:contributorId/contributions', async (req, res) => {
       toCSV = false,
       date_occurred_gte,
       date_occurred_lte,
+      year,
       sortBy
     } = req.query
 
@@ -32,6 +33,7 @@ router.get('/contributor/:contributorId/contributions', async (req, res) => {
         sortBy,
         date_occurred_gte,
         date_occurred_lte,
+        year,
       })
       return res.send({
         data: contributions.rows.map(apiReprContributionCommittee),
@@ -43,6 +45,7 @@ router.get('/contributor/:contributorId/contributions', async (req, res) => {
         contributorId,
         date_occurred_gte,
         date_occurred_lte,
+        year,
       })
       const contributorPromise = getContributor({ contributorId })
 
