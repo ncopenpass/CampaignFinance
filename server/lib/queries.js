@@ -48,6 +48,7 @@ const getCandidateSummary = async ({
 
   // Post MVP we should probably find a way to speed this up.
   console.time('getCandidateSummary')
+  const excludeInterestType = "AND upper(transaction_type) != 'INTEREST'";
   // TODO: fix aggregated individual contribution logic
   const summary = await db.query(
     `
@@ -58,15 +59,16 @@ const getCandidateSummary = async ({
       where contributor_id IS NULl
         and canon_committee_sboe_id = $1
   )
-  select sum(amount),
-         avg(amount),
-         max(amount),
+  select sum(adjusted_amount),
+         avg(adjusted_amount),
+         max(adjusted_amount),
          count(*)::int,
          (select aggregated_contributions_count from aggregated_contributions limit 1) as aggregated_contributions_count,
          (select aggregated_contributions_sum from aggregated_contributions limit 1)   as aggregated_contributions_sum
-  from contributions
+  from (select c.*, (CASE WHEN upper(transaction_type) = 'REFUND' THEN amount*-1 ELSE amount END) adjusted_amount from contributions c where canon_committee_sboe_id = $1) contribs
   where (
-    canon_committee_sboe_id = $1 
+    canon_committee_sboe_id = $1
+    ${excludeInterestType}
     ${safeDateOccurredGteFilter}
     ${safeDateOccurredLteFilter}
     )`,
