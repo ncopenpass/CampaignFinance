@@ -1,5 +1,3 @@
-'use strict'
-
 const fs = require('fs')
 let AdmZip = require('adm-zip')
 let path = require('path')
