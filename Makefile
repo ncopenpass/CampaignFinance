@@ -62,4 +62,6 @@ test-server:
 	cd server && npm run test
 
 download-data:
-	cd server/tmp && ../../scripts/gdownloader.sh && node ../../scripts/extractor.js
+	$(info WARNING: automatic downloads do not work. Download a copy of the data from here: https://drive.google.com/uc?export=download&id=1AJOrBuTeGPYyXsXNs4XzX7a5QloZVTGV)
+	$(info WARNING (cont.): Copy the extracted CSV files to ./server/tmp)
+	# cd server/tmp && ../../scripts/gdownloader.sh && node ../../scripts/extractor.js
