@@ -4,7 +4,6 @@ const fs = require('fs')
 const path = require('path')
 const db = require('../db')
 const json2csv = require('json2csv')
-const { emptyString } = require('react-select/src/utils')
 
 // array: [1, 2, 3] => string: '1, 2, 3'
 const toSQLInQueryArgs = (args, el) => `${args}, ${el}`
