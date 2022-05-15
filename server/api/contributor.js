@@ -7,6 +7,7 @@ const {
 const {
   getContributor,
   getContributorContributions,
+  getContributorContributionYears,
 } = require('../lib/queries')
 const { handleError, sendCSV } = require('../lib/helpers')
 
@@ -22,7 +23,7 @@ router.get('/contributor/:contributorId/contributions', async (req, res) => {
       date_occurred_gte,
       date_occurred_lte,
       year,
-      sortBy
+      sortBy,
     } = req.query
 
     if (!toCSV) {
@@ -81,6 +82,28 @@ router.get('/contributor/:contributorId', async (req, res) => {
     res.status(contributor === null ? 404 : 200)
     return res.send({
       data: contributor,
+    })
+  } catch (error) {
+    handleError(error, res)
+  }
+})
+
+router.get('/contributor/:ncsbeID/contributions/years', async (req, res) => {
+  try {
+    let { ncsbeID = '' } = req.params
+    ncsbeID = decodeURIComponent(ncsbeID)
+    if (!ncsbeID) {
+      res.status(500)
+      return res.send({
+        error: 'empty ncsbeID',
+      })
+    }
+
+    const years = await getContributorContributionYears({ ncsbeID })
+
+    return res.send({
+      data: { years },
+      count: years.length, // a little silly,
     })
   } catch (error) {
     handleError(error, res)

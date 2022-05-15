@@ -14,7 +14,7 @@ const copyFromCSV = (
   tableName,
   client,
   headers = '',
-  nullDelimiter = 'NULL'
+  nullDelimiter = ''
 ) =>
   new Promise((resolve, reject) => {
     const fileStream = fs.createReadStream(path)

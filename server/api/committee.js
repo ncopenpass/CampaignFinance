@@ -12,6 +12,7 @@ const {
   getCommitteeSummary,
   getCommitteeContributions,
   getCommitteeContributionsForDownload,
+  getCandidateContributionYears,
 } = require('../lib/queries')
 
 const router = express.Router()
@@ -135,6 +136,28 @@ router.get('/committee/:ncsbeID/contributions', async (req, res) => {
         res
       )
     }
+  } catch (error) {
+    handleError(error, res)
+  }
+})
+
+router.get('/committee/:ncsbeID/contributions/years', async (req, res) => {
+  try {
+    let { ncsbeID = '' } = req.params
+    ncsbeID = decodeURIComponent(ncsbeID)
+    if (!ncsbeID) {
+      res.status(500)
+      return res.send({
+        error: 'empty ncsbeID',
+      })
+    }
+
+    const years = await getCandidateContributionYears({ ncsbeID })
+
+    return res.send({
+      data: { years },
+      count: years.length, // a little silly,
+    })
   } catch (error) {
     handleError(error, res)
   }

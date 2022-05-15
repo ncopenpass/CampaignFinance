@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { API_BATCH_SIZE, STATUSES } from '../constants'
 
 const CONTRIBUTOR_URL = '/api/contributor/'
@@ -14,7 +14,7 @@ const constructContributorContributionsUrl = ({
   limit,
   offset,
   sort,
-  filters,
+  filters = [],
 }) => {
   contributorId = encodeURIComponent(contributorId)
   let contributionsUrl = `${url}${contributorId}/contributions?limit=${limit}&offset=${offset}`
@@ -131,4 +131,31 @@ export const useContributors = () => {
     fetchContributor,
     fetchContributorContributions,
   }
+}
+
+export const useGetContributorContributionYears = (contributorId = '') => {
+  const [years, setYears] = useState([])
+  const [status, setStatus] = useState(STATUSES.Unsent)
+
+  useEffect(() => {
+    if (!contributorId) {
+      return
+    }
+    setStatus(STATUSES.Pending)
+    async function fetchYears() {
+      try {
+        const result = await fetch(
+          `${CONTRIBUTOR_URL}${contributorId}/contributions/years`
+        )
+        const body = await result.json()
+        setYears(body.data.years || [])
+        setStatus(STATUSES.Success)
+      } catch (err) {
+        console.error(err)
+        setStatus(STATUSES.Fail)
+      }
+    }
+    fetchYears()
+  }, [contributorId])
+  return { years, status }
 }

@@ -110,7 +110,7 @@ function DateRange({
         name="year-selector-dropdown"
         onChange={(e) => changeYearSelector(e.target.value)}
         disabled={isCustomDatesOpen}
-        defaultValue={new Date().getFullYear().toString()}
+        defaultValue={datePickerStart}
       >
         <option key="all-years" value="all-years">
           {' '}

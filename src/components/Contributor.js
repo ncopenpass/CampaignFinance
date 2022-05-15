@@ -2,10 +2,13 @@ import React, { useEffect, useCallback, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { Button, Grid, GridContainer } from '@trussworks/react-uswds'
 
-import { useContributors } from '../hooks/useContributors'
+import {
+  useContributors,
+  useGetContributorContributionYears,
+} from '../hooks/useContributors'
 import SearchResultTable from './SearchResultTable'
 import { useTableColumns } from '../hooks'
-import { API_BATCH_SIZE } from '../constants'
+import { API_BATCH_SIZE, STATUSES } from '../constants'
 import ReportError from './ReportError'
 import { formatSortBy } from '../utils'
 import DateRange from './DateRange'
@@ -21,6 +24,16 @@ const Contributor = () => {
   const currentYear = date.getFullYear().toString()
   const [datePickerStart, setDatePickerStart] = useState(currentYear + '-01-01')
   const [datePickerEnd, setDatePickerEnd] = useState(currentDate)
+
+  const { years, status: yearsStatus } =
+    useGetContributorContributionYears(contributorId)
+
+  useEffect(() => {
+    if (years && years.length > 0 && yearsStatus === STATUSES.Success) {
+      setDatePickerStart(years[years.length - 1] + '-01-01')
+      setDatePickerEnd(years[0] + '-12-31')
+    }
+  }, [years, yearsStatus])
 
   const {
     contributor,
@@ -121,12 +134,15 @@ const Contributor = () => {
           </Grid>
         </Grid>
 
-        <DateRange
-          datePickerStart={datePickerStart}
-          datePickerEnd={datePickerEnd}
-          setDatePickerStart={setDatePickerStart}
-          setDatePickerEnd={setDatePickerEnd}
-        />
+        {yearsStatus === STATUSES.Success && (
+          <DateRange
+            datePickerStart={datePickerStart}
+            datePickerEnd={datePickerEnd}
+            setDatePickerStart={setDatePickerStart}
+            setDatePickerEnd={setDatePickerEnd}
+            allYears={years}
+          />
+        )}
 
         <Grid row gap="sm">
           <Grid col={7} mobile={{ col: 6 }}>
