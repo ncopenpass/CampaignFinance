@@ -667,6 +667,25 @@ const getExpenditures = async ({
   return result
 }
 
+/**
+ *
+ * @param {Object} param0
+ * @param {string} param0.ncsbeID
+ * @returns {Promise<string[]>}
+ */
+const getContributionYears = async ({ ncsbeID }) => {
+  const result = await db.query(
+    `SELECT distinct(date_part('year', date_occurred))
+  FROM transactions
+  WHERE date_occurred IS NOT NULL
+    AND canon_committee_sboe_id = $1
+    order by date_part desc`,
+    [ncsbeID]
+  )
+  const years = result.rows.map((row) => row.date_part)
+  return years
+}
+
 module.exports = {
   getCandidateSummary,
   getCandidateContributions,
@@ -680,4 +699,5 @@ module.exports = {
   getCommitteeSummary,
   getExpenditures,
   getExpendituresForDownload,
+  getContributionYears,
 }

@@ -10,6 +10,7 @@ const {
   getCandidateSummary,
   getCandidateContributions,
   getCandidateContributionsForDownload,
+  getContributionYears,
 } = require('../lib/queries')
 
 const router = express.Router()
@@ -146,4 +147,25 @@ router.get('/candidate/:ncsbeID/contributions', async (req, res) => {
   }
 })
 
+router.get('/candidate/:ncsbeID/contributions/years', async (req, res) => {
+  try {
+    let { ncsbeID = '' } = req.params
+    ncsbeID = decodeURIComponent(ncsbeID)
+    if (!ncsbeID) {
+      res.status(500)
+      return res.send({
+        error: 'empty ncsbeID',
+      })
+    }
+
+    const years = await getContributionYears({ ncsbeID })
+
+    return res.send({
+      data: { years },
+      count: years.length, // a little silly,
+    })
+  } catch (error) {
+    handleError(error, res)
+  }
+})
 module.exports = router
