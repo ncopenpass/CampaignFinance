@@ -580,6 +580,7 @@ const getContributorContributions = ({
   const yearFilter = year
     ? format('AND EXTRACT(YEAR FROM CAST(date_occurred as DATE)) = %L', year)
     : ''
+
   return db.query(
     `select *, count(*) over () as full_count,
     (select sum(amount) from contributions c where contributor_id = $1
@@ -589,9 +590,8 @@ const getContributorContributions = ({
     where contributor_id = $1
       ${safeDateOccurredGteFilter}
       ${safeDateOccurredLteFilter}
-      ${sortBy ? `order by ${order}` : ''}
       ${yearFilter}
-    order by contributions.date_occurred asc
+      ${sortBy ? `order by ${order}` : ''}
     limit $2
     offset $3
     `,
@@ -673,12 +673,31 @@ const getExpenditures = async ({
  * @param {string} param0.ncsbeID
  * @returns {Promise<string[]>}
  */
-const getContributionYears = async ({ ncsbeID }) => {
+const getCandidateContributionYears = async ({ ncsbeID }) => {
   const result = await db.query(
     `SELECT distinct(date_part('year', date_occurred))
   FROM transactions
   WHERE date_occurred IS NOT NULL
     AND canon_committee_sboe_id = $1
+    order by date_part desc`,
+    [ncsbeID]
+  )
+  const years = result.rows.map((row) => row.date_part)
+  return years
+}
+
+/**
+ *
+ * @param {Object} param0
+ * @param {string} param0.ncsbeID
+ * @returns {Promise<string[]>}
+ */
+const getContributorContributionYears = async ({ ncsbeID }) => {
+  const result = await db.query(
+    `SELECT distinct(date_part('year', date_occurred))
+  FROM transactions
+  WHERE date_occurred IS NOT NULL
+    AND contributor_id = $1
     order by date_part desc`,
     [ncsbeID]
   )
@@ -699,5 +718,6 @@ module.exports = {
   getCommitteeSummary,
   getExpenditures,
   getExpendituresForDownload,
-  getContributionYears,
+  getCandidateContributionYears,
+  getContributorContributionYears,
 }

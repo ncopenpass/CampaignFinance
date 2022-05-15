@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { API_BATCH_SIZE, STATUSES } from '../constants'
 
 const CANDIDATE_URL = '/api/candidate/'
@@ -163,4 +163,31 @@ export const useCandidate = () => {
     fetchContributions,
     fetchSummary,
   }
+}
+
+export const useGetCandidateContributionYears = (candidateId = '') => {
+  const [years, setYears] = useState([])
+  const [status, setStatus] = useState(STATUSES.Unsent)
+
+  useEffect(() => {
+    if (!candidateId) {
+      return
+    }
+    setStatus(STATUSES.Pending)
+    async function fetchYears() {
+      try {
+        const result = await fetch(
+          `${CANDIDATE_URL}${candidateId}/contributions/years`
+        )
+        const body = await result.json()
+        setYears(body.data.years || [])
+        setStatus(STATUSES.Success)
+      } catch (err) {
+        console.error(err)
+        setStatus(STATUSES.Fail)
+      }
+    }
+    fetchYears()
+  }, [candidateId])
+  return { years, status }
 }

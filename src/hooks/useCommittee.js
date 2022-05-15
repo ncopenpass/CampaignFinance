@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { API_BATCH_SIZE, STATUSES } from '../constants'
 
 const COMMITTEE_URL = '/api/committee/'
@@ -164,4 +164,31 @@ export const useCommittee = () => {
     fetchContributions,
     fetchSummary,
   }
+}
+
+export const useGetCommitteeContributionYears = (ncsbeID = '') => {
+  const [years, setYears] = useState([])
+  const [status, setStatus] = useState(STATUSES.Unsent)
+
+  useEffect(() => {
+    if (!ncsbeID) {
+      return
+    }
+    setStatus(STATUSES.Pending)
+    async function fetchYears() {
+      try {
+        const result = await fetch(
+          `${COMMITTEE_URL}${ncsbeID}/contributions/years`
+        )
+        const body = await result.json()
+        setYears(body.data.years || [])
+        setStatus(STATUSES.Success)
+      } catch (err) {
+        console.error(err)
+        setStatus(STATUSES.Fail)
+      }
+    }
+    fetchYears()
+  }, [ncsbeID])
+  return { years, status }
 }

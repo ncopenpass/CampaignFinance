@@ -10,7 +10,7 @@ const {
   getCandidateSummary,
   getCandidateContributions,
   getCandidateContributionsForDownload,
-  getContributionYears,
+  getCandidateContributionYears,
 } = require('../lib/queries')
 
 const router = express.Router()
@@ -158,7 +158,7 @@ router.get('/candidate/:ncsbeID/contributions/years', async (req, res) => {
       })
     }
 
-    const years = await getContributionYears({ ncsbeID })
+    const years = await getCandidateContributionYears({ ncsbeID })
 
     return res.send({
       data: { years },

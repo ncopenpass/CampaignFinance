@@ -3,8 +3,13 @@ import { useParams } from 'react-router-dom'
 import { Button, Grid, GridContainer } from '@trussworks/react-uswds'
 import NumberFormat from 'react-number-format'
 
-import { useCandidate, useTableColumns, useExpenditures } from '../hooks'
-import { API_BATCH_SIZE } from '../constants'
+import {
+  useCandidate,
+  useTableColumns,
+  useExpenditures,
+  useGetCandidateContributionYears,
+} from '../hooks'
+import { API_BATCH_SIZE, STATUSES } from '../constants'
 import '../css/candidate.scss'
 import { formatSortBy } from '../utils'
 
@@ -23,6 +28,16 @@ const Candidate = () => {
   const currentYear = date.getFullYear().toString()
   const [datePickerStart, setDatePickerStart] = useState(currentYear + '-01-01')
   const [datePickerEnd, setDatePickerEnd] = useState(currentDate)
+
+  const { years, status: yearsStatus } =
+    useGetCandidateContributionYears(candidateId)
+
+  useEffect(() => {
+    if (years && years.length > 0 && yearsStatus === STATUSES.Success) {
+      setDatePickerStart(years[years.length - 1] + '-01-01')
+      setDatePickerEnd(years[0] + '-12-31')
+    }
+  }, [years, yearsStatus])
 
   const {
     apiStatus: candidateApiStatus,
@@ -277,12 +292,15 @@ const Candidate = () => {
           </Grid>
         </Grid>
 
-        <DateRange
-          datePickerStart={datePickerStart}
-          datePickerEnd={datePickerEnd}
-          setDatePickerStart={setDatePickerStart}
-          setDatePickerEnd={setDatePickerEnd}
-        />
+        {yearsStatus === STATUSES.Success && (
+          <DateRange
+            datePickerStart={datePickerStart}
+            datePickerEnd={datePickerEnd}
+            setDatePickerStart={setDatePickerStart}
+            setDatePickerEnd={setDatePickerEnd}
+            allYears={years}
+          />
+        )}
 
         <Grid row gap="sm">
           <Grid col={7} mobile={{ col: 6 }}>
