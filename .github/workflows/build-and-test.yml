@@ -36,8 +36,8 @@ jobs:
     needs: test-server
     if: github.ref == 'refs/heads/master'
     steps:
-      - name: Deploy to Heroku
       - uses: actions/checkout@v2
+      - name: Deploy to Heroku
         with:
           fetch-depth: 0
       uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
