@@ -507,7 +507,7 @@ const getExpendituresForDownload = ({
     e.purpose,
     e.amount,
     v.name
-    from expenditures e join vendors v on e.contributor_id = v.account_id
+    from expenditures e join accounts v on e.contributor_id = v.account_id
     where (
       lower(e.original_committee_sboe_id) = lower($1)
         ${safeDateOccurredGteFilter}
@@ -651,7 +651,7 @@ const getExpenditures = async ({
       e.purpose,
       e.amount,
       v.name
-    from expenditures e join vendors v on e.contributor_id = v.account_id
+    from expenditures e join accounts v on e.contributor_id = v.account_id
     where (
       lower(e.original_committee_sboe_id) = lower($1)
       ${safeDateOccurredGteFilter}

@@ -211,10 +211,10 @@ const Candidate = () => {
           <Grid col>
             <h1 className="candidate-name">{candidate.candidate_full_name}</h1>
             <p className="candidate-party">{candidate.party}</p>
-            <p className="candidate-prop">
+            {/* <p className="candidate-prop">
               <span className="candidate-prop-label">Contest:</span>
               {candidate.office}
-            </p>
+            </p> */}
             {candidate.committee_name && (
               <p className="candidate-prop">
                 <span className="candidate-prop-label">PAC:</span>
