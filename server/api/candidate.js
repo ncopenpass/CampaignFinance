@@ -4,7 +4,7 @@ const {
   apiReprCandidate,
   apiReprContributorContributions,
 } = require('../lib/repr')
-const { handleError, sendCSV } = require('../lib/helpers')
+const { handleError, streamFile } = require('../lib/helpers')
 const {
   getCandidate,
   getCandidateSummary,
@@ -113,32 +113,19 @@ router.get('/candidate/:ncsbeID/contributions', async (req, res) => {
           contributions.rows.length > 0 ? contributions.rows[0].full_count : 0,
       })
     } else {
-      const [contributions, candidate] = await Promise.all([
-        getCandidateContributionsForDownload({
-          ncsbeID,
-          date_occurred_gte,
-          date_occurred_lte,
-          year,
-        }),
-        getCandidate(ncsbeID),
-      ])
-
-      if (contributions.rows.length < 1 || !candidate) {
-        return handleError(
-          new Error(`no results found for candidate with id: ${ncsbeID}`),
-          res
-        )
-      }
-
-      // Due to some data integrity issues, not all candidates have a full_name field,
-      // So we fallback to the committee_name
-      const candidateName = candidate.candidate_full_name
+      const candidate = await getCandidate(ncsbeID)
+      const filename = candidate.candidate_full_name
         ? candidate.candidate_full_name
         : candidate.committee_name
 
-      sendCSV(
-        contributions.rows.map(apiReprContributorContributions),
-        `${candidateName.replace(/ /g, '_').toLowerCase()}_contributions.csv`,
+      await streamFile(
+        () =>
+          getCandidateContributionsForDownload({
+            ncsbeID,
+            year,
+            res,
+          }),
+        filename,
         res
       )
     }

@@ -5,7 +5,7 @@ const {
   apiReprContributorContributions,
 } = require('../lib/repr')
 
-const { handleError, sendCSV } = require('../lib/helpers')
+const { handleError, streamFile } = require('../lib/helpers')
 
 const {
   getCommittee,
@@ -111,17 +111,9 @@ router.get('/committee/:ncsbeID/contributions', async (req, res) => {
           contributions.rows.length > 0 ? contributions.rows[0].full_count : 0,
       })
     } else {
-      const [contributions, committee] = await Promise.all([
-        getCommitteeContributionsForDownload({
-          ncsbeID,
-          date_occurred_gte,
-          date_occurred_lte,
-          year,
-        }),
-        getCommittee(ncsbeID),
-      ])
+      const committee = await getCommittee(ncsbeID)
 
-      if (contributions.rows.length < 1 || !committee) {
+      if (!committee) {
         return handleError(
           new Error(`no results found for candidate with id: ${ncsbeID}`),
           res
@@ -130,8 +122,15 @@ router.get('/committee/:ncsbeID/contributions', async (req, res) => {
 
       const committeeName = committee.committee_name
 
-      sendCSV(
-        contributions.rows.map(apiReprContributorContributions),
+      await streamFile(
+        () =>
+          getCommitteeContributionsForDownload({
+            ncsbeID,
+            date_occurred_gte,
+            date_occurred_lte,
+            year,
+            res,
+          }),
         `${committeeName.replace(/ /g, '_').toLowerCase()}_contributions.csv`,
         res
       )

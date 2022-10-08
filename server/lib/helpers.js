@@ -32,4 +32,14 @@ const sendCSV = (data, filename, res) => {
   res.send(csv)
 }
 
-module.exports = { handleError, sendCSV }
+const streamFile = (streamFn, filename, res) => {
+  console.log('filename', sanitize(filename))
+  res.setHeader('Content-type', 'text/csv')
+  res.setHeader(
+    'Content-disposition',
+    `attachment; filename="${sanitize(filename)}"`
+  )
+  return streamFn()
+}
+
+module.exports = { handleError, sendCSV, streamFile }
