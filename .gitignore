@@ -4,3 +4,4 @@ node_modules
 server/tmp/
 .idea
 build/
+server/dist
