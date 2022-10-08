@@ -1,21 +1,20 @@
-const http = require('http')
-const chai = require('chai')
+import http from 'http'
+import chai from 'chai'
 // eslint-disable-next-line no-unused-vars
 const deepEqualInAnyOrder = require('deep-equal-in-any-order')
 const supertest = require('supertest')
 
-const app = require('../app')
-const { setUpDb, seedDb, dropRows, tearDownDb } = require('./utils')
-const { getClient } = require('../db')
+import app from '../app'
+import { setUpDb, seedDb, dropRows, tearDownDb } from './utils'
+import { getClient } from '../db'
 
 const { PORT: port = 3001 } = process.env
 
 chai.should()
 chai.use(deepEqualInAnyOrder)
 
-let server
+let server: http.Server
 
-// eslint-disable-next-line no-undef
 before(async function () {
   console.log('Setting up db')
   try {
@@ -43,7 +42,6 @@ afterEach(async function () {
   }
 })
 
-// eslint-disable-next-line no-undef
 after(async function () {
   console.log('Tearing down db')
   try {
@@ -324,7 +322,7 @@ describe('GET /api/candidate/:ncsbeID/contributions CSV download', function () {
     response.text
       .split('\n')[0]
       .split(',')
-      .map((item) => item.replace(/"/g, ''))
+      .map((item: string) => item.replace(/"/g, ''))
       .should.deep.equalInAnyOrder(expectedContributorContributionsKeys)
   })
 })
@@ -350,7 +348,7 @@ describe('GET /api/committee/:ncsbeID/contributions CSV download', function () {
     response.text
       .split('\n')[0]
       .split(',')
-      .map((item) => item.replace(/"/g, ''))
+      .map((item: string) => item.replace(/"/g, ''))
       .should.deep.equalInAnyOrder(expectedContributorContributionsKeys)
   })
 })
@@ -373,7 +371,7 @@ describe('GET /api/contributor/:contributorId/contributions CSV download', funct
     response.text
       .split('\n')[0]
       .split(',')
-      .map((item) => item.replace(/"/g, ''))
+      .map((item: string) => item.replace(/"/g, ''))
       .should.deep.equalInAnyOrder(expectedContributionCommitteeKeys)
   })
 })
@@ -428,42 +426,6 @@ describe('GET /api/contributor/:contributorId', function () {
     response.status.should.equal(404)
     response.body.should.be.an('object').that.has.all.keys(['data'])
     chai.should().equal(response.body.data, null)
-  })
-})
-
-describe('GET /api/search/candidates-donors-pacs/:name', function () {
-  it('it should have status 200 and correct schema', async function () {
-    const client = await getClient()
-    const { rows } = await client.query(
-      'select candidate_last_name from committees where candidate_last_name is not null limit 1',
-      []
-    )
-    client.release()
-    const name = encodeURIComponent(rows[0].candidate_last_name)
-    const response = await supertest(app).get(
-      `/api/search/candidates-donors-pacs/${name}`
-    )
-    response.status.should.equal(200)
-    const keys = ['data', 'count']
-
-    ;[('candidates', 'donors', 'pacs')].forEach((item) => {
-      response.body[item].should.be.an('object').that.has.all.keys(keys)
-    })
-
-    response.body.should.be
-      .an('object')
-      .that.has.all.keys(['candidates', 'donors', 'pacs'])
-
-    if (response.body.candidates.length > 0) {
-      response.body.candidates[0].should.be
-        .an('object')
-        .that.has.all.keys(expectedCandidateKeys)
-    }
-    if (response.body.donors.length > 0) {
-      response.body.donors[0].should.be
-        .an('object')
-        .that.has.all.keys(expectedContributorKeys)
-    }
   })
 })
 

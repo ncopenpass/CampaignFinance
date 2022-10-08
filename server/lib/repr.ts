@@ -1,6 +1,4 @@
-// @ts-check
-
-const apiReprCandidate = (row) => {
+export const apiReprCandidate = (row: Record<string, unknown>) => {
   return {
     candidate_first_last_name: row.candidate_first_last_name,
     candidate_first_name: row.candidate_first_name,
@@ -16,7 +14,7 @@ const apiReprCandidate = (row) => {
   }
 }
 
-const apiReprContributor = (row) => {
+export const apiReprContributor = (row: Record<string, unknown>) => {
   return {
     contributor_id: row.account_id,
     name: row.name,
@@ -28,7 +26,7 @@ const apiReprContributor = (row) => {
   }
 }
 
-const apiReprContribution = (row) => {
+export const apiReprContribution = (row: Record<string, unknown>) => {
   return {
     account_code: row.account_code,
     amount: row.amount,
@@ -44,7 +42,7 @@ const apiReprContribution = (row) => {
   }
 }
 
-const apiReprCommittee = (row) => {
+export const apiReprCommittee = (row: Record<string, unknown>) => {
   return {
     committee_name: row.committee_name,
     office: row.office,
@@ -55,7 +53,7 @@ const apiReprCommittee = (row) => {
   }
 }
 
-const apiReprContributionCommittee = (row) => {
+export const apiReprContributionCommittee = (row: Record<string, unknown>) => {
   return {
     ...apiReprContribution(row),
     candidate_full_name: row.candidate_full_name,
@@ -64,13 +62,20 @@ const apiReprContributionCommittee = (row) => {
   }
 }
 
-const apiReprExpenditure = ({
+export const apiReprExpenditure = ({
   date_occurred,
   form_of_payment,
   transaction_type,
   purpose,
   amount,
   name,
+}: {
+  date_occurred: string
+  form_of_payment: string
+  transaction_type: string
+  purpose: string
+  amount: number
+  name: string
 }) => ({
   date_occurred,
   form_of_payment,
@@ -81,19 +86,11 @@ const apiReprExpenditure = ({
 })
 
 // the combined view for contributor + contributions
-const apiReprContributorContributions = (row) => {
+export const apiReprContributorContributions = (
+  row: Record<string, unknown>
+) => {
   return {
     ...apiReprContributor(row),
     ...apiReprContribution(row),
   }
-}
-
-module.exports = {
-  apiReprCandidate,
-  apiReprCommittee,
-  apiReprContribution,
-  apiReprContributor,
-  apiReprContributionCommittee,
-  apiReprContributorContributions,
-  apiReprExpenditure,
 }

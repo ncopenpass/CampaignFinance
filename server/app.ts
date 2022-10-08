@@ -1,14 +1,7 @@
-//@ts-check
-const express = require('express')
-const path = require('path')
+import express, { Request, Response, NextFunction } from 'express'
+import path from 'path'
 
-/**
- *
- * @param {import('express').Request} req
- * @param {import('express').Response} res
- * @param {import('express').NextFunction} next
- */
-const enforceSSL = (req, res, next) => {
+const enforceSSL = (req: Request, res: Response, next: NextFunction) => {
   const proto = req.headers['x-forwarded-proto']
   if (proto === 'http') {
     const host = req.headers['host'] ? req.headers['host'] : req.hostname
@@ -17,12 +10,7 @@ const enforceSSL = (req, res, next) => {
   next()
 }
 
-/**
- * @param {import('express').Request} req
- * @param {import('express').Response} res
- * @param {import('express').NextFunction} next
- */
-const logHandlerTime = (req, res, next) => {
+const logHandlerTime = (req: Request, res: Response, next: NextFunction) => {
   const startTime = Date.now()
 
   req.on('end', () => {
@@ -60,4 +48,4 @@ if (process.env.NODE_ENV === 'production') {
   })
 }
 
-module.exports = app
+export default app

@@ -1,14 +1,16 @@
 #!/usr/bin/env node
-const fs = require('fs')
-const path = require('path')
-const copyTo = require('pg-copy-streams').to
-const { getClient } = require('../db')
+import fs from 'fs'
+import path from 'path'
+import { PoolClient } from 'pg'
+import { getClient } from '../db'
+import copyStreams from 'pg-copy-streams'
+const copyTo = copyStreams.to
 
 const DIRECTORY = process.argv[2] || './'
 
 const tables = ['contributors', 'contributions', 'committees']
 
-const streamToFile = (client, table = '') =>
+const streamToFile = (client: PoolClient, table = '') =>
   new Promise((resolve, reject) => {
     const stream = client.query(
       copyTo(`COPY ${table} TO STDOUT DELIMITER ',' csv header`)
@@ -26,7 +28,7 @@ const streamToFile = (client, table = '') =>
   })
 
 ;(async () => {
-  let client = null
+  let client: PoolClient | null = null
   try {
     client = await getClient()
     for (const table of tables) {
@@ -36,6 +38,8 @@ const streamToFile = (client, table = '') =>
   } catch (err) {
     console.error('Unable to copy from table', err)
   } finally {
-    client.release()
+    if (client) {
+      client.release()
+    }
   }
 })()

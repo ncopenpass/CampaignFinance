@@ -1,7 +1,8 @@
-const sanitize = require('sanitize-filename')
-const { parse } = require('json2csv')
+import sanitize from 'sanitize-filename'
+import { parse } from 'json2csv'
+import { Response } from 'express'
 
-const handleError = (error, res) => {
+export const handleError = (error: Error, res: Response) => {
   console.error(error)
   res.status(500)
   const { NODE_ENV } = process.env
@@ -15,11 +16,8 @@ const handleError = (error, res) => {
 /**
  * Takes an array of data and sends a CSV file
  * The field names of the first item in the array will be the header row
- * @param {Array<Object>} data
- * @param {String} filename
- * @param {import('express').Response} res
  */
-const sendCSV = (data, filename, res) => {
+export const sendCSV = (data: any[], filename: string, res: Response) => {
   console.log('filename', sanitize(filename))
   res.setHeader('Content-type', 'text/csv')
   res.setHeader(
@@ -32,7 +30,11 @@ const sendCSV = (data, filename, res) => {
   res.send(csv)
 }
 
-const streamFile = (streamFn, filename, res) => {
+export const streamFile = (
+  streamFn: () => Promise<any>,
+  filename: string,
+  res: Response
+) => {
   console.log('filename', sanitize(filename))
   res.setHeader('Content-type', 'text/csv')
   res.setHeader(
@@ -41,5 +43,3 @@ const streamFile = (streamFn, filename, res) => {
   )
   return streamFn()
 }
-
-module.exports = { handleError, sendCSV, streamFile }
