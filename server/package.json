@@ -28,8 +28,8 @@
     "adm-zip": "^0.5.9",
     "chai": "^4.2.0",
     "deep-equal-in-any-order": "^1.0.28",
-    "mocha": "^8.1.1",
+    "mocha": "^10.0.0",
     "nodemon": "^2.0.4",
-    "supertest": "^4.0.2"
+    "supertest": "^6.3.0"
   }
 }
