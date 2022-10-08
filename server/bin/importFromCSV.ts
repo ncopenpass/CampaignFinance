@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-const { getClient } = require('../db')
-const { copyFromCSV } = require('../db/copyFromCSV')
+import { getClient } from '../db'
+import { copyFromCSV } from '../db/copyFromCSV'
 
 const tableName = process.argv[2]
 const filePath = process.argv[3]

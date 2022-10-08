@@ -28,6 +28,7 @@ build:
 	npm run build-ui
 	rm -rf server/build
 	mv build server/build
+	cd server && npm run build
 
 start-prod:
 	cd server/ && NODE_ENV=production npm run start
@@ -44,7 +45,7 @@ clean-db: refresh-docker wait-for-postgres migrate-up etl
 clean-db-windows: refresh-docker wait-for-postgres migrate-up-windows etl
 
 etl:
-	cd server && node bin/etl.js
+	cd server && npm exec ts-node bin/etl.ts
 
 migrate-up:
 	cd server && npm run migrate up

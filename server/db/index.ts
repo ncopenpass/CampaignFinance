@@ -19,7 +19,7 @@ const pool = new Pool({
   min: 1,
 })
 
-export const query = (text: string, params: any[]) => pool.query(text, params)
+export const query = (text: string, params?: any[]) => pool.query(text, params)
 
 export const getClient = () => pool.connect()
 

@@ -1,12 +1,13 @@
 #! /usr/local/env node
 
-const fs = require('fs')
-const path = require('path')
-const db = require('../db')
-const json2csv = require('json2csv')
+import fs from 'fs'
+import path from 'path'
+import * as db from '../db'
+import json2csv from 'json2csv'
 
 // array: [1, 2, 3] => string: '1, 2, 3'
-const toSQLInQueryArgs = (args, el) => `${args}, ${el}`
+const toSQLInQueryArgs = (acc: string, val: number | string): string =>
+  `${acc}, ${val}`
 
 ;(async () => {
   try {
@@ -16,14 +17,14 @@ const toSQLInQueryArgs = (args, el) => `${args}, ${el}`
     ).rows
 
     // Get contributor_id's from result
-    const contributorIds = transactions
+    const contributorIds: string = transactions
       .map((transaction) => parseInt(transaction.contributor_id))
-      .reduce(toSQLInQueryArgs)
+      .reduce(toSQLInQueryArgs, '')
 
-    const committeeIds = transactions
+    const committeeIds: string = transactions
       .map((transaction) => transaction.canon_committee_sboe_id)
       .map((id) => `'${id}'`)
-      .reduce(toSQLInQueryArgs)
+      .reduce(toSQLInQueryArgs, '')
 
     const accounts = (
       await db.query(
@@ -39,15 +40,15 @@ const toSQLInQueryArgs = (args, el) => `${args}, ${el}`
 
     fs.writeFileSync(
       path.resolve(`./test/fixtures/transactions.csv`),
-      json2csv.parse(transactions, { emptyString: null })
+      json2csv.parse(transactions)
     )
     fs.writeFileSync(
       path.resolve(`./test/fixtures/accounts.csv`),
-      json2csv.parse(accounts, { emptyString: null })
+      json2csv.parse(accounts)
     )
     fs.writeFileSync(
       path.resolve(`./test/fixtures/committees.csv`),
-      json2csv.parse(committees, { emptyString: null })
+      json2csv.parse(committees)
     )
   } catch (error) {
     console.error(error)

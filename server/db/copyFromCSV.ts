@@ -1,6 +1,8 @@
-// @ts-check
-const fs = require('fs')
-const copyFrom = require('pg-copy-streams').from
+import fs from 'fs'
+import * as copyStream from 'pg-copy-streams'
+import { PoolClient } from 'pg'
+
+const copyFrom = copyStream.from
 
 /**
  *
@@ -9,10 +11,10 @@ const copyFrom = require('pg-copy-streams').from
  * @param {import('pg').PoolClient} client
  * @param {string} headers comma delimited string of header fields in order they appear in CSV file
  */
-const copyFromCSV = (
-  path,
-  tableName,
-  client,
+export const copyFromCSV = (
+  path: string,
+  tableName: string,
+  client: PoolClient,
   headers = '',
   nullDelimiter = ''
 ) =>
@@ -32,10 +34,6 @@ const copyFromCSV = (
       reject(error)
     })
     fileStream.pipe(stream).on('finish', () => {
-      resolve()
+      resolve(null)
     })
   })
-
-module.exports = {
-  copyFromCSV,
-}

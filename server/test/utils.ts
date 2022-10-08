@@ -1,23 +1,24 @@
-const migrate = require('node-pg-migrate').default
+import migrate, { RunnerOption } from 'node-pg-migrate'
+import { PoolClient } from 'pg'
 
-const { getClient } = require('../db')
-const { copyFromCSV } = require('../db/copyFromCSV')
+import { getClient } from '../db'
+import { copyFromCSV } from '../db/copyFromCSV'
 
 require('dotenv').config()
 
 const MIGRATIONS_TABLE_NAME = 'pgmigrations_test'
 
-const dropTables = async (client) => {
+const dropTables = async (client: PoolClient) => {
   await client.query('drop table if exists accounts cascade')
   await client.query('drop table if exists committees cascade')
   await client.query('drop table if exists transactions cascade')
   await client.query(`drop table if exists ${MIGRATIONS_TABLE_NAME}`)
 }
 
-const setUpDb = async () => {
+export const setUpDb = async () => {
   let client = null
-  const config = {
-    databaseUrl: process.env.TEST_DATABASE_URL,
+  const config: Partial<RunnerOption> = {
+    databaseUrl: process.env.TEST_DATABASE_URL!,
     dir: `${__dirname}/../migrations`,
     direction: 'up',
     migrationsTable: MIGRATIONS_TABLE_NAME,
@@ -28,7 +29,7 @@ const setUpDb = async () => {
     console.log('Dropping existing tables from test db, if they exist')
     await dropTables(client)
     console.log('Running migrations to set up db')
-    await migrate(config)
+    await migrate(config as RunnerOption)
   } catch (error) {
     console.error(error)
   } finally {
@@ -38,7 +39,7 @@ const setUpDb = async () => {
   }
 }
 
-const seedDb = async () => {
+export const seedDb = async () => {
   let client = null
   try {
     client = await getClient()
@@ -70,7 +71,7 @@ const seedDb = async () => {
   }
 }
 
-const dropRows = async () => {
+export const dropRows = async () => {
   let client = null
   try {
     client = await getClient()
@@ -82,7 +83,7 @@ const dropRows = async () => {
   }
 }
 
-const tearDownDb = async () => {
+export const tearDownDb = async () => {
   let client = null
   try {
     client = await getClient()
@@ -92,11 +93,4 @@ const tearDownDb = async () => {
   } finally {
     if (client !== null) client.release()
   }
-}
-
-module.exports = {
-  setUpDb,
-  seedDb,
-  tearDownDb,
-  dropRows,
 }

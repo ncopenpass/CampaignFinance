@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node dist/index.js",
-    "test": "NODE_ENV=test mocha",
+    "test": "NODE_ENV=test mocha -r tsconfig-paths/register -r ts-node/register test/*.test.ts",
     "start-dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/index.js\"",
     "migrate": "npm run parse-dot-env node-pg-migrate",
     "migrate-no-dot-env": "node-pg-migrate",
@@ -15,6 +15,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/chai": "^4.3.3",
+    "@types/mocha": "^10.0.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "json2csv": "^5.0.1",
@@ -29,6 +31,7 @@
     "@types/express": "^4.17.14",
     "@types/json2csv": "^5.0.3",
     "@types/node": "^18.8.3",
+    "@types/pg-copy-streams": "^1.2.1",
     "@types/pg-format": "^1.0.2",
     "adm-zip": "^0.5.9",
     "chai": "^4.2.0",
@@ -37,6 +40,8 @@
     "mocha": "^8.1.1",
     "nodemon": "^2.0.4",
     "supertest": "^4.0.2",
+    "ts-mocha": "^10.0.0",
+    "ts-node": "^10.9.1",
     "typescript": "^4.8.4"
   }
 }
