@@ -448,58 +448,6 @@ status code: 404
 }
 ```
 
-## GET `/api/search/candidates-donors-pacs/:name`
-
-Search for candidates, donors, and PACs by name.
-
-Query Params (optional):
-
-- `limit` default value `50`
-
-Example: `/api/search/candidates-donors-pacs/cooper?limit=1`
-
-response:
-
-```json
-{
-  "candidates": {
-    "data": [
-      {
-        "candidate_first_last_name": "JAMES STANFORD",
-        "candidate_first_name": "JAMES",
-        "candidate_full_name": "JAMES COOPER STANFORD",
-        "candidate_last_name": "STANFORD",
-        "candidate_middle_name": "COOPER",
-        "current_status": "Unknown",
-        "juris": "COUNTY",
-        "office": "Clerk of Superior Court",
-        "party": "Democratic",
-        "committee_sboe_id": "ORA-I2J52O-C-001"
-      }
-    ],
-    "count": "3"
-  },
-  "donors": {
-    "data": [
-      {
-        "contributor_id": 335348,
-        "name": "NORTH CAROLINA ASSOCIATION OF ELECTRIC COOPERATIVES RURAL ELECTRIC ACTION PROGRAM",
-        "city": "RALEIGH",
-        "state": "NC",
-        "zipcode": "27611-6566",
-        "profession": "",
-        "employer_name": ""
-      }
-    ],
-    "count": "780"
-  },
-  "pacs": {
-    "data": [],
-    "count": "0"
-  }
-}
-```
-
 ## GET `/api/expenditures/:ncsbeID`
 
 Get a list of expenditures associated with an ncbseID

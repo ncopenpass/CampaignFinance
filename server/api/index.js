@@ -1,4 +1,4 @@
-const express = require('express')
+import express from 'express'
 const search = require('./search')
 const candidate = require('./candidate')
 const contributor = require('./contributor')

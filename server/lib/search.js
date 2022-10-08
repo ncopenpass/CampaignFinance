@@ -1,6 +1,5 @@
-//@ts-check
-const { getClient } = require('../db')
-const format = require('pg-format')
+import { getClient } from '../db'
+import format, { string } from 'pg-format'
 
 const SUPPORTED_CANDIDATE_SORT_FIELDS = [
   'candidate_full_name',
@@ -17,34 +16,21 @@ const SUPPORTED_COMMITTEE_SORT_FIELDS = [
   '-committee_name',
 ]
 
-/**
- * @typedef {Object} SearchResult
- * @property {Array<any>} data
- * @property {number} count
- */
+type SearchResult = {
+  data: any[]
+  count: Number
+}
 
-/**
- * @param {string} name
- * @param {string|number} offset
- * @param {string|number} limit
- * @param {string|number} trigramLimit
- * @param {string} sort
- * @param {string} nameFilter
- * @param {string} professionFilter
- * @param {string} cityStateFilter
- * @returns {Promise<SearchResult>}
- * @throws an error if the pg query or connection fails
- */
-const searchContributors = async (
-  name,
+export const searchContributors = async (
+  name: string,
   offset = 0,
   limit = 50,
   trigramLimit = 0.6,
   sort = 'sml',
-  nameFilter,
-  professionFilter,
-  cityStateFilter
-) => {
+  nameFilter?: string,
+  professionFilter?: string,
+  cityStateFilter?: string
+): Promise<SearchResult> => {
   let client = null
   let order = SUPPORTED_CONTRIBUTOR_SORT_FIELDS.includes(sort) ? sort : 'sml'
   order = order.startsWith('-')
@@ -91,20 +77,7 @@ const searchContributors = async (
   }
 }
 
-/**
- * @param {object} arg
- * @param {string} arg.name
- * @param {string|number} arg.offset
- * @param {string|number} arg.limit
- * @param {string|number} arg.trigramLimit
- * @param {string} arg.partyFilter
- * @param {string} arg.nameFilter
- * @param {string} arg.contestFilter
- * @param {string} arg.sort
- * @returns {Promise<SearchResult>}
- * @throws an error if the pg query or connection fails
- */
-const searchCommittees = async ({
+export const searchCommittees = async ({
   name,
   offset = 0,
   limit = 10,
@@ -113,7 +86,16 @@ const searchCommittees = async ({
   partyFilter = '',
   nameFilter = '',
   contestFilter = '',
-}) => {
+}: {
+  name: string
+  offset: number
+  limit: number
+  trigramLimit: number
+  sort: string
+  partyFilter: string
+  nameFilter: string
+  contestFilter: string
+}): Promise<SearchResult> => {
   let client = null
   // default order by to nothing because postgres default ordering of ilike
   // works better than ordering by committee_name_sml
@@ -171,28 +153,16 @@ const searchCommittees = async ({
   }
 }
 
-/**
- * @param {string} name
- * @param {string|number} offset
- * @param {string|number} limit
- * @param {string|number} trigramLimit
- * @param {string} sort
- * @param {string} nameFilter
- * @param {string} partyFilter
- * @param {string} contestFilter
- * @returns {Promise<SearchResult>}
- * @throws an error if the pg query or connection fails
- */
-const searchCandidates = async (
-  name,
+export const searchCandidates = async (
+  name: string,
   offset = 0,
   limit = 50,
   trigramLimit = 0.6,
   sort = 'first_last_sml',
-  nameFilter,
-  partyFilter,
-  contestFilter
-) => {
+  nameFilter: string,
+  partyFilter: string,
+  contestFilter: string
+): Promise<SearchResult> => {
   let client = null
   let order = SUPPORTED_CANDIDATE_SORT_FIELDS.includes(sort)
     ? sort
@@ -245,10 +215,4 @@ const searchCandidates = async (
       client.release()
     }
   }
-}
-
-module.exports = {
-  searchContributors,
-  searchCandidates,
-  searchCommittees,
 }

@@ -1,8 +1,9 @@
 // @ts-check
-const { Pool } = require('pg')
+import { Pool } from 'pg'
 require('dotenv').config()
-const QueryStream = require('pg-query-stream')
-const { Transform } = require('json2csv')
+import QueryStream from 'pg-query-stream'
+import { Transform } from 'json2csv'
+import { Response } from 'express'
 
 const pool = new Pool({
   connectionString:
@@ -18,27 +19,16 @@ const pool = new Pool({
   min: 1,
 })
 
-/**
- *
- * @param {string | import('pg').QueryConfig<any[]>} text
- * @param {any[]} params
- * @returns {Promise<import('pg').QueryResult>}
- */
-const query = (text, params) => pool.query(text, params)
-/**
- * @returns {Promise<import('pg').PoolClient>}
- */
-const getClient = () => pool.connect()
+export const query = (text: string, params: any[]) => pool.query(text, params)
 
-/**
- *
- * @param {import('express').Response} res
- * @param {string} text
- * @param {any[]} args
- * @param {import('json2csv').Json2CsvTransform<any, any>|undefined} transformFn
- * @returns
- */
-const streamQueryToCSV = (res, text, args, transformFn) =>
+export const getClient = () => pool.connect()
+
+export const streamQueryToCSV = (
+  res: Response,
+  text: string,
+  args: any[],
+  transformFn?: json2csv.Json2CsvTransform<any, any>
+) =>
   new Promise((resolve, reject) =>
     pool.connect((err, client, done) => {
       if (err) {
@@ -66,9 +56,3 @@ const streamQueryToCSV = (res, text, args, transformFn) =>
       stream.pipe(json2csv).pipe(res)
     })
   )
-
-module.exports = {
-  query,
-  getClient,
-  streamQueryToCSV,
-}
