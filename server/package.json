@@ -10,7 +10,8 @@
     "migrate": "npm run parse-dot-env node-pg-migrate",
     "migrate-no-dot-env": "node-pg-migrate",
     "parse-dot-env": "eval $(egrep -v '^#' .env | xargs)",
-    "build": "npx tsc"
+    "build": "npx tsc",
+    "postbuild": "mv ./build ./dist/"
   },
   "author": "",
   "license": "ISC",
