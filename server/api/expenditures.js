@@ -1,11 +1,11 @@
 const express = require('express')
-const db = require('../db')
 const { apiReprExpenditure } = require('../lib/repr')
 const {
   getExpenditures,
   getExpendituresForDownload,
+  getCandidate,
 } = require('../lib/queries')
-const { handleError, sendCSV } = require('../lib/helpers')
+const { handleError, streamFile } = require('../lib/helpers')
 
 const router = express()
 
@@ -39,25 +39,24 @@ router.get('/expenditures/:ncsbeID', async (req, res) => {
           expenditures.rows.length > 0 ? expenditures.rows[0].full_count : 0,
       })
     } else {
-      const [expenditures, candidate] = await Promise.all([
-        getExpendituresForDownload({
-          ncsbeID,
-          date_occurred_gte,
-          date_occurred_lte,
-          year,
-        }),
-        getExpenditures(ncsbeID),
-      ])
+      const [candidate] = await Promise.all([getCandidate(ncsbeID)])
 
-      if (expenditures.rows.length < 1 || !candidate) {
+      if (!candidate) {
         return handleError(
           new Error(`no results found for candidate with id: ${ncsbeID}`),
           res
         )
       }
 
-      sendCSV(
-        expenditures.rows.map(apiReprExpenditure),
+      await streamFile(
+        () =>
+          getExpendituresForDownload({
+            ncsbeID,
+            date_occurred_gte,
+            date_occurred_lte,
+            year,
+            res,
+          }),
         `${ncsbeID}_expenditures.csv`,
         res
       )

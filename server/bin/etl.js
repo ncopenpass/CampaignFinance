@@ -9,6 +9,10 @@ const { copyFromCSV } = require('../db/copyFromCSV')
   let client = null
   try {
     client = await getClient()
+    const truncate = await client.query(
+      'truncate accounts, transactions, committees'
+    )
+    console.log({ truncate }, 'truncate response')
     await copyFromCSV(
       `${__dirname}/../tmp/accounts.csv`,
       'accounts',
