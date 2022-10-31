@@ -350,7 +350,8 @@ status code: 200
 
 ## GET `/candidate/:ncsbeID/contributions/years`
 
-Get the years that an individual candidate received contributions
+Get the years that a candidate received contributions
+
 
 Example: `/api/candidate/177-AGM31F-C-001/contributions/years`
 
