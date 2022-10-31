@@ -1,12 +1,15 @@
 import React, { useCallback, useState } from 'react'
 import { Search } from '@trussworks/react-uswds'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 
 import { SEARCH_FRAGMENT_ROUTE } from '../constants'
 
 const SearchBar = () => {
   const history = useHistory()
-  const [searchTerm, setSearchTerm] = useState('')
+  const location = useLocation()
+  const [searchTerm, setSearchTerm] = useState(
+    location.pathname.replace('/search/', '') || ''
+  )
 
   const handleChange = useCallback((e) => setSearchTerm(e.target.value), [])
 
@@ -26,6 +29,7 @@ const SearchBar = () => {
           onSubmit={handleSearch}
           onChange={handleChange}
           size="big"
+          defaultValue={searchTerm}
         />
       </div>
     </div>
