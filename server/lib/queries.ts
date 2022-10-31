@@ -51,8 +51,7 @@ export const getCandidateSummary = async ({
       select count(*)    as aggregated_contributions_count,
              sum(amount) as aggregated_contributions_sum
       from contributions
-      where contributor_id IS NULl
-        and canon_committee_sboe_id = $1
+      where canon_committee_sboe_id = $1
   )
   select sum(amount),
          avg(amount),
