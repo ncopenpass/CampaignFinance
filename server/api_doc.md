@@ -448,6 +448,25 @@ status code: 404
 }
 ```
 
+## GET `/contributor/:ncsbeID/contributions/years`
+
+Get an individual's years contributed
+
+Example: `/api/contributor/8ce7bc9f-2c13-45ac-8395-3e46b4191490/contributions/years`
+
+response:
+
+status code: 200
+
+```json
+{
+  "data": {
+    "years": [2021, 2020, 2019, 2018],
+    "count": 4
+  }
+}
+```
+
 ## GET `/api/expenditures/:ncsbeID`
 
 Get a list of expenditures associated with an ncbseID
