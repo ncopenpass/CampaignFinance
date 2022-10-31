@@ -329,6 +329,25 @@ Non-Candidate Committee response:
 }
 ```
 
+## GET `/candidate/:ncsbeID/contributions/years`
+
+Get an the years that an individual candidate received contributions
+
+Example: `/api/candidate/177-AGM31F-C-001/contributions/years`
+
+response:
+
+status code: 200
+
+```json
+{
+  "data": {
+    "years": [2021, 2020, 2019, 2018],
+    "count": 4
+  }
+}
+```
+
 ## GET `/api/contributor/:contributorId/contributions`
 
 Retrieve contributions for a contributor id.
